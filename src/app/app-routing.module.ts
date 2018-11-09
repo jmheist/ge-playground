@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
-import { Step1Component } from './step1/step1.component';
-import { Step2Component } from './step2/step2.component';
-import { Step3Component } from './step3/step3.component';
-import { Step4Component } from './step4/step4.component';
-import { FinalStepComponent } from './final-step/final-step.component';
+import { HomeComponent } from './template/home/home.component';
+import { Step1Component } from './setup/step1/step1.component';
+import { Step2Component } from './setup/step2/step2.component';
+import { Step3Component } from './setup/step3/step3.component';
+import { Step4Component } from './setup/step4/step4.component';
+import { FinalStepComponent } from './setup/final-step/final-step.component';
 
 const routes: Routes = [
 	{ path: '', component: HomeComponent },
