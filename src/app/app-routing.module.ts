@@ -7,6 +7,7 @@ import { Step2Component } from './setup/step2/step2.component';
 import { Step3Component } from './setup/step3/step3.component';
 import { Step4Component } from './setup/step4/step4.component';
 import { FinalStepComponent } from './setup/final-step/final-step.component';
+import { ListExchangesComponent } from './list-exchanges/list-exchanges.component';
 
 const routes: Routes = [
 	{ path: '', component: HomeComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
 	{ path: 'step3', component: Step3Component },
 	{ path: 'step4', component: Step4Component },
 	{ path: 'finalize', component: FinalStepComponent },
+	{ path: 'list-all', component: ListExchangesComponent }
 ];
 
 @NgModule({
