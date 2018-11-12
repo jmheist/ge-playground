@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { Component } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './template/nav/nav.component';
@@ -12,6 +12,8 @@ import { Step3Component } from './setup/step3/step3.component';
 import { Step1Component } from './setup/step1/step1.component';
 import { Step4Component } from './setup/step4/step4.component';
 import { FinalStepComponent } from './setup/final-step/final-step.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,11 +26,13 @@ import { FinalStepComponent } from './setup/final-step/final-step.component';
     Step3Component,
     Step1Component,
     Step4Component,
-    FinalStepComponent
+    FinalStepComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

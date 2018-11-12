@@ -17,32 +17,38 @@
     <div class="col-sm-8">
       <form>
         <div class="form-group">
-          <label for="exampleFormControlInput1">Email address</label>
-          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+          <h4><label for="exhangeName">Name Your Gift Exchange</label></h4>
+          <input type="text" class="form-control form-control-lg" id="exhangeName" placeholder="Family Gift Exchange">
         </div>
         <div class="form-group">
-          <label for="exampleFormControlSelect1">Example select</label>
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
+          <h4>Date of Exchange</h4>
+          <ngb-datepicker #d></ngb-datepicker>
         </div>
-        <div class="form-group">
-          <label for="exampleFormControlSelect2">Example multiple select</label>
-          <select multiple class="form-control" id="exampleFormControlSelect2">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
+         <div class="form-group">
+          <h4><label for="exhangeName">Budget Max Per Gift?</label></h4>
+          <input type="text" class="form-control form-control-lg" id="exhangeName" placeholder="$20">
         </div>
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Example textarea</label>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <h4>Each person draws # names?</h4>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input form-control-lg" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+          <label class="form-check-label" for="inlineRadio1">1</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input form-control-lg" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+          <label class="form-check-label" for="inlineRadio2">2</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input form-control-lg" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+          <label class="form-check-label" for="inlineRadio3">Do not draw names</label>
+        </div>
+        <h4>Options</h4>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input form-control-lg" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Include My Name in Drawing</label>
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input form-control-lg" id="exampleCheck2">
+          <label class="form-check-label" for="exampleCheck2">Show me who drew who</label>
         </div>
       </form>
       <p><a class="btn btn-primary btn-lg" routerLink="/step2" role="button">Add Names &raquo;</a></p>
