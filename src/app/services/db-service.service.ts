@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class DbServiceService {
 	exchanges: Observable<any[]>;
-	constructor(db: AngularFirestore) {
-		this.exchanges = db.collection('exchanges').valueChanges();
+  	constructor(db: AngularFirestore) {
+  		this.exchanges = db.collection('exchanges').valueChanges();
   	}
+
 }

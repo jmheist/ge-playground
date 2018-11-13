@@ -22,6 +22,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { ListExchangesComponent } from './list-exchanges/list-exchanges.component';
 
+import { DbServiceService } from './services/db-service.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +48,7 @@ import { ListExchangesComponent } from './list-exchanges/list-exchanges.componen
     NgbModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [DbServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
