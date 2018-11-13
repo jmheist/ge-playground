@@ -23,6 +23,8 @@ import { environment } from '../environments/environment';
 import { ListExchangesComponent } from './list-exchanges/list-exchanges.component';
 
 import { DbServiceService } from './services/db-service.service';
+import { SetupService } from './services/setup.service';
+
 
 @NgModule({
   declarations: [
@@ -48,7 +50,10 @@ import { DbServiceService } from './services/db-service.service';
     NgbModule,
     FormsModule,
   ],
-  providers: [DbServiceService],
+  providers: [
+    DbServiceService,
+    SetupService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

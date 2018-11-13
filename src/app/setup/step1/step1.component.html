@@ -15,43 +15,45 @@
       </ul>
     </div>
     <div class="col-sm-8">
-      <form>
+      <form #setup1form="ngForm">
+        {{ setup1form.value | json }}
         <div class="form-group">
           <h4><label for="exhangeName">Name Your Gift Exchange</label></h4>
-          <input type="text" class="form-control form-control-lg" id="exhangeName" placeholder="Family Gift Exchange">
+          <input type="text" class="form-control form-control-lg" id="exhangeName" name="exhangeName" placeholder="Family Gift Exchange" ngModel>
         </div>
         <div class="form-group">
           <h4>Date of Exchange</h4>
-          <ngb-datepicker #d></ngb-datepicker>
+          <!-- <ngb-datepicker #d></ngb-datepicker> -->
+          <input type="text" ngbDatepicker #d="ngbDatepicker" name="datePicker" ngModel/><button (click)="d.toggle()">Toggle</button>
         </div>
          <div class="form-group">
-          <h4><label for="exhangeName">Budget Max Per Gift?</label></h4>
-          <input type="text" class="form-control form-control-lg" id="exhangeName" placeholder="$20">
+          <h4><label for="exchangeBudget">Budget Max Per Gift?</label></h4>
+          <input type="text" class="form-control form-control-lg" id="exchangeBudget" name="exchangeBudget" placeholder="$20" ngModel>
         </div>
         <h4>Each person draws # names?</h4>
         <div class="form-check form-check-inline">
-          <input class="form-check-input form-control-lg" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-          <label class="form-check-label" for="inlineRadio1">1</label>
+          <input class="form-check-input form-control-lg" type="radio" name="nameCountRadio" id="inlineRadio1" value="1" ngModel>
+          <label class="form-check-label" for="1">1</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input form-control-lg" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+          <input class="form-check-input form-control-lg" type="radio" name="nameCountRadio" id="inlineRadio2" value="2" ngModel>
           <label class="form-check-label" for="inlineRadio2">2</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input form-control-lg" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+          <input class="form-check-input form-control-lg" type="radio" name="nameCountRadio" id="inlineRadio3" value="0" ngModel>
           <label class="form-check-label" for="inlineRadio3">Do not draw names</label>
         </div>
         <h4>Options</h4>
         <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input form-control-lg" id="exampleCheck1">
+          <input type="checkbox" class="form-check-input form-control-lg" id="includeMeCheck" name="includeMeCheck" ngModel>
           <label class="form-check-label" for="exampleCheck1">Include My Name in Drawing</label>
         </div>
         <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input form-control-lg" id="exampleCheck2">
+          <input type="checkbox" class="form-check-input form-control-lg" id="notSecretCheck" name="notSecretCheck" ngModel>
           <label class="form-check-label" for="exampleCheck2">Show me who drew who</label>
         </div>
       </form>
-      <p><a class="btn btn-primary btn-lg" routerLink="/step2" role="button">Add Names &raquo;</a></p>
+      <p><a class="btn btn-primary btn-lg" ng-click='submitData()' role="button">Add Names &raquo;</a></p>
     </div>
   </div>
 </div>

@@ -1,4 +1,3 @@
-export class Exchange {
-  id: number;
+export interface Exchange {
   name: string;
 }
