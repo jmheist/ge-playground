@@ -7,7 +7,7 @@ export class SetupService {
 	private setupData: {};
 	
 	constructor() {
-
+		
 	}
 	
 }
