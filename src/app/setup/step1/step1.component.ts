@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
+import { Step1 } from '../../setup';
 
 @Component({
   selector: 'app-step1',
@@ -7,13 +8,16 @@ import {Router} from '@angular/router';
   styleUrls: ['./step1.component.scss']
 })
 export class Step1Component implements OnInit {
-  constructor() { }
 
-  ngOnInit() {
-  }
+	step1FormData = new Step1('Exhange Name 2', { "year": 2018, "month": 11, "day": 15 }, 100);
 
-  submitData() {
-  	// get form data and save it in the setup data object
-  }
+	constructor() { }
+
+	ngOnInit() {
+	}
+
+	submitData() {
+		
+	}
 
 }
