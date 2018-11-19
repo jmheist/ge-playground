@@ -14,6 +14,7 @@ import { Step4Component } from './setup/step4/step4.component';
 import { FinalStepComponent } from './setup/final-step/final-step.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -24,6 +25,7 @@ import { ListExchangesComponent } from './list-exchanges/list-exchanges.componen
 
 import { DbServiceService } from './services/db-service.service';
 import { SetupService } from './services/setup.service';
+import { SetupComponent } from './setup/setup.component';
 
 
 @NgModule({
@@ -39,6 +41,7 @@ import { SetupService } from './services/setup.service';
     Step4Component,
     FinalStepComponent,
     ListExchangesComponent,
+    SetupComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { SetupService } from './services/setup.service';
     AppRoutingModule,
     NgbModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     DbServiceService,

@@ -3,60 +3,40 @@
 </div>
 <div class="container">
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-lg-4">
       <h3>Add Names</h3>
       <ul>
         <li>Your Info</li>
         <li>Add Names</li>
       </ul>
     </div>
-    <div class="col-sm-8">
-      <form>
+    <div class="col-lg-8">
+      {{ step2Form.value | json}}
+      <form [formGroup]="step2Form">
         <h3>Your Info</h3>
         <div class="form-group">
-          <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+          <input type="text" class="form-control" placeholder="Your Name" formControlName="adminName">
         </div>
         <div class="form-group">
-          <input type="email" class="form-control" id="exampleInputName2" placeholder="Email">
+          <input type="email" class="form-control" placeholder="Your Email Address" formControlName="adminEmail">
         </div>
         <h3>Add Names</h3>
-        <div class="form-row align-items-center">
-          <div class="col-6">
-            <label class="sr-only" for="inlineFormInput">Name</label>
-            <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Jane Doe">
+        <div class="addNamesSection">
+
+          <div class="form-row align-items-center" formGroupName="exchangee">
+            <div class="col-6">
+              <label class="sr-only" for="ExchangeeName1">Name</label>
+              <input type="text" class="form-control mb-2" placeholder="Exchangee's Name" formControlName="exchangeeName">
+            </div>
+            <div class="col-6">
+              <input type="email" class="form-control mb-2" placeholder="Email" formControlName="exchangeeEmail">
+            </div>
           </div>
-          <div class="col-6">
-            <input type="email" class="form-control mb-2" id="exampleInputName3" placeholder="Email">
-          </div>
+
         </div>
-        <div class="form-row align-items-center">
-          <div class="col-6">
-            <label class="sr-only" for="inlineFormInput">Name</label>
-            <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Jane Doe">
-          </div>
-          <div class="col-6">
-            <input type="email" class="form-control mb-2" id="exampleInputName3" placeholder="Email">
-          </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-success">Submit</button>
         </div>
-        <div class="form-row align-items-center">
-          <div class="col-6">
-            <label class="sr-only" for="inlineFormInput">Name</label>
-            <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Jane Doe">
-          </div>
-          <div class="col-6">
-            <input type="email" class="form-control mb-2" id="exampleInputName3" placeholder="Email">
-          </div>
-        </div>
-        <div class="form-row align-items-center">
-          <div class="col-6">
-            <label class="sr-only" for="inlineFormInput">Name</label>
-            <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Jane Doe">
-          </div>
-          <div class="col-6">
-            <input type="email" class="form-control mb-2" id="exampleInputName3" placeholder="Email">
-          </div>
-        </div>
-        <p><a class="btn btn-primary btn-lg" routerLink="/step3" role="button">Next Step &raquo;</a></p>
       </form>
     </div>
   </div>

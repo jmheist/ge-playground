@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Step1 } from '../../setup';
+import { Setup } from '../../setup';
+import { SetupService } from '../../services/setup.service';
 
 @Component({
   selector: 'app-step1',
@@ -9,15 +10,16 @@ import { Step1 } from '../../setup';
 })
 export class Step1Component implements OnInit {
 
-	step1FormData = new Step1('Exhange Name 2', { "year": 2018, "month": 11, "day": 15 }, 100);
-
-	constructor() { }
+	constructor(private _setupService: SetupService, private router: Router) { }
 
 	ngOnInit() {
 	}
 
+	step1FormData = this._setupService.getData();
+
 	submitData() {
-		
+		this._setupService.addData(this.step1FormData);
+		this.router.navigate(['setup/step2']);
 	}
 
 }
