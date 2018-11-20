@@ -8,7 +8,7 @@ export class SetupService {
 	private setupData;
 	
 	constructor() {
-		this.setupData = new Setup('Exhange Name 2', { "year": 2018, "month": 11, "day": 15 }, 100, '1', true, false, 'jacob', 'jmheist@');
+		this.setupData = {};
 	}
 
 	addData(data) {
@@ -18,9 +18,7 @@ export class SetupService {
 				this.setupData[key] = data[key];
 			}
 		}
-		
 		this.printData()
-
 	}
 
 	getData() {

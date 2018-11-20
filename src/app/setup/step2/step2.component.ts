@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Setup } from '../../setup';
 import { SetupService } from '../../services/setup.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup, Validator } from '@angular/forms';
 
 @Component({
   selector: 'app-step2',
@@ -11,34 +11,57 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class Step2Component implements OnInit {
 
-  constructor(private _setupService: SetupService, private router: Router) { }
+  constructor(
+    private _setupService: SetupService, 
+    private router: Router,
+    private fb: FormBuilder
+  ) { }
+
+  public formData = this._setupService.getData();
 
   ngOnInit() {
+    console.log('step2FormData',this.formData);
+    if (this.formData.hasOwnProperty('exchangees') && this.formData.exchangees.length > 0) {
+      this.formData.exchangees.forEach(ex => {
+        if (ex.name != '' && ex.email != '') {
+          this.addNames(ex.name, ex.email);
+        }
+      });
+    }
+    this.addNames();
   }
-
-  step2FormData = this._setupService.getData();
-  
-  step2Form = new FormGroup({
-    adminName: new FormControl('Jacob'),
-    adminEmail: new FormControl('jmheist@gmail.com'),
-    exchangee: new FormGroup({
-      exchangeeName: new FormControl('exchangee one'),
-      exchangeeEmail: new FormControl('exchangeeOne@email.com')
-    })
+    
+  step2Form = this.fb.group({
+    adminName: [this.formData.adminName],
+    adminEmail: [this.formData.adminName],
+    exchangees: this.fb.array([])
   });
 
-  submitData() {
-    var organizedData = {};
-
-    organizedData['adminName'] = this.step2FormData.adminName;
-    organizedData['adminEmail'] = this.step2FormData.adminEmail;
-
-    // for (var i = this.step2FormData.length - 1; i >= 0; i--) {
-    //   this.step2FormData[i]
-    // }
-
-    this._setupService.addData(organizedData);
-  	this.router.navigate(['setup/step3']);
+  createNameField(exName = '', exEmail = ''): FormGroup {
+    return this.fb.group({
+      name: [exName],
+      email: [exEmail]
+    })
   }
+
+  get exchangees() {
+    return this.step2Form.get('exchangees') as FormArray;
+  }
+
+  addNames(exName = '', exEmail = '') {
+    this.exchangees.push(this.createNameField(exName, exEmail));
+  }
+
+  back() {
+    this.router.navigate(['setup/step1']);
+  }
+
+  submitData() {
+
+    // TODO: strip out blank exchangees so they dont go to setupFormData
+
+		this._setupService.addData(this.step2Form.value);
+		this.router.navigate(['setup/step3']);
+	}
 
 }

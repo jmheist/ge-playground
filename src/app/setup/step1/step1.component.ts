@@ -15,10 +15,10 @@ export class Step1Component implements OnInit {
 	ngOnInit() {
 	}
 
-	step1FormData = this._setupService.getData();
+	formData = this._setupService.getData();
 
 	submitData() {
-		this._setupService.addData(this.step1FormData);
+		this._setupService.addData(this.formData);
 		this.router.navigate(['setup/step2']);
 	}
 

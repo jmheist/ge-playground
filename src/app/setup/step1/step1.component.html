@@ -18,40 +18,40 @@
       <form #setup1form="ngForm" novalidate (ngSubmit)="submitData()">
         {{ setup1form.value | json }}
         <hr>
-        {{ step1FormData | json }}
+        {{ formData | json }}
         <div class="form-group">
           <h4><label for="exhangeName">Name Your Gift Exchange</label></h4>
-          <input type="text" class="form-control form-control-lg" id="exhangeName" name="exhangeName" placeholder="Family Gift Exchange" [(ngModel)]="step1FormData.name">
+          <input type="text" class="form-control form-control-lg" id="exhangeName" name="exhangeName" placeholder="Family Gift Exchange" [(ngModel)]="formData.name">
         </div>
         <div class="form-group">
           <h4>Date of Exchange</h4>
           <!-- <ngb-datepicker #d></ngb-datepicker> -->
-          <input type="text" ngbDatepicker #d="ngbDatepicker" name="datePicker" [(ngModel)]="step1FormData.date" /><button (click)="d.toggle()" novalidate type="button">Toggle</button>
+          <input type="text" ngbDatepicker #d="ngbDatepicker" name="datePicker" [(ngModel)]="formData.date" /><button (click)="d.toggle()" novalidate type="button">Toggle</button>
         </div>
         <div class="form-group">
           <h4><label for="exchangeBudget">Budget Max Per Gift?</label></h4>
-          <input type="text" class="form-control form-control-lg" id="exchangeBudget" name="exchangeBudget" placeholder="$20" [(ngModel)]="step1FormData.budget">
+          <input type="text" class="form-control form-control-lg" id="exchangeBudget" name="exchangeBudget" placeholder="$20" [(ngModel)]="formData.budget">
         </div>
         <h4>Each person draws # names?</h4>
         <div class="form-check form-check-inline">
-          <input class="form-check-input form-control-lg" type="radio" name="nameCountRadio" id="draw1Name" value="1" [(ngModel)]="step1FormData.nameCount">
+          <input class="form-check-input form-control-lg" type="radio" name="nameCountRadio" id="draw1Name" value="1" [(ngModel)]="formData.nameCount">
           <label class="form-check-label" for="1">1</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input form-control-lg" type="radio" name="nameCountRadio" id="draw2Name" value="2" [(ngModel)]="step1FormData.nameCount">
+          <input class="form-check-input form-control-lg" type="radio" name="nameCountRadio" id="draw2Name" value="2" [(ngModel)]="formData.nameCount">
           <label class="form-check-label" for="inlineRadio2">2</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input form-control-lg" type="radio" name="nameCountRadio" id="draw0Name" value="0" [(ngModel)]="step1FormData.nameCount">
+          <input class="form-check-input form-control-lg" type="radio" name="nameCountRadio" id="draw0Name" value="0" [(ngModel)]="formData.nameCount">
           <label class="form-check-label" for="inlineRadio3">Do not draw names</label>
         </div>
         <h4>Options</h4>
         <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input form-control-lg" id="includeMeCheck" name="includeMeCheck" [(ngModel)]="step1FormData.includeAdmin">
+          <input type="checkbox" class="form-check-input form-control-lg" id="includeMeCheck" name="includeMeCheck" [(ngModel)]="formData.includeAdmin">
           <label class="form-check-label" for="exampleCheck1">Include My Name in Drawing</label>
         </div>
         <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input form-control-lg" id="notSecretCheck" name="notSecretCheck" [(ngModel)]="step1FormData.visibleNames">
+          <input type="checkbox" class="form-check-input form-control-lg" id="notSecretCheck" name="notSecretCheck" [(ngModel)]="formData.visibleNames">
           <label class="form-check-label" for="exampleCheck2">Show me who drew who</label>
         </div>
         <div class="form-group">
