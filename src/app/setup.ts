@@ -8,6 +8,6 @@ export class Setup {
 		public visibleNames: boolean,
 		public adminName: string,
 		public adminEmail: string,
-		public namesArray: [],
+		public exchangees: [],
 	) {}
 }

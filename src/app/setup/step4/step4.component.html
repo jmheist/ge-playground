@@ -9,15 +9,19 @@
         <li>Write a message to everyone in the gift Exchange</li>
         <li>Send it and get this party started</li>
       </ul>
+      {{ step4Form.value | json }}
+
+      {{ formData | json }}
     </div>
     <div class="col-sm-8">
-      <form>
+      <form [formGroup]="step4Form" novalidate (ngSubmit)="submitData()">
         <div class="form-group">
           <label for="exampleFormControlTextarea1">Example textarea</label>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" formControlName="welcomeMessage"></textarea>
         </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="button" class="btn btn-secondary ml-2" (click)="back()">back</button>
       </form>
-      <p><a class="btn btn-primary btn-lg" routerLink="/finalize" role="button">Send Invites &raquo;</a></p>
     </div>
   </div>
 </div>

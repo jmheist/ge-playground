@@ -9,134 +9,29 @@
         <li>Find a person to exclude who they can draw</li>
         <li>Select the name they should not draw</li>
       </ul>
+      {{ formData | json }}
+      <hr>
+      {{ step3Form.value | json }}
     </div>
+    
     <div class="col-sm-8">
-      <form>
+      <form [formGroup]="step3Form" novalidate (ngSubmit)="submitData()">
         <div class="container">
           <div class="row">
-            <div class="col-md-4">
-              <h5>John Doe</h5>
-              <div class="form-group">
-              	<select class="form-control" id="exampleFormControlSelect1">
-                  <option value="" default>none</option>
-                  <option>Jane Doe</option>
-                  <option>Mom Doe</option>
-                  <option>Dad Doe</option>
-                  <option>Brother Doe</option>
-                  <option>Sister Doe</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <h5>John Doe</h5>
-              <div class="form-group">
-              	<select class="form-control" id="exampleFormControlSelect1">
-                  <option value="" default>none</option>
-                  <option>Jane Doe</option>
-                  <option>Mom Doe</option>
-                  <option>Dad Doe</option>
-                  <option>Brother Doe</option>
-                  <option>Sister Doe</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <h5>John Doe</h5>
-              <div class="form-group">
-              	<select class="form-control" id="exampleFormControlSelect1">
-                  <option value="" default>none</option>
-                  <option>Jane Doe</option>
-                  <option>Mom Doe</option>
-                  <option>Dad Doe</option>
-                  <option>Brother Doe</option>
-                  <option>Sister Doe</option>
-                </select>
+            <div formArrayName="exchangees" *ngFor="let exchangee of formData.exchangees; let i = index">
+              <div class="col-lg-4">
+                <h5>{{ exchangee.name }}</h5>
+                <div class="form-group">
+                  <select class="form-control" id="exampleFormControlSelect1" formControlName="exclude" [formControlName]='i'>
+                    <option value="" default>none</option>
+                    <!-- TODO: remove their own name from exclude list via pipe filter -->
+                    <option *ngFor="let ex of formData.exchangees; let l = index" [value]="ex.name">{{ ex.name }}</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-4">
-              <h5>John Doe</h5>
-              <div class="form-group">
-              	<select class="form-control" id="exampleFormControlSelect1">
-                  <option value="" default>none</option>
-                  <option>Jane Doe</option>
-                  <option>Mom Doe</option>
-                  <option>Dad Doe</option>
-                  <option>Brother Doe</option>
-                  <option>Sister Doe</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <h5>John Doe</h5>
-              <div class="form-group">
-              	<select class="form-control" id="exampleFormControlSelect1">
-                  <option value="" default>none</option>
-                  <option>Jane Doe</option>
-                  <option>Mom Doe</option>
-                  <option>Dad Doe</option>
-                  <option>Brother Doe</option>
-                  <option>Sister Doe</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <h5>John Doe</h5>
-              <div class="form-group">
-              	<select class="form-control" id="exampleFormControlSelect1">
-                  <option value="" default>none</option>
-                  <option>Jane Doe</option>
-                  <option>Mom Doe</option>
-                  <option>Dad Doe</option>
-                  <option>Brother Doe</option>
-                  <option>Sister Doe</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <h5>John Doe</h5>
-              <div class="form-group">
-              	<select class="form-control" id="exampleFormControlSelect1">
-                  <option value="" default>none</option>
-                  <option>Jane Doe</option>
-                  <option>Mom Doe</option>
-                  <option>Dad Doe</option>
-                  <option>Brother Doe</option>
-                  <option>Sister Doe</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <h5>John Doe</h5>
-              <div class="form-group">
-              	<select class="form-control" id="exampleFormControlSelect1">
-                  <option value="" default>none</option>
-                  <option>Jane Doe</option>
-                  <option>Mom Doe</option>
-                  <option>Dad Doe</option>
-                  <option>Brother Doe</option>
-                  <option>Sister Doe</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <h5>John Doe</h5>
-              <div class="form-group">
-              	<select class="form-control" id="exampleFormControlSelect1">
-                  <option value="" default>none</option>
-                  <option>Jane Doe</option>
-                  <option>Mom Doe</option>
-                  <option>Dad Doe</option>
-                  <option>Brother Doe</option>
-                  <option>Sister Doe</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <p><a class="btn btn-primary btn-lg" routerLink="/step4" role="button">Next Step &raquo;</a></p>
+          <button type="submit" class="btn btn-success">Submit</button>
           <button type="button" class="btn btn-secondary ml-2" (click)="back()">back</button>
         </div>
       </form>

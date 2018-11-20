@@ -1,5 +1,23 @@
-<ul>
-  <li class="text" *ngFor="let exchange of exchanges | async">
-    {{exchange.name}}
-  </li>
-</ul>
+<div class="container">
+  <div class="row">&nbsp;</div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>Exchanges</h3>
+      <ul>
+        <li class="text" *ngFor="let exchange of exchanges | async">
+          {{exchange.name}}
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <h3>Users</h3>
+      <ul>
+        <li class="text" *ngFor="let user of users | async">
+          {{user.name}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -57,8 +57,17 @@ export class Step2Component implements OnInit {
   }
 
   submitData() {
+    var cleanedExs = []
+    for (const ex in this.formData.exchangees) {
+      if (this.formData.exchangees.hasOwnProperty(ex)) {
+        const exch = this.formData.exchangees[ex];
+        if (exch.name != '' && exch.email != '') {
+          cleanedExs.push(exch);
+        }
+      }
+    }
 
-    // TODO: strip out blank exchangees so they dont go to setupFormData
+    this.step2Form.value.exchangees = cleanedExs;
 
 		this._setupService.addData(this.step2Form.value);
 		this.router.navigate(['setup/step3']);

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Setup } from '../../setup';
+import { SetupService } from '../../services/setup.service';
+import { FormBuilder, FormArray, FormGroup, Validator } from '@angular/forms';
 
 @Component({
   selector: 'app-final-step',
@@ -7,7 +11,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FinalStepComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _setupService: SetupService,
+    private router: Router,
+    private fb: FormBuilder
+  ) { }
+
+  public formData = this._setupService.getData();
 
   ngOnInit() {
   }

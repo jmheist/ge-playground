@@ -9,12 +9,14 @@ import { DbServiceService } from '../services/db-service.service';
 export class ListExchangesComponent implements OnInit {
 
 	public exchanges = {};
+	public users = {};
 
  	constructor(private _dbservice: DbServiceService) {
   	}
 
 	ngOnInit() {
 		this.exchanges = this._dbservice.exchanges;
+		this.users = this._dbservice.users;
 	}
 
 }
