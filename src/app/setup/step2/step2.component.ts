@@ -67,8 +67,9 @@ export class Step2Component implements OnInit {
     }
 
     // add admin to exchangees if aplicable
-		if (this.formData.includeAdmin) {
+		if (this.formData.includeAdmin && !this.formData.adminAdded) {
       cleanedExs.push({name: this.formData.adminName, email: this.formData.adminEmail});
+      this.formData.adminAdded = true;
 		}
 
     this.step2Form.value.exchangees = cleanedExs;
