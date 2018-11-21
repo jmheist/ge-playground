@@ -29,7 +29,7 @@ export class SetupService {
 		await this.handleUsers();
 		console.log('users added to db!');
 		await this.handleExchange();
-		console.log('excahnge added to db!');
+		console.log('exhange added to db!');
 	}
 
 	async handleExchange() {

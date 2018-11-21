@@ -4,9 +4,9 @@ import { Setup } from '../../setup';
 import { SetupService } from '../../services/setup.service';
 
 @Component({
-  selector: 'app-step1',
-  templateUrl: './step1.component.html',
-  styleUrls: ['./step1.component.scss']
+	selector: 'app-step1',
+	templateUrl: './step1.component.html',
+	styleUrls: ['./step1.component.scss']
 })
 export class Step1Component implements OnInit {
 

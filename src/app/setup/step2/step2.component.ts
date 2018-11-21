@@ -61,10 +61,15 @@ export class Step2Component implements OnInit {
     for (let i = 0; i < this.step2Form.value.exchangees.length; i++) {
       const ex = this.step2Form.value.exchangees[i];
         if (ex.name != '' && ex.email != '') {
-          ex['excluded'] = this.formData.exchangees[i].excluded;
+          ex['excluded'] = this.formData.exchangees[i].excluded || '';
           cleanedExs.push(ex);
         } 
     }
+
+    // add admin to exchangees if aplicable
+		if (this.formData.includeAdmin) {
+      cleanedExs.push({name: this.formData.adminName, email: this.formData.adminEmail});
+		}
 
     this.step2Form.value.exchangees = cleanedExs;
 		this._setupService.addData(this.step2Form.value);
