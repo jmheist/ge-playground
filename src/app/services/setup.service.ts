@@ -22,6 +22,10 @@ export class SetupService {
 		this.printData()
 	}
 
+	sendSetupToFirestore() {
+		
+	}
+
 	getData() {
 		return this.setupData;
 	}

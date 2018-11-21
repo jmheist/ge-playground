@@ -20,6 +20,8 @@ export class FinalStepComponent implements OnInit {
   public formData = this._setupService.getData();
 
   ngOnInit() {
+    this._setupService.sendSetupToFirestore()
   }
+
 
 }
