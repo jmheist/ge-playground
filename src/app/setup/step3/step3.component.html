@@ -13,21 +13,19 @@
       <hr>
       {{ step3Form.value | json }}
     </div>
-    
+
     <div class="col-sm-8">
       <form [formGroup]="step3Form" novalidate (ngSubmit)="submitData()">
         <div class="container">
           <div class="row">
-            <div formArrayName="exchangees" *ngFor="let exchangee of formData.exchangees; let i = index">
-              <div class="col-lg-4">
-                <h5>{{ exchangee.name }}</h5>
-                <div class="form-group">
-                  <select class="form-control" id="exampleFormControlSelect1" formControlName="exclude" [formControlName]='i'>
-                    <option value="" default>none</option>
-                    <!-- TODO: remove their own name from exclude list via pipe filter -->
-                    <option *ngFor="let ex of formData.exchangees; let l = index" [value]="ex.name">{{ ex.name }}</option>
-                  </select>
-                </div>
+            <div class="col-sm-6" formArrayName="exchangees" *ngFor="let exchangee of formData.exchangees; let i = index">
+              <h5>{{ exchangee.name }}</h5>
+              <div class="form-group">
+                <select class="form-control" id="exampleFormControlSelect1" formControlName="exclude" [formControlName]='i'>
+                  <option value="" default>none</option>
+                  <!-- TODO: remove their own name from exclude list via pipe filter -->
+                  <option *ngFor="let ex of formData.exchangees; let l = index" [value]="ex.name">{{ ex.name }}</option>
+                </select>
               </div>
             </div>
           </div>

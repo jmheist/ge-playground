@@ -5,6 +5,7 @@ import { Setup } from '../setup';
   	providedIn: 'root'
 })
 export class SetupService {
+	
 	private setupData;
 	
 	constructor() {
