@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, SnapshotOptions } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument,
+  AngularFirestoreCollection,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { FirestoreService } from './firestore.service';
 
 export interface Exchange {
   id?: string;
@@ -31,7 +36,10 @@ export class DbServiceService {
   users: Observable<User[]>;
   usersDoc: AngularFirestoreDocument<User>;
 
-  constructor(public afs: AngularFirestore) {
+  constructor(
+    public afs: AngularFirestore,
+    public db: FirestoreService
+  ) {
     //this.exchanges = this.afs.collection('exchanges').valueChanges();
 
     this.exchangesCollection = this.afs.collection('exchanges', ref => ref.orderBy('name', 'asc'));
@@ -46,7 +54,6 @@ export class DbServiceService {
 
 
     this.usersCollection = this.afs.collection('users', ref => ref.orderBy('name', 'asc'));
-
     this.users = this.usersCollection.snapshotChanges().map(changes => {
       return changes.map(a => {
         const data = a.payload.doc.data() as User;
@@ -62,7 +69,6 @@ export class DbServiceService {
 
   async addExchange(exchange: Exchange) {
     const data = {
-      createdAt: Date.now(),
       name: exchange.name,
       date: exchange.date,
       budget: exchange.budget,
@@ -74,8 +80,11 @@ export class DbServiceService {
       welcomeMessage: exchange.welcomeMessage,
     };
 
-    const docRef = await this.afs.collection('exchanges').add(data);
-    return docRef;
+    // db.set('items/ID', data) })
+
+    // const docRef = await this.afs.collection('users').add(data);
+    const id = await this.afs.createId();
+    const docRef = await this.db.set(`exchanges/${id}`, data);
   }
 
   deleteExchange(exchange: Exchange) {
@@ -94,13 +103,14 @@ export class DbServiceService {
 
   async addUser(user) {
     const data = {
-      createdAt: Date.now(),
       name: user.name,
       email: user.email
     };
 
-    const docRef = await this.afs.collection('users').add(data);
-    return docRef;
+    //this.db.upsert('notes/xyz', { content: 'hello dude'})
+
+    // const docRef = await this.afs.collection('users').add(data);
+    const docRef = await this.db.upsert(`users/${data.email}`, data);
   }
 
   deleteUser(user: User) {

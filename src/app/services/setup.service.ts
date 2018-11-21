@@ -46,7 +46,7 @@ export class SetupService {
 			console.log(counter);
 			const ex = this.setupData.exchangees[i];
 			ex['drawnName'] = this.setupData.exchangees[counter].name;
-			ex['drawnNameId'] = this.setupData.exchangees[counter].id;
+			ex['drawnNameEmail'] = this.setupData.exchangees[counter].email;
 			counter++;
 		}
 
@@ -64,16 +64,8 @@ export class SetupService {
 		var userArray = [];
 		for (let i = 0; i < this.setupData.exchangees.length; i++) {
 			const user = this.setupData.exchangees[i];
-			await this.db.addUser(user)
-			.then(function(docRef) {
-				user['id'] = docRef.id;
-				userArray.push(user);
-			})
-			.catch(function(error) {
-				console.error("Error adding document: ", error);
-			});
+			await this.db.addUser(user);
 		}
-		this.setupData.exchangees = userArray;
 		return;
 	}
 
