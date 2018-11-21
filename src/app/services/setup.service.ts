@@ -25,18 +25,56 @@ export class SetupService {
 		this.printData()
 	}
 
-	sendSetupToFirestore() {
-		this.handleUsers();
+	async sendSetupToFirestore() {
+		await this.handleUsers();
+		console.log('users added to db!');
+		await this.handleExchange();
+		console.log('excahnge added to db!');
 	}
 
-	handleUsers() {
+	async handleExchange() {
+
+		var exchange = this.setupData;
+
+		// DO THE MAGIC, draw names TODO: Make this actually random and exclude names.... :D
+		var counter = 1;
+		const len = this.setupData.exchangees.length;
+		for (let i = 0; i < this.setupData.exchangees.length; i++) {
+			if (counter > len-1) {
+				counter = 0;
+			}
+			console.log(counter);
+			const ex = this.setupData.exchangees[i];
+			ex['drawnName'] = this.setupData.exchangees[counter].name;
+			ex['drawnNameId'] = this.setupData.exchangees[counter].id;
+			counter++;
+		}
+
+		await this.db.addExchange(exchange)
+		.then(function(docRef) {
+			console.log('Exchange added to db!');
+		})
+		.catch(function(error) {
+			console.error("Error adding document: ", error);
+		});
+		return;
+	}
+
+	async handleUsers() {
+		var userArray = [];
 		for (let i = 0; i < this.setupData.exchangees.length; i++) {
 			const user = this.setupData.exchangees[i];
-			this.db.addUser(user).then(
-				id => console.log(id);
-			);
-			console.log(id);
+			await this.db.addUser(user)
+			.then(function(docRef) {
+				user['id'] = docRef.id;
+				userArray.push(user);
+			})
+			.catch(function(error) {
+				console.error("Error adding document: ", error);
+			});
 		}
+		this.setupData.exchangees = userArray;
+		return;
 	}
 
 	getData() {

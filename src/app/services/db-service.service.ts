@@ -4,22 +4,22 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 export interface Exchange {
-  id?:string;
-  name?:string;
-  date?:{};
-  budget?:string;
-  nameCount?:string;
-  includeAdmin?:boolean;
-  adminName?:string;
-  adminEmail?:string;
-  exchangees?:[];
-  welcomeEmail?:string;
+  id?: string;
+  name?: string;
+  date?: {};
+  budget?: string;
+  nameCount?: string;
+  includeAdmin?: boolean;
+  adminName?: string;
+  adminEmail?: string;
+  exchangees?: [];
+  welcomeMessage?: string;
 }
 export interface User {
-  id?:string;
-  name?:string;
-  email?:string;
-  exchanges?:[];
+  id?: string;
+  name?: string;
+  email?: string;
+  exchanges?: [];
 }
 
 @Injectable()
@@ -31,10 +31,10 @@ export class DbServiceService {
   users: Observable<User[]>;
   usersDoc: AngularFirestoreDocument<User>;
 
-  constructor(public afs: AngularFirestore) { 
+  constructor(public afs: AngularFirestore) {
     //this.exchanges = this.afs.collection('exchanges').valueChanges();
-    window.snaps = [];
-    this.exchangesCollection = this.afs.collection('exchanges', ref => ref.orderBy('name','asc'));
+
+    this.exchangesCollection = this.afs.collection('exchanges', ref => ref.orderBy('name', 'asc'));
 
     this.exchanges = this.exchangesCollection.snapshotChanges().map(changes => {
       return changes.map(a => {
@@ -43,9 +43,9 @@ export class DbServiceService {
         return data;
       });
     });
-		
-		
-		this.usersCollection = this.afs.collection('users', ref => ref.orderBy('name','asc'));
+
+
+    this.usersCollection = this.afs.collection('users', ref => ref.orderBy('name', 'asc'));
 
     this.users = this.usersCollection.snapshotChanges().map(changes => {
       return changes.map(a => {
@@ -56,41 +56,59 @@ export class DbServiceService {
     });
   }
 
-  getExchange(){
+  getExchange() {
     return this.exchanges;
   }
 
-  addExchange(exchange: Exchange){
-    this.exchangesCollection.add(exchange);
+  async addExchange(exchange: Exchange) {
+    const data = {
+      createdAt: Date.now(),
+      name: exchange.name,
+      date: exchange.date,
+      budget: exchange.budget,
+      nameCount: exchange.nameCount,
+      includeAdmin: exchange.includeAdmin,
+      adminName: exchange.adminName,
+      adminEmail: exchange.adminEmail,
+      exchangees: exchange.exchangees,
+      welcomeMessage: exchange.welcomeMessage,
+    };
+
+    const docRef = await this.afs.collection('exchanges').add(data);
+    return docRef;
   }
 
-  deleteExchange(exchange: Exchange){
+  deleteExchange(exchange: Exchange) {
     this.exchangeDoc = this.afs.doc(`exchanges/${exchange.id}`);
     this.exchangeDoc.delete();
   }
 
-  updateExchange(exchange: Exchange){
+  updateExchange(exchange: Exchange) {
     this.exchangeDoc = this.afs.doc(`exchanges/${exchange.id}`);
     this.exchangeDoc.update(exchange);
-	}
-	
-	getUsers(){
+  }
+
+  getUsers() {
     return this.users;
   }
 
-  addUser(user: User){
-    var snap = this.usersCollection.add(user).then(data =>
-      return data.id;
-    );
-    
+  async addUser(user) {
+    const data = {
+      createdAt: Date.now(),
+      name: user.name,
+      email: user.email
+    };
+
+    const docRef = await this.afs.collection('users').add(data);
+    return docRef;
   }
 
-  deleteUser(user: User){
+  deleteUser(user: User) {
     this.usersDoc = this.afs.doc(`users/${user.id}`);
     this.usersDoc.delete();
   }
 
-  updateUser(user: User){
+  updateUser(user: User) {
     this.usersDoc = this.afs.doc(`users/${user.id}`);
     this.usersDoc.update(user);
   }
