@@ -107,10 +107,11 @@ export class DbServiceService {
       email: user.email
     };
 
-    //this.db.upsert('notes/xyz', { content: 'hello dude'})
+    // this.db.upsert('notes/xyz', { content: 'hello dude'}, false)
+    // false = do not update
 
     // const docRef = await this.afs.collection('users').add(data);
-    const docRef = await this.db.upsert(`users/${data.email}`, data);
+    const docRef = await this.db.upsert(`users/${data.email}`, data, false);
   }
 
   deleteUser(user: User) {

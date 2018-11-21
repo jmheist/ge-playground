@@ -43,20 +43,13 @@ export class SetupService {
 			if (counter > len-1) {
 				counter = 0;
 			}
-			console.log(counter);
 			const ex = this.setupData.exchangees[i];
 			ex['drawnName'] = this.setupData.exchangees[counter].name;
 			ex['drawnNameEmail'] = this.setupData.exchangees[counter].email;
 			counter++;
 		}
 
-		await this.db.addExchange(exchange)
-		.then(function(docRef) {
-			console.log('Exchange added to db!');
-		})
-		.catch(function(error) {
-			console.error("Error adding document: ", error);
-		});
+		await this.db.addExchange(exchange);
 		return;
 	}
 

@@ -128,14 +128,14 @@ export class FirestoreService {
   }
 
   /// If doc exists update, otherwise set
-  upsert<T>(ref: DocPredicate<T>, data: any): Promise<void> {
+  upsert<T>(ref: DocPredicate<T>, data: any, update = true): Promise<void> {
     const doc = this.doc(ref)
       .snapshotChanges()
       .pipe(take(1))
       .toPromise();
 
     return doc.then((snap: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
-      return snap.payload.exists ? this.update(ref, data) : this.set(ref, data);
+      return snap.payload.exists ? (update ? this.update(ref, data) : null) : this.set(ref, data);
     });
   }
 
