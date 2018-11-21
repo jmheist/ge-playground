@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, SnapshotOptions } from '@angular/fire/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -33,7 +33,7 @@ export class DbServiceService {
 
   constructor(public afs: AngularFirestore) { 
     //this.exchanges = this.afs.collection('exchanges').valueChanges();
-
+    window.snaps = [];
     this.exchangesCollection = this.afs.collection('exchanges', ref => ref.orderBy('name','asc'));
 
     this.exchanges = this.exchangesCollection.snapshotChanges().map(changes => {
@@ -56,40 +56,43 @@ export class DbServiceService {
     });
   }
 
-  getItems(){
+  getExchange(){
     return this.exchanges;
   }
 
-  addItem(exchange: Exchange){
+  addExchange(exchange: Exchange){
     this.exchangesCollection.add(exchange);
   }
 
-  deleteItem(exchange: Exchange){
+  deleteExchange(exchange: Exchange){
     this.exchangeDoc = this.afs.doc(`exchanges/${exchange.id}`);
     this.exchangeDoc.delete();
   }
 
-  updateItem(exchange: Exchange){
+  updateExchange(exchange: Exchange){
     this.exchangeDoc = this.afs.doc(`exchanges/${exchange.id}`);
     this.exchangeDoc.update(exchange);
 	}
 	
 	getUsers(){
-    return this.exchanges;
+    return this.users;
   }
 
   addUser(user: User){
-    this.exchangesCollection.add(user);
+    var snap = this.usersCollection.add(user).then(data =>
+      return data.id;
+    );
+    
   }
 
   deleteUser(user: User){
-    this.exchangeDoc = this.afs.doc(`users/${user.id}`);
-    this.exchangeDoc.delete();
+    this.usersDoc = this.afs.doc(`users/${user.id}`);
+    this.usersDoc.delete();
   }
 
   updateUser(user: User){
-    this.exchangeDoc = this.afs.doc(`users/${user.id}`);
-    this.exchangeDoc.update(user);
+    this.usersDoc = this.afs.doc(`users/${user.id}`);
+    this.usersDoc.update(user);
   }
 
 }
