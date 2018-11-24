@@ -20,10 +20,16 @@
     <div class="col-sm-12">
       <h3>People</h3>
       <div class="container">
-        <div class="row border-bottom" *ngFor="let ex of (exchange | async)?.exchangees ; let i of index;">
-          <div class="col-sm-4"><strong>{{ex.name}}</strong></div>
-          <div class="col-sm-3 ml-3">Wishlist: false</div>
-          <div class="col-sm-4 ml-3">Viewed Wishlist: false</div>
+        <div class="mt-2 mb-2 pt-2 pb-2 border-bottom" *ngFor="let ex of (exchange | async)?.exchangees ; let i of index;">
+          <div class="row">
+            <div class="col-sm-4"><strong>{{ex.name}}</strong></div>
+            <div class="col-sm-4">{{ ex.email }} (edit)</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">Wishlist Created: false</div>
+            <div class="col-sm-4">Viewed Name: false</div>
+          </div>
         </div>
       </div>
     </div>
