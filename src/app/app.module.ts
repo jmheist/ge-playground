@@ -26,7 +26,7 @@ import { DbServiceService } from './services/db-service.service';
 import { SetupService } from './services/setup.service';
 import { SetupComponent } from './setup/setup.component';
 import { AdminComponent } from './pages/admin/admin.component';
-import { WishlistComponent } from './wishlist/wishlist.component';
+import { WishlistComponent } from './pages/wishlist/wishlist.component';
 
 
 @NgModule({
