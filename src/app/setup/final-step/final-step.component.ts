@@ -27,9 +27,4 @@ export class FinalStepComponent implements OnInit {
     this._setupService.sendSetupToFirestore()
   }
 
-  drawNames() {
-    this._setupService.drawNames();
-  }
-
-
 }
