@@ -3,10 +3,13 @@
 </div>
 <div class="container">
   <div class="row justify-content-md-center">
-  	<div class="col-sm-6">
+  	<div class="col-sm-12">
   		<h2>Thank You!</h2>
 			<p>Please verify your email address. An email has been sent to {{ formData.adminEmail}} with a link to verify. Please complete this step, once verified we will notify everyone in your exchange.</p>
-			<p>{{ formData | json }}</p>
+			<button type="button" class="btn btn-primary" (click)="drawNames()">drawnNames()</button>
+			<ul>
+				<li *ngFor="let ex of this.formData.exchangees">{{ ex.name }} - {{ex.nameDrawn}} - {{ex.excluded}}</li>
+			</ul>
 			<button type="button" class="btn btn-primary" (click)="send()">Send to Firestore</button>
 		</div>
   </div>

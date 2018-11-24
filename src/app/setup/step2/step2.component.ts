@@ -60,8 +60,8 @@ export class Step2Component implements OnInit {
     var cleanedExs = []
     for (let i = 0; i < this.step2Form.value.exchangees.length; i++) {
       const ex = this.step2Form.value.exchangees[i];
-        if (ex.name != '' && ex.email != '') {
-          ex['excluded'] = this.formData.exchangees[i].excluded || '';
+        if (ex.name != '' && ex.email != '' && this.formData.exchangees && this.formData.exchangees.length > 0) {
+          ex['excluded'] = this.formData.exchangees[i].hasOwnProperty('excluded') ? this.formData.exchangees[i].excluded : '';
           cleanedExs.push(ex);
         } 
     }
