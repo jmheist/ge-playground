@@ -43,16 +43,17 @@ export class Step3Component implements OnInit {
 
   submitData() {
 
-    var organizedData = this.formData;
-    var i = 0;
-    for (const ex in organizedData) {
-      if (organizedData.hasOwnProperty(ex) && organizedData.exchangees[i] && this.step3Form.value.exchangees[i] != '') {
-        organizedData.exchangees[i].excluded = this.step3Form.value.exchangees[i];
-      }
-      i++;
+    var exchangees = [];
+    for (let i = 0; i < this.formData.exchangees.length; i++) {
+      const savedEx = this.formData.exchangees[i];
+      const stepEx = this.step3Form.value.exchangees[i];
+      savedEx['excluded'] = stepEx || "";
+      exchangees.push(savedEx);
     }
 
-    this._setupService.addData(organizedData);
+    const res = {'exchangees': exchangees};
+
+    this._setupService.addData(res);
     this.router.navigate(['setup/step4']);
   }
 

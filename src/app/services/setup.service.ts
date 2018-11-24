@@ -23,10 +23,10 @@ export class SetupService {
 			// "exchangees": [
 			// 	{ "name": "", "email": "jmheis1t@gmail.com" },
 			// 	{ "name": "Jacob 2 Heisterkamp", "email": "jmheist2@gmail.com" },
-			// 	{ "name": "Jacob 3 Heisterkamp", "email": "jmheist3@gmail.com", "excluded": "Jacob 1 Heisterkamp" },
-			// 	{ "name": "Jacob 4 Heisterkamp", "email": "jmheist4@gmail.com", "excluded": "Jacob 2 Heisterkamp" },
+			// 	{ "name": "Jacob 3 Heisterkamp", "email": "jmheist3@gmail.com" },
+			// 	{ "name": "Jacob 4 Heisterkamp", "email": "jmheist4@gmail.com" },
 			// 	{ "name": "Jacob 5 Heisterkamp", "email": "jmheist5@gmail.com" },
-			// 	{ "name": "Jacob 6 Heisterkamp", "email": "jmheist6@gmail.com", "excluded": "Jacob 5 Heisterkamp" }
+			// 	{ "name": "Jacob 6 Heisterkamp", "email": "jmheist6@gmail.com" }
 			// ],
 			// "welcomeMessage": "This is my great message!"
 		};
@@ -34,12 +34,12 @@ export class SetupService {
 	}
 
 	addData(data) {
-		console.log(data);
 		if (data) {
 			for (let key in data) {
 				this.setupData[key] = data[key];
 			}
 		}
+		this.printData();
 	}
 
 	async sendSetupToFirestore() {

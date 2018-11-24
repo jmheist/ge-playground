@@ -11,9 +11,6 @@
       </ul>
     </div>
     <div class="col-lg-8">
-      {{ step2Form.value | json}}
-      <hr>
-      {{ formData | json}}
       <form [formGroup]="step2Form" novalidate (ngSubmit)="submitData()">
         <h3>Your Info</h3>
         <div class="form-group">

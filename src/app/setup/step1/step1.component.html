@@ -16,9 +16,6 @@
     </div>
     <div class="col-sm-8">
       <form #setup1form="ngForm" novalidate (ngSubmit)="submitData()">
-        {{ setup1form.value | json }}
-        <hr>
-        {{ formData | json }}
         <div class="form-group">
           <h4><label for="exhangeName">Name Your Gift Exchange</label></h4>
           <input type="text" class="form-control form-control-lg" id="exhangeName" name="exhangeName" placeholder="Family Gift Exchange" [(ngModel)]="formData.name">
