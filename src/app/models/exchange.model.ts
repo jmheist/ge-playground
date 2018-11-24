@@ -1,3 +1,12 @@
 export interface Exchange {
-  name: string;
+  id?: string;
+  name?: string;
+  date?: {};
+  budget?: string;
+  nameCount?: string;
+  includeAdmin?: boolean;
+  adminName?: string;
+  adminEmail?: string;
+  exchangees?: [];
+  welcomeMessage?: string;
 }

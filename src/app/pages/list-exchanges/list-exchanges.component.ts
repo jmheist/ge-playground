@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DbServiceService } from '../services/db-service.service';
+import { DbServiceService } from '../../services/db-service.service';
 
 @Component({
 	selector: 'app-list-exchanges',
@@ -15,7 +15,7 @@ export class ListExchangesComponent implements OnInit {
   	}
 
 	ngOnInit() {
-		this.exchanges = this._dbservice.exchanges;
+		this.exchanges = this._dbservice.getExchanges();
 		this.users = this._dbservice.users;
 	}
 

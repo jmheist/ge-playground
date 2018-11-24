@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DbServiceService } from '../services/db-service.service';
+import { ParseSourceSpan } from '@angular/compiler';
 
 @Injectable({
 	providedIn: 'root'
@@ -42,6 +43,7 @@ export class SetupService {
 	}
 
 	async sendSetupToFirestore() {
+		this.drawNames(true);
 		await this.handleUsers();
 		console.log('users added to db!');
 		await this.handleExchange();
@@ -86,9 +88,14 @@ export class SetupService {
 		console.log(this.setupData ? this.setupData : 'no data in this.setupData');
 	}
 
-	drawNames() {
+	drawNames(prod = false) {
 		let errors = false;
-		let people = this.setupData.exchangees;
+		let people = [];
+		if (prod) {
+			people = this.setupData.exchangees;
+		} else {
+			people = Object.assign([], this.setupData.exchangees);
+		}
 		const verifyGiftPartners = (people) => people.every((person) => person.nameDrawn);
 		const setNameDrawnToBlank = (people) => people.forEach((person) => person.nameDrawn = '');
 
@@ -147,6 +154,8 @@ export class SetupService {
 		} else {
 			console.log(people);
 		}
+
+		if(!prod) { return !errors } // so I can test the excludes and return true if excludes are fine.
 
 	}
 }

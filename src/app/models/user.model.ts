@@ -1,4 +1,7 @@
-export class User {
-  id: number;
-  name: string;
+
+export interface User {
+  id?: string;
+  name?: string;
+  email?: string;
+  exchanges?: [];
 }

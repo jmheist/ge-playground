@@ -7,34 +7,19 @@ import {
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { FirestoreService } from './firestore.service';
-
-export interface Exchange {
-  id?: string;
-  name?: string;
-  date?: {};
-  budget?: string;
-  nameCount?: string;
-  includeAdmin?: boolean;
-  adminName?: string;
-  adminEmail?: string;
-  exchangees?: [];
-  welcomeMessage?: string;
-}
-export interface User {
-  id?: string;
-  name?: string;
-  email?: string;
-  exchanges?: [];
-}
+import { Exchange } from '../models/exchange.model';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class DbServiceService {
   exchangesCollection: AngularFirestoreCollection<Exchange>;
   exchanges: Observable<Exchange[]>;
-  exchangeDoc: AngularFirestoreDocument<Exchange>;
+  exDoc: AngularFirestoreDocument<Exchange>;
+  ex: Observable<Exchange>;
   usersCollection: AngularFirestoreCollection<User>;
   users: Observable<User[]>;
   usersDoc: AngularFirestoreDocument<User>;
+  user: Observable<User>;
 
   constructor(
     public afs: AngularFirestore,
@@ -63,8 +48,12 @@ export class DbServiceService {
     });
   }
 
-  getExchange() {
+  getExchanges() {
     return this.exchanges;
+  }
+
+  getExchange(id) {
+    return this.db.doc$('exchanges/'+id);
   }
 
   async addExchange(exchange: Exchange) {
@@ -88,17 +77,21 @@ export class DbServiceService {
   }
 
   deleteExchange(exchange: Exchange) {
-    this.exchangeDoc = this.afs.doc(`exchanges/${exchange.id}`);
-    this.exchangeDoc.delete();
+    this.exDoc = this.afs.doc(`exchanges/${exchange.id}`);
+    this.exDoc.delete();
   }
 
   updateExchange(exchange: Exchange) {
-    this.exchangeDoc = this.afs.doc(`exchanges/${exchange.id}`);
-    this.exchangeDoc.update(exchange);
+    this.exDoc = this.afs.doc(`exchanges/${exchange.id}`);
+    this.exDoc.update(exchange);
   }
 
   getUsers() {
     return this.users;
+  }
+
+  getUser(id) {
+    return this.db.doc$('users/' + id);
   }
 
   async addUser(user) {

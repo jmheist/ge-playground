@@ -7,7 +7,9 @@
       <h3>Exchanges</h3>
       <ul>
         <li class="text" *ngFor="let exchange of exchanges | async">
-          {{exchange.name}}
+          <a [routerLink]="['/admin', exchange.id]">
+            {{exchange.name}}
+          </a>
         </li>
       </ul>
     </div>

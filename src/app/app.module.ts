@@ -4,9 +4,8 @@ import { Component } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './template/nav/nav.component';
-import { HomeComponent } from './template/home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 import { FooterComponent } from './template/footer/footer.component';
-import { StartFormComponent } from './bits/start-form/start-form.component';
 import { Step2Component } from './setup/step2/step2.component';
 import { Step3Component } from './setup/step3/step3.component';
 import { Step1Component } from './setup/step1/step1.component';
@@ -21,11 +20,13 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
-import { ListExchangesComponent } from './list-exchanges/list-exchanges.component';
+import { ListExchangesComponent } from './pages/list-exchanges/list-exchanges.component';
 
 import { DbServiceService } from './services/db-service.service';
 import { SetupService } from './services/setup.service';
 import { SetupComponent } from './setup/setup.component';
+import { AdminComponent } from './pages/admin/admin.component';
+import { WishlistComponent } from './wishlist/wishlist.component';
 
 
 @NgModule({
@@ -34,7 +35,6 @@ import { SetupComponent } from './setup/setup.component';
     NavComponent,
     HomeComponent,
     FooterComponent,
-    StartFormComponent,
     Step2Component,
     Step3Component,
     Step1Component,
@@ -42,6 +42,8 @@ import { SetupComponent } from './setup/setup.component';
     FinalStepComponent,
     ListExchangesComponent,
     SetupComponent,
+    AdminComponent,
+    WishlistComponent,
   ],
   imports: [
     BrowserModule,
