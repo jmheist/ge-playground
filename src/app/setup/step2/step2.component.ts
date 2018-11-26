@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Setup } from '../../setup';
 import { SetupService } from '../../services/setup.service';
 import { FormBuilder, FormArray, FormGroup, Validator } from '@angular/forms';
 
@@ -77,7 +76,7 @@ export class Step2Component implements OnInit {
 
     // add admin to exchangees if aplicable
     if (this.formData.includeAdmin && !this.formData.adminAdded) {
-      cleanedExs.push({ name: this.formData.adminName, email: this.formData.adminEmail });
+      cleanedExs.push({ name: this.formData.adminName, email: this.formData.adminEmail, isAdmin: true });
       this.formData.adminAdded = true;
     }
 

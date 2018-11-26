@@ -49,10 +49,23 @@ export class FirestoreService {
       .snapshotChanges()
       .pipe(
         map((doc: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
-          return doc.payload.data() as T;
+          const data = doc.payload.data();
+          return data as T;
         }),
       );
   }
+
+  // docWithIds$<T>(ref: DocPredicate<T>): Observable<T> {
+  //   return this.doc(ref)
+  //     .snapshotChanges()
+  //     .pipe(
+  //       map((doc: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
+  //         const data = doc.payload.data();
+  //         data['id'] = doc.payload.id;
+  //         return data as T;
+  //       }),
+  //     );
+  // }
 
   col$<T>(ref: CollectionPredicate<T>, queryFn?): Observable<T[]> {
     return this.col(ref, queryFn)
@@ -128,14 +141,22 @@ export class FirestoreService {
   }
 
   /// If doc exists update, otherwise set
-  upsert<T>(ref: DocPredicate<T>, data: any, update = true): Promise<void> {
+  upsertUser<T>(ref: DocPredicate<T>, data: any, update = true): Promise<void> {
     const doc = this.doc(ref)
       .snapshotChanges()
       .pipe(take(1))
       .toPromise();
 
     return doc.then((snap: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
-      return snap.payload.exists ? (update ? this.update(ref, data) : null) : this.set(ref, data);
+      if (snap.payload.exists) {
+        delete data.uid;
+        return update ? this.update(ref, data) : null;
+      }else {
+        const uid = this.afs.createId();
+        data.uid = uid;
+        return this.set(ref, data)
+      }
+      // return snap.payload.exists ? (update ? this.update(ref, data) : null) : this.set(ref, data);
     });
   }
 

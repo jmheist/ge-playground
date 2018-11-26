@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DbServiceService } from '../services/db-service.service';
-import { ParseSourceSpan } from '@angular/compiler';
+import { User } from '../models/user.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,22 +13,7 @@ export class SetupService {
 		private db: DbServiceService,
 	) {
 		this.setupData = {
-			// "name": "New Gift Exchange 1",
-			// "date": { "year": 2018, "month": 11, "day": 15 },
-			// "budget": "50",
-			// "nameCount": "1",
-			// "includeAdmin": true,
-			// "adminName": "Jacob Heisterkamp",
-			// "adminEmail": "jmheist@gmail.com",
-			// "exchangees": [
-			// 	{ "name": "", "email": "jmheis1t@gmail.com" },
-			// 	{ "name": "Jacob 2 Heisterkamp", "email": "jmheist2@gmail.com" },
-			// 	{ "name": "Jacob 3 Heisterkamp", "email": "jmheist3@gmail.com" },
-			// 	{ "name": "Jacob 4 Heisterkamp", "email": "jmheist4@gmail.com" },
-			// 	{ "name": "Jacob 5 Heisterkamp", "email": "jmheist5@gmail.com" },
-			// 	{ "name": "Jacob 6 Heisterkamp", "email": "jmheist6@gmail.com" }
-			// ],
-			// "welcomeMessage": "This is my great message!"
+			"adminName": "Jacob Heisterkamp", "adminEmail": "Jacob Heisterkamp", "exchangees": [{ "name": "stacey", "email": "stacey@email.com", "excluded": "Jacob Heisterkamp" }, { "name": "dave", "email": "dave@email.com", "excluded": "deb" }, { "name": "deb", "email": "deb@email.com", "excluded": "dave" }, { "name": "grant", "email": "grant@email.com", "excluded": "kristin" }, { "name": "kristin", "email": "kristin@email.com", "excluded": "grant" }, { "name": "Jacob Heisterkamp", "email": "jmheist@gmail.com", "excluded": "stacey" }], "name": "Best Heisterkamp Family Exchange", "date": { "year": 2018, "month": 11, "day": 15 }, "budget": "20", "nameCount": "1", "includeAdmin": true, "adminAdded": true, "welcomeMessage": "Hello Everyone!"
 		};
 		// this.setupData = {};
 	}
@@ -72,10 +57,14 @@ export class SetupService {
 	}
 
 	async handleUsers() {
-		var userArray = [];
 		for (let i = 0; i < this.setupData.exchangees.length; i++) {
 			const user = this.setupData.exchangees[i];
 			await this.db.addUser(user);
+
+			this.db.getUser(user.email).subscribe(userData => {
+				this.setupData.exchangees[i].uid = userData.uid;
+			});
+
 		}
 		return;
 	}
@@ -155,7 +144,7 @@ export class SetupService {
 			console.log(people);
 		}
 
-		if(!prod) { return !errors } // so I can test the excludes and return true if excludes are fine.
+		if (!prod) { return !errors } // so I can test the excludes and return true if excludes are fine.
 
 	}
 }

@@ -11,26 +11,9 @@ import { Exchange } from '../../models/exchange.model';
 })
 export class AdminComponent implements OnInit {
 
-  public exchange: Observable<Exchange>;
-  private id: string;
-
-  constructor(
-    private route: ActivatedRoute,
-    private db: DbServiceService,
-    
-  ) { 
-    this.route.params.subscribe(params => {
-      this.id = params['id'];
-    });
-  }
-
+  constructor() {};
   ngOnInit() {
-    this.loadExchange();
-  }
 
-  async loadExchange() {
-    // load data from firestore for this exhange
-    this.exchange = await this.db.getExchange(this.id);
   }
 
 }

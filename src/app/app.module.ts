@@ -26,8 +26,12 @@ import { DbServiceService } from './services/db-service.service';
 import { SetupService } from './services/setup.service';
 import { SetupComponent } from './setup/setup.component';
 import { AdminComponent } from './pages/admin/admin.component';
-import { WishlistComponent } from './pages/wishlist/wishlist.component';
-
+import { ExchangeAdminComponent } from './pages/admin/exchange-admin/exchange-admin.component';
+import { WishlistComponent } from './pages/exchange/wishlist/wishlist.component';
+import { UpdateEmailComponent } from './pages/admin/update-email/update-email.component';
+import { ExchangeComponent } from './pages/exchange/exchange.component';
+import { DrawComponent } from './pages/exchange/draw/draw.component';
+import { GroupComponent } from './pages/exchange/group/group.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +47,12 @@ import { WishlistComponent } from './pages/wishlist/wishlist.component';
     ListExchangesComponent,
     SetupComponent,
     AdminComponent,
+    ExchangeAdminComponent,
     WishlistComponent,
+    UpdateEmailComponent,
+    ExchangeComponent,
+    DrawComponent,
+    GroupComponent,
   ],
   imports: [
     BrowserModule,

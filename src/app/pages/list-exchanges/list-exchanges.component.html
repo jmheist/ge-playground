@@ -17,7 +17,7 @@
       <h3>Users</h3>
       <ul>
         <li class="text" *ngFor="let user of users | async">
-          {{user.name}}
+          <a (click)="getUser(user.email)">{{user.name}}</a>
         </li>
       </ul>
     </div>

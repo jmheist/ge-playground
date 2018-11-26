@@ -1,33 +1,30 @@
 Things to complete:
 
-  Exchange Setup Phase:
-    ☐ Forms @tagged  
-    ☐ Data sent to firestore @tagged
+  Page Setup Completion: 
+    ✔ Exchange Setup @done(18-11-26 11:34)
+    ✔ Exchange Admin Page @done(18-11-26 11:34)
+      ☐ Update email page 
+      ☐ Send email page
+    ☐ Exchangee Home Page
+      ☐ group page
+        ☐ send group email
+      ☐ view name's wishlist
+        ☐ ask name a question
+      ☐ Set their own wishlist 
+      ☐ see gift idea list
 
+  Exchange Setup Phase:
+    ✔ Forms @done(18-11-26 10:15)
+    ✔ Data sent to firestore @done(18-11-26 10:15)
+    ☐ Option to select 2 names per exchangee
+ 
   Email System:
     ☐ Enable sending email
     ☐ Determine how to trigger emails
       - firebase has a way to do this
       - sign up for a email vendor free service
-    ☐ 
 
-  Admin System:
-    ☐ admin page to see exchange status
-      - who has emails
-      - set wishlist
-      - viewed name's wishlist
-    ☐ Send out emails to keep group up to date
-    ☐ update email addresses
-    ☐ add names?
-
-  Exchangee:
-    ☐ first page is to view their secret name
-    ☐ set their own wishlist
-    ☐ notified with their name has set wishlist
-    ☐ view secret name wishlist
-
-Pages Outstanding:
-  ☐ Admin group page
-  ☐ Exchangee view secret name page
-  ☐ Exchangee set wishlist
-    - Item searching with api for amazon and more
+  Things to consider eventually:
+    ☐ Add exchange Id to users document when exchangee intereacts with exchange
+      - for future lookup of previous gift exchanges
+      - dont add to early in process in case exchange is created but never used

@@ -73,6 +73,7 @@ export class DbServiceService {
 
     // const docRef = await this.afs.collection('users').add(data);
     const id = await this.afs.createId();
+    console.log(data);
     const docRef = await this.db.set(`exchanges/${id}`, data);
   }
 
@@ -90,21 +91,17 @@ export class DbServiceService {
     return this.users;
   }
 
-  getUser(id) {
-    return this.db.doc$('users/' + id);
+  getUser(id): Observable<User> {
+    return this.db.doc$(`users/${id}`);
   }
 
-  async addUser(user) {
+  addUser(user): Promise<void> {
     const data = {
       name: user.name,
       email: user.email
     };
 
-    // this.db.upsert('notes/xyz', { content: 'hello dude'}, false)
-    // false = do not update
-
-    // const docRef = await this.afs.collection('users').add(data);
-    const docRef = await this.db.upsert(`users/${data.email}`, data, false);
+    return this.db.upsertUser(`users/${data.email}`, data, true);
   }
 
   deleteUser(user: User) {

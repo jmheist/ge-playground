@@ -4,4 +4,6 @@ export interface User {
   name?: string;
   email?: string;
   exchanges?: [];
+  uid?: string;
+  isAdmin?: boolean;
 }

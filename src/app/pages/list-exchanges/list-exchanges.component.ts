@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DbServiceService } from '../../services/db-service.service';
+import { FirestoreService } from 'src/app/services/firestore.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
 	selector: 'app-list-exchanges',
@@ -10,8 +12,12 @@ export class ListExchangesComponent implements OnInit {
 
 	public exchanges = {};
 	public users = {};
+	public userDoc;
+	public user: User;
 
- 	constructor(private _dbservice: DbServiceService) {
+ 	constructor(
+		private _dbservice: DbServiceService,
+		private fs: FirestoreService) {
   	}
 
 	ngOnInit() {
@@ -19,4 +25,10 @@ export class ListExchangesComponent implements OnInit {
 		this.users = this._dbservice.users;
 	}
 
+	getUser(id) {
+		this._dbservice.getUser(id).subscribe(user =>{
+			this.user = user as User;
+			console.log(this.user.uid);
+		});
+	}
 }
