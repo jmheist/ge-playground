@@ -1,42 +1,40 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1>{{ (exchange | async)?.name }}</h1>
-    </div>
+<div class="row">
+  <div class="col-sm-12">
+    <h1>{{ (exchange | async)?.name }}</h1>
   </div>
-  <div class="row mt-3">
-    <div class="col-sm-6">
-      <h3>For You</h3>
-      <ul>
-        <li>Set your wishlist</li>
-        <li>view name's wishlist</li>
-      </ul>
-    </div>
-    <div class="col-sm-6">
-      <h3>Settings</h3>
-      <ul>
-        <li>Budget: ${{ (exchange | async)?.budget }}</li>
-        <li>Date: {{ (exchange | async)?.date.month }}/{{ (exchange | async)?.date.day }}/{{ (exchange |
-          async)?.date.year }}</li>
-        <li>I'm Inclucded: {{ (exchange | async)?.includeAdmin }}</li>
-        <li># of Names Per Person: {{ (exchange | async)?.nameCount }}</li>
-      </ul>
-    </div>
+</div>
+<div class="row mt-3">
+  <div class="col-sm-6">
+    <h3>For You</h3>
+    <ul>
+      <li>Set your wishlist</li>
+      <li>view name's wishlist</li>
+    </ul>
   </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <h3>People</h3>
-      <div class="container">
-        <div class="mt-2 mb-2 pt-2 pb-2 border-bottom" *ngFor="let ex of (exchange | async)?.exchangees ; let i of index;">
-          <div class="row">
-            <div class="col-sm-4"><strong>{{ex.name}}</strong></div>
-            <div class="col-sm-8">{{ ex.email }} (edit)</div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4"></div>
-            <div class="col-sm-4">Wishlist Created: false</div>
-            <div class="col-sm-4">Viewed Name: false</div>
-          </div>
+  <div class="col-sm-6">
+    <h3>Settings</h3>
+    <ul>
+      <li>Budget: ${{ (exchange | async)?.budget }}</li>
+      <li>Date: {{ (exchange | async)?.date.month }}/{{ (exchange | async)?.date.day }}/{{ (exchange |
+        async)?.date.year }}</li>
+      <li>I'm Inclucded: {{ (exchange | async)?.includeAdmin }}</li>
+      <li># of Names Per Person: {{ (exchange | async)?.nameCount }}</li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <h3>People</h3>
+    <div class="container">
+      <div class="mt-2 mb-2 pt-2 pb-2 border-bottom" *ngFor="let ex of (exchange | async)?.exchangees ; let i of index;">
+        <div class="row">
+          <div class="col-sm-4"><strong>{{ex.name}}</strong></div>
+          <div class="col-sm-8">{{ ex.email }} (edit)</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4">Wishlist Created: false</div>
+          <div class="col-sm-4">Viewed Name: false</div>
         </div>
       </div>
     </div>

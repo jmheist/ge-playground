@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DbServiceService } from '../../services/db-service.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { User } from 'src/app/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-list-exchanges',
@@ -17,7 +18,9 @@ export class ListExchangesComponent implements OnInit {
 
  	constructor(
 		private _dbservice: DbServiceService,
-		private fs: FirestoreService) {
+		private fs: FirestoreService,
+		private router: Router
+		) {
   	}
 
 	ngOnInit() {
@@ -30,5 +33,9 @@ export class ListExchangesComponent implements OnInit {
 			this.user = user as User;
 			console.log(this.user.uid);
 		});
+	}
+
+	testWishlist() {
+		this.router.navigate(['/exchange/s01lJW9eYBL6Tbk0PsEX/wishlist/u5t8MVVS08Mx9tyX9Gqo']);
 	}
 }

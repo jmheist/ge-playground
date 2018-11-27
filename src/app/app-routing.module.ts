@@ -46,11 +46,11 @@ const routes: Routes = [
 		]
 	},
 	{
-		path: 'exchange/:id/', 
+		path: 'exchange/:id', 
 		component: ExchangeComponent,
 		children: [
 			{ path: 'wishlist/:userId', component: WishlistComponent },
-			{ path: 'draw/:userId', component: DrawComponent }
+			{ path: 'draw/:currentUser/:userId', component: DrawComponent }
 		]
 	},
 	{ path: 'list-all', component: ListExchangesComponent }

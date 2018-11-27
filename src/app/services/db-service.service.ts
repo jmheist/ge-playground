@@ -11,10 +11,12 @@ import 'rxjs/add/operator/map';
 import { FirestoreService } from './firestore.service';
 import { Exchange } from '../models/exchange.model';
 import { User } from '../models/user.model';
+import { WishlistItem } from '../models/wishlist.model';
 
 @Injectable()
 export class DbServiceService {
   exchangesCollection: AngularFirestoreCollection<Exchange>;
+  WishlistCollection: AngularFirestoreCollection<WishlistItem>;
   exchanges: Observable<Exchange[]>;
   exDoc: AngularFirestoreDocument<Exchange>;
   ex: Observable<Exchange>;
@@ -58,8 +60,8 @@ export class DbServiceService {
     return this.exchanges;
   }
 
-  getExchange(id) {
-    return this.db.doc$('exchanges/'+id);
+  getExchange(id): Observable<Exchange> {
+    return this.db.doc$(`exchanges/${id}`);
   }
 
   async addExchange(exchange: Exchange) {
@@ -103,6 +105,16 @@ export class DbServiceService {
 
   getUser(id): Observable<User> {
     return this.db.doc$(`users/${id}`);
+  }
+  
+  getExchangee(exId,id): Observable<User> {
+    this.exchDoc = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(id);
+    return this.db.doc$(this.exchDoc);
+  }
+
+  getWishlist(exId, id): Observable<any> {
+    this.WishlistCollection = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(id).collection('wishlist');
+    return this.db.colWithIds$(this.WishlistCollection);
   }
 
   addUser(user): Promise<void> {

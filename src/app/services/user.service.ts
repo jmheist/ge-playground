@@ -1,22 +1,24 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { DbServiceService } from './db-service.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  public activeUser: User;
+  private activeUserId: string;
 
   constructor(
     private db: DbServiceService
     ) {}
 
-  setActiveUser(id) {
-    this.db.getUser(id).subscribe(user =>{
-      this.activeUser = user;
-    });
+  setActiveUserId(id) {
+    this.activeUserId = id;
   }
-
+  
+  getActiveUserId() {
+    return this.activeUserId;
+  }
 }

@@ -1,3 +1,10 @@
-<p>
-  wishlist works!
-</p>
+<div class="row">
+  <div class="col-sm-12">Wishlist for {{ currentUser?.name }}</div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <ul>
+      <li *ngFor="let item of (wishlist|async)">{{ item?.name }} --- {{ item?.url }}</li>
+    </ul>
+  </div>
+</div>
