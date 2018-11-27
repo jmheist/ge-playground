@@ -13,7 +13,7 @@ export class SetupService {
 		private db: DbServiceService,
 	) {
 		this.setupData = {
-			"adminName": "Jacob Heisterkamp", "adminEmail": "Jacob Heisterkamp", "exchangees": [{ "name": "stacey", "email": "stacey@email.com", "excluded": "Jacob Heisterkamp" }, { "name": "dave", "email": "dave@email.com", "excluded": "deb" }, { "name": "deb", "email": "deb@email.com", "excluded": "dave" }, { "name": "grant", "email": "grant@email.com", "excluded": "kristin" }, { "name": "kristin", "email": "kristin@email.com", "excluded": "grant" }, { "name": "Jacob Heisterkamp", "email": "jmheist@gmail.com", "excluded": "stacey" }], "name": "Best Heisterkamp Family Exchange", "date": { "year": 2018, "month": 11, "day": 15 }, "budget": "20", "nameCount": "1", "includeAdmin": true, "adminAdded": true, "welcomeMessage": "Hello Everyone!"
+			"adminName": "Jacob Heisterkamp", "adminEmail": "jmheist@gmail.com", "exchangees": [{ "name": "stacey", "email": "stacey@email.com", "excluded": "Jacob Heisterkamp" }, { "name": "dave", "email": "dave@email.com", "excluded": "deb" }, { "name": "deb", "email": "deb@email.com", "excluded": "dave" }, { "name": "grant", "email": "grant@email.com", "excluded": "kristin" }, { "name": "kristin", "email": "kristin@email.com", "excluded": "grant" }, { "name": "Jacob Heisterkamp", "email": "jmheist@gmail.com", "excluded": "stacey" }], "name": "Best Heisterkamp Family Exchange", "date": { "year": 2018, "month": 11, "day": 15 }, "budget": "20", "nameCount": "1", "includeAdmin": true, "adminAdded": true, "welcomeMessage": "Hello Everyone!"
 		};
 		// this.setupData = {};
 	}
@@ -36,36 +36,29 @@ export class SetupService {
 	}
 
 	async handleExchange() {
-
-		var exchange = this.setupData;
-
-		// DO THE MAGIC, draw names TODO: Make this actually random and exclude names.... :D
-		var counter = 1;
-		const len = this.setupData.exchangees.length;
-		for (let i = 0; i < this.setupData.exchangees.length; i++) {
-			if (counter > len - 1) {
-				counter = 0;
-			}
-			const ex = this.setupData.exchangees[i];
-			ex['drawnName'] = this.setupData.exchangees[counter].name;
-			ex['drawnNameEmail'] = this.setupData.exchangees[counter].email;
-			counter++;
-		}
-
-		await this.db.addExchange(exchange);
-		return;
+		const exId = await this.db.addExchange(this.setupData);
+		console.log(`exchange created ${exId}`);
+		console.log(this.setupData);
+		const properties = Object.keys(this.setupData.exchangees);
+		properties.forEach(async prop => {
+			console.log(`loop ${prop}`)
+			await this.db.addExchangeesToExchange(exId, this.setupData.exchangees[prop]);
+		});
 	}
 
 	async handleUsers() {
+		var newExs = {};
 		for (let i = 0; i < this.setupData.exchangees.length; i++) {
-			const user = this.setupData.exchangees[i];
+			let user = this.setupData.exchangees[i];
 			await this.db.addUser(user);
 
-			this.db.getUser(user.email).subscribe(userData => {
-				this.setupData.exchangees[i].uid = userData.uid;
+			await this.db.getUser(user.email).subscribe(userData => {
+				user.uid = userData.uid;
+				newExs[userData.uid] = user;
+				return;
 			});
-
 		}
+		this.setupData.exchangees = newExs;
 		return;
 	}
 

@@ -55,17 +55,17 @@ export class FirestoreService {
       );
   }
 
-  // docWithIds$<T>(ref: DocPredicate<T>): Observable<T> {
-  //   return this.doc(ref)
-  //     .snapshotChanges()
-  //     .pipe(
-  //       map((doc: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
-  //         const data = doc.payload.data();
-  //         data['id'] = doc.payload.id;
-  //         return data as T;
-  //       }),
-  //     );
-  // }
+  docWithIds$<T>(ref: DocPredicate<T>): Observable<T> {
+    return this.doc(ref)
+      .snapshotChanges()
+      .pipe(
+        map((doc: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
+          const data = doc.payload.data();
+          data['id'] = doc.payload.id;
+          return data as T;
+        }),
+      );
+  }
 
   col$<T>(ref: CollectionPredicate<T>, queryFn?): Observable<T[]> {
     return this.col(ref, queryFn)

@@ -3,6 +3,8 @@ import {
   AngularFirestore,
   AngularFirestoreDocument,
   AngularFirestoreCollection,
+  DocumentReference,
+  CollectionReference,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -20,6 +22,10 @@ export class DbServiceService {
   users: Observable<User[]>;
   usersDoc: AngularFirestoreDocument<User>;
   user: Observable<User>;
+  exchCollection: AngularFirestoreCollection<User>;
+  exchs: Observable<User[]>;
+  exchDoc: AngularFirestoreDocument<User>;
+  exch: Observable<User>;
 
   constructor(
     public afs: AngularFirestore,
@@ -65,7 +71,6 @@ export class DbServiceService {
       includeAdmin: exchange.includeAdmin,
       adminName: exchange.adminName,
       adminEmail: exchange.adminEmail,
-      exchangees: exchange.exchangees,
       welcomeMessage: exchange.welcomeMessage,
     };
 
@@ -73,8 +78,8 @@ export class DbServiceService {
 
     // const docRef = await this.afs.collection('users').add(data);
     const id = await this.afs.createId();
-    console.log(data);
     const docRef = await this.db.set(`exchanges/${id}`, data);
+    return id;
   }
 
   deleteExchange(exchange: Exchange) {
@@ -85,6 +90,11 @@ export class DbServiceService {
   updateExchange(exchange: Exchange) {
     this.exDoc = this.afs.doc(`exchanges/${exchange.id}`);
     this.exDoc.update(exchange);
+  }
+
+  async addExchangeesToExchange(exchangeId, data) {
+    this.exchDoc = this.afs.collection<Exchange>(`exchanges`).doc(exchangeId).collection<User>('exchangees').doc(data.uid);
+    await this.db.set(this.exchDoc, data);
   }
 
   getUsers() {

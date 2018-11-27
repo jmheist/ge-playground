@@ -31,7 +31,7 @@ export class Step2Component implements OnInit {
 
   step2Form = this.fb.group({
     adminName: [this.formData.adminName],
-    adminEmail: [this.formData.adminName],
+    adminEmail: [this.formData.adminEmail],
     exchangees: this.fb.array([])
   });
 
