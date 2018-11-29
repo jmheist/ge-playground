@@ -36,6 +36,6 @@ export class ListExchangesComponent implements OnInit {
 	}
 
 	testWishlist() {
-		this.router.navigate(['/exchange/s01lJW9eYBL6Tbk0PsEX/wishlist/u5t8MVVS08Mx9tyX9Gqo']);
+		this.router.navigate(['/exchange/xYOr2GsuUFl12dNeJsAH/wishlist/ZcgcPv2wWi0m3HL17G35']);
 	}
 }

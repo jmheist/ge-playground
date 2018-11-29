@@ -7,6 +7,7 @@ export interface Exchange {
   includeAdmin?: boolean;
   adminName?: string;
   adminEmail?: string;
+  adminUid?: string;
   exchangees?: [];
   welcomeMessage?: string;
 }

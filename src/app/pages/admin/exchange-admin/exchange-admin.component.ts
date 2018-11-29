@@ -12,6 +12,7 @@ import { Exchange } from '../../../models/exchange.model';
 export class ExchangeAdminComponent implements OnInit {
 
   public exchange: Observable<Exchange>;
+  public people: Observable<any>;
   private id: string;
 
   constructor(
@@ -24,13 +25,18 @@ export class ExchangeAdminComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.loadExchange();
+  async ngOnInit() {
+    await this.loadExchange();
+    this.loadPeople();
   }
 
   async loadExchange() {
     // load data from firestore for this exhange
     this.exchange = await this.db.getExchange(this.id);
+  }
+
+  loadPeople() {
+    this.people = this.db.getExchangePeople(this.id);
   }
 
 }

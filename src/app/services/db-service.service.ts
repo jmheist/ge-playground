@@ -12,11 +12,13 @@ import { FirestoreService } from './firestore.service';
 import { Exchange } from '../models/exchange.model';
 import { User } from '../models/user.model';
 import { WishlistItem } from '../models/wishlist.model';
+import 'rxjs/add/operator/take';
 
 @Injectable()
 export class DbServiceService {
   exchangesCollection: AngularFirestoreCollection<Exchange>;
   WishlistCollection: AngularFirestoreCollection<WishlistItem>;
+  PeopleCollection: AngularFirestoreCollection<WishlistItem>;
   exchanges: Observable<Exchange[]>;
   exDoc: AngularFirestoreDocument<Exchange>;
   ex: Observable<Exchange>;
@@ -64,7 +66,7 @@ export class DbServiceService {
     return this.db.doc$(`exchanges/${id}`);
   }
 
-  async addExchange(exchange: Exchange) {
+  async addExchange(exchange: Exchange): Promise<string> {
     const data = {
       name: exchange.name,
       date: exchange.date,
@@ -73,6 +75,7 @@ export class DbServiceService {
       includeAdmin: exchange.includeAdmin,
       adminName: exchange.adminName,
       adminEmail: exchange.adminEmail,
+      adminUid: exchange.adminUid,
       welcomeMessage: exchange.welcomeMessage,
     };
 
@@ -106,17 +109,30 @@ export class DbServiceService {
   getUser(id): Observable<User> {
     return this.db.doc$(`users/${id}`);
   }
-  
-  getExchangee(exId,id): Observable<User> {
+
+  getUserOnce(id): Promise<User> {
+    return this.afs.collection('users').doc(id)
+      .valueChanges()
+      .take(1)
+      .toPromise()
+      .then((user: User) => user);
+  }
+
+  getExchangee(exId, id): Observable<User> {
     this.exchDoc = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(id);
     return this.db.doc$(this.exchDoc);
+  }
+
+  getExchangePeople(exId): Observable<any> {
+    this.PeopleCollection = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees');
+    return this.db.colWithIds$(this.PeopleCollection);
   }
 
   getWishlist(exId, id): Observable<any> {
     this.WishlistCollection = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(id).collection('wishlist');
     return this.db.colWithIds$(this.WishlistCollection);
   }
-
+  
   addUser(user): Promise<void> {
     const data = {
       name: user.name,

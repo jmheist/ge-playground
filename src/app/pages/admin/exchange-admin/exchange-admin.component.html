@@ -26,15 +26,14 @@
   <div class="col-sm-12">
     <h3>People</h3>
     <div class="container">
-      <div class="mt-2 mb-2 pt-2 pb-2 border-bottom" *ngFor="let ex of (exchange | async)?.exchangees ; let i of index;">
+      <div class="mt-2 mb-2 pt-2 pb-2 border-bottom" *ngFor="let ex of (people | async) ; let i of index;">
         <div class="row">
-          <div class="col-sm-4"><strong>{{ex.name}}</strong></div>
-          <div class="col-sm-8">{{ ex.email }} (edit)</div>
+          <div class="col-sm-4"><h4>{{ex.name}}</h4></div>
+          <div class="col-sm-4 offset-md-4"><strong>Wishlist Status:</strong> not set</div>
         </div>
         <div class="row">
-          <div class="col-sm-4"></div>
-          <div class="col-sm-4">Wishlist Created: false</div>
-          <div class="col-sm-4">Viewed Name: false</div>
+          <div class="col-sm-4">{{ ex.email }} <small>(edit)</small></div>
+          <div class="col-sm-4 offset-md-4"><strong>Viewed Their Name's Wishlist:</strong> No</div>
         </div>
       </div>
     </div>

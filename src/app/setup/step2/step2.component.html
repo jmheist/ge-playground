@@ -13,8 +13,9 @@
     <div class="col-lg-8">
       <form [formGroup]="step2Form" novalidate (ngSubmit)="submitData()">
         <h3>Your Info</h3>
-        <div class="form-group">
+        <div class="form-group has-feedback has-clear">
           <input type="text" class="form-control" placeholder="Your Name" formControlName="adminName">
+          <span class="form-control-clear glyphicon glyphicon-remove form-control-feedback hidden"></span>
         </div>
         <div class="form-group">
           <input type="email" class="form-control" placeholder="Your Email Address" formControlName="adminEmail">
@@ -23,18 +24,18 @@
         <div class="addNamesSection">
           <div formArrayName="exchangees" *ngFor="let exchangee of step2Form.get('exchangees').controls; let i = index;">
             <div class="form-row align-items-center" [formGroupName]="i">
-            <div class="col-6">
-              <label class="sr-only" for="ExchangeeName1">Name</label>
-              <input type="text" class="form-control mb-2" placeholder="Exchangee's Name" formControlName="name">
+              <div class="col-6">
+                <label class="sr-only" for="ExchangeeName1">Name</label>
+                <input type="text" class="form-control mb-2" placeholder="Exchangee's Name" formControlName="name">
+              </div>
+              <div class="col-6">
+                <input type="email" class="form-control mb-2" placeholder="Email" formControlName="email">
+              </div>
             </div>
-            <div class="col-6">
-              <input type="email" class="form-control mb-2" placeholder="Email" formControlName="email">
-            </div>
-            </div>
-          </div> 
+          </div>
           <div class="form-group">
-          <button type="button" class="btn-secondary btn-sm m-s" (click)="addNames()">Add Names</button>
-            </div>
+            <button type="button" class="btn-secondary btn-sm m-2" (click)="addNames()">Add Names</button>
+          </div>
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-success">Submit</button>
