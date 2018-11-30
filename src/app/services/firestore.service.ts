@@ -151,13 +151,24 @@ export class FirestoreService {
       if (snap.payload.exists) {
         delete data.uid;
         return update ? this.update(ref, data) : null;
-      }else {
+      } else {
         const uid = this.afs.createId();
         data.uid = uid;
         return this.set(ref, data)
       }
       // return snap.payload.exists ? (update ? this.update(ref, data) : null) : this.set(ref, data);
     });
+  }
+
+  upsertItem<T>(ref: CollectionPredicate<T>, data: any, update = true): Promise<void> {
+    if (data.uid == "none") {
+      const uid = this.afs.createId();
+      data.uid = uid;
+      return this.set(this.col(ref).doc(data.uid), data)
+    } else {
+      return update ? this.update(this.col(ref).doc(data.uid), data) : null;
+    }
+
   }
 
   /// **************

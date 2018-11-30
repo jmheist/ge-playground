@@ -110,7 +110,7 @@ export class DbServiceService {
     return this.db.doc$(`users/${id}`);
   }
 
-  getUserOnce(id): Promise<User> {
+  getUserOnce(id): Promise<any> {
     return this.afs.collection('users').doc(id)
       .valueChanges()
       .take(1)
@@ -136,9 +136,15 @@ export class DbServiceService {
   setWishList(exId, id, data: Array<any>): Promise<any> {
     this.WishlistCollection = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(id).collection('wishlist');
     data.forEach(async item => {
-      var newItem = new item({name:item.name, url: item.url || "", uid: item.uid || ""})
-      var uid = await this.db.upsertUser(this.WishlistCollection.doc(newItem.uid), newItem);
-      item.uid = uid;
+      if (item.itemName != '') {
+        console.log(item);
+        item.itemUrl = item.itemUrl == "" ? 'none' : item.itemUrl;
+        item.itemUid = item.itemUid == "" ? 'none' : item.itemUid;
+        console.log(item);
+        var newItem = {name:item.itemName, url: item.itemUrl, uid: item.itemUid}
+        var uid = await this.db.upsertItem(this.WishlistCollection, newItem);
+        item.uid = uid;
+      }
     });
     return;
   }

@@ -2,19 +2,30 @@
     <div class="col-sm-12">Wishlist for {{ currentUser?.name }}</div>
 </div>
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-6">
         <ul>
-            <li *ngFor="let item of (wishlist|async)">{{ item?.name }} --- {{ item?.url }}</li>
+            <li *ngFor="let item of (wishlist|async)">{{ item?.name }} --- {{ item?.uid }}</li>
         </ul>
+    </div>
+    <div class="col-sm-6">
+        <ul>
+            <li *ngFor="let item of wishlistForm.get('items').value">{{ item.itemName }} --- {{ item.itemUid }}</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
         <form [formGroup]="wishlistForm" novalidate (ngSubmit)="submitData()">
 
-            <div formArrayName="items" *ngFor="let item of wishlistForm.get('items').controls; let i = index; last as isLast;" class="mb-4">
+            <div formArrayName="items" *ngFor="let item of wishlistForm.get('items').controls; let i = index; last as isLast;"
+                class="mb-4">
                 <div class="form-row" [formGroupName]="i">
                     <div class="col-sm-11">
                         <input type="text" class="form-control" name="itemName" formControlName="itemName" placeholder="Enter your gift ideas here">
                     </div>
                     <div class="col-sm-1">
-                        <button type="button" [class.d-none]="false" class="close m-1" aria-label="Close btn-danger" (click)="remove(i)">
+                        <button type="button" [class.d-none]="false" class="close m-1" aria-label="Close btn-danger"
+                            (click)="remove(i)">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

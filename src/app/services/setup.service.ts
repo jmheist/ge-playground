@@ -92,9 +92,9 @@ export class SetupService {
 		console.log('handleUsers(): Started');
 		var newExs = {};
 		const properties = Object.keys(this.setupData.exchangees);
-		properties.forEach(async prop => {
+		for (const prop of properties) {
 			let user = this.setupData.exchangees[prop];
-			this.db.addUser(user);
+			await this.db.addUser(user);
 			const userData: User = await this.db.getUserOnce(user.email);
 			user.uid = userData.uid;
 			newExs[userData.uid] = user;
@@ -104,7 +104,7 @@ export class SetupService {
 			// 	newExs[userData.uid] = user;
 			// });
 			
-		});
+		}
 		this.setupData.exchangees = newExs;
 		console.log('handleUsers(): Completed');
 	}

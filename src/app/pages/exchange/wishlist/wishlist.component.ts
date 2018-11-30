@@ -38,10 +38,9 @@ export class WishlistComponent implements OnInit {
                 this.wishlist = this.db.getWishlist(this.exchangeId, this.currentUser.uid);
                 var sub = this.wishlist.subscribe(items => {
                     items.forEach(item => {
-                        console.log(item);
                         this.addItem(item.name, item.url, item.uid)
-                        sub.unsubscribe();
                     });
+                    sub.unsubscribe();
                     this.addItem() // add a blank
                 })
 
@@ -74,7 +73,7 @@ export class WishlistComponent implements OnInit {
     }
 
     submitData() {
-        console.log(this.wishlistForm.value);
+        this.db.setWishList(this.exchangeId, this.currentUser.uid, this.wishlistForm.value.items);
     }
 
     remove(i) {
@@ -108,8 +107,9 @@ export class WishlistComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log();
-        console.log(this.items)
+        
+        //console.log(this.items)
+        
     }
 
 }
