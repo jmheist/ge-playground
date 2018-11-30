@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-sm-12">Wishlist for {{ currentUser?.name }}</div>
 </div>
-<div class="row">
+<!-- <div class="row">
     <div class="col-sm-6">
         <ul>
             <li *ngFor="let item of (wishlist|async)">{{ item?.name }} --- {{ item?.uid }}</li>
@@ -12,23 +12,26 @@
             <li *ngFor="let item of wishlistForm.get('items').value">{{ item.itemName }} --- {{ item.itemUid }}</li>
         </ul>
     </div>
-</div>
+</div> -->
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-8">
         <form [formGroup]="wishlistForm" novalidate (ngSubmit)="submitData()">
 
             <div formArrayName="items" *ngFor="let item of wishlistForm.get('items').controls; let i = index; last as isLast;"
                 class="mb-4">
-                <div class="form-row" [formGroupName]="i">
-                    <div class="col-sm-11">
+                <div class="" [formGroupName]="i">
+                    <div class="col-sm-12 btn-group">
+                        
                         <input type="text" class="form-control" name="itemName" formControlName="itemName" placeholder="Enter your gift ideas here">
-                    </div>
-                    <div class="col-sm-1">
-                        <button type="button" [class.d-none]="false" class="close m-1" aria-label="Close btn-danger"
-                            (click)="remove(i)">
+                        <button type="button" [class.d-none]="wishlistForm.get('items').controls[i].get('itemName').pristine && wishlistForm.get('items').controls[i].get('itemName').value == '' && isLast"
+                            class="close m-1" aria-label="Close btn-danger" (click)="remove(i)">
                             <span aria-hidden="true">&times;</span>
                         </button>
+                    
                     </div>
+                   
+                        
+                    
                     <input class="form-control" type="hidden" formControlName="itemUrl">
                     <input class="form-control" type="hidden" formControlName="itemUid">
                 </div>
@@ -39,5 +42,11 @@
                 <button type="button" class="btn-secondary btn-sm ml-2" (click)="addItem()">Add another Gift Idea</button>
             </div>
         </form>
+    </div>
+    <div class="col-sm-4">
+        <h3>Hints</h3>
+        <ul>
+            <li>You can add links to gift ideas from sites like amazon!</li>
+        </ul>
     </div>
 </div>

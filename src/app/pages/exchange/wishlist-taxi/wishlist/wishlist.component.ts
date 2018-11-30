@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/models/user.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
-import { WishlistItem } from 'src/app/models/wishlist.model';
+import { currentId } from 'async_hooks';
 
 @Component({
     selector: 'app-wishlist',
@@ -23,16 +23,19 @@ export class WishlistComponent implements OnInit {
 
     constructor(
         private router: ActivatedRoute,
+        private route: Router,
         private db: DbServiceService,
         private userSrv: UserService,
         private fb: FormBuilder,
 
     ) {
-        this.router.parent.params.subscribe(params => {
+        this.router.parent.parent.params.subscribe(params => {
             this.exchangeId = params['id'];
         });
-        this.router.params.subscribe(params => {
+        this.router.parent.params.subscribe(params => {
             this.userSrv.setActiveUserId(params['userId']);
+        });
+        this.router.params.subscribe(params => {
             this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(user => {
                 this.currentUser = user;
                 this.wishlist = this.db.getWishlist(this.exchangeId, this.currentUser.uid);
@@ -73,25 +76,27 @@ export class WishlistComponent implements OnInit {
     }
 
     submitData() {
+
+        for (const item in this.items.controls) {
+            var url = this.items.controls[item].get('itemName').value;
+            if (url.startsWith('http') && url.indexOf('amazon') > -1) {
+                this.items.controls[item].get('itemName').setValue(url+'&tag=jmheist-20');
+            }
+            
+        }
+
         this.db.setWishList(this.exchangeId, this.currentUser.uid, this.wishlistForm.value.items);
+        this.route.navigate(['/exchange/J56O1pNNIMY2QX5tvBtI/wishlist/p4Ffw5TIgdMo8AbmPad5/edit/wishlistSaved']);
     }
 
     remove(i) {
-        //delete this.items[i];
-        
+        const itemUid = this.items.controls[i].get('itemUid').value;
+        // remove from db
+        if (itemUid && itemUid != '') {
+            this.db.removeWishlistItem(this.exchangeId, this.currentUser.uid, itemUid);
+        }
+        // remove from form
         this.items.removeAt(i);
-        
-        // const index = this.items.controls.indexOf(i, 0);
-        // if (i > -1) {
-        //     console.log(this.items);
-        //     if (this.items.controls.length === 1) {
-        //         this.items.controls[i].setValue("")
-        //     } else {
-        //         this.items.controls.splice(i, 1);
-        //         this.checkForBlank();
-        //     }
-        // }
-
     }
 
     checkForBlank() {
@@ -107,9 +112,9 @@ export class WishlistComponent implements OnInit {
     }
 
     ngOnInit() {
-        
+
         //console.log(this.items)
-        
+
     }
 
 }

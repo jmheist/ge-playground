@@ -18,6 +18,7 @@ import 'rxjs/add/operator/take';
 export class DbServiceService {
   exchangesCollection: AngularFirestoreCollection<Exchange>;
   WishlistCollection: AngularFirestoreCollection<WishlistItem>;
+  WishlistDoc: AngularFirestoreDocument<WishlistItem>;
   PeopleCollection: AngularFirestoreCollection<User>;
   exchanges: Observable<Exchange[]>;
   exDoc: AngularFirestoreDocument<Exchange>;
@@ -137,16 +138,19 @@ export class DbServiceService {
     this.WishlistCollection = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(id).collection('wishlist');
     data.forEach(async item => {
       if (item.itemName != '') {
-        console.log(item);
         item.itemUrl = item.itemUrl == "" ? 'none' : item.itemUrl;
         item.itemUid = item.itemUid == "" ? 'none' : item.itemUid;
-        console.log(item);
         var newItem = {name:item.itemName, url: item.itemUrl, uid: item.itemUid}
         var uid = await this.db.upsertItem(this.WishlistCollection, newItem);
         item.uid = uid;
       }
     });
     return;
+  }
+
+  removeWishlistItem(exId, userId, itemUid) {
+    this.WishlistDoc = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(userId).collection('wishlist').doc(itemUid);
+    this.WishlistDoc.delete();
   }
   
   addUser(user): Promise<void> {

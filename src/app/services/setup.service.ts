@@ -82,9 +82,9 @@ export class SetupService {
 		const exId = await this.db.addExchange(this.setupData);
 		console.log('handleExchange(): Created in DB');
 		const properties = Object.keys(this.setupData.exchangees);
-		await properties.forEach(async prop => {
+		for (const prop of properties) {
 			await this.db.addExchangeesToExchange(exId, this.setupData.exchangees[prop]);
-		});
+		}
 		console.log('handleExchange(): Completed processing');
 	}
 
@@ -98,12 +98,6 @@ export class SetupService {
 			const userData: User = await this.db.getUserOnce(user.email);
 			user.uid = userData.uid;
 			newExs[userData.uid] = user;
-			
-			// await this.db.getUser(user.email).subscribe(async userData => {
-			// 	user.uid = userData.uid;
-			// 	newExs[userData.uid] = user;
-			// });
-			
 		}
 		this.setupData.exchangees = newExs;
 		console.log('handleUsers(): Completed');
