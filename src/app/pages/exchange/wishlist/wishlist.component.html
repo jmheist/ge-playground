@@ -6,17 +6,20 @@
         <ul>
             <li *ngFor="let item of (wishlist|async)">{{ item?.name }} --- {{ item?.url }}</li>
         </ul>
-
         <form [formGroup]="wishlistForm" novalidate (ngSubmit)="submitData()">
 
-            <div formArrayName="items" *ngFor="let item of items.controls; let i = index; last as isLast" class="form-row mb-4">
-                <div class="col-sm-11">
-                    <input type="text" class="form-control" [formControlName]="i" name="item" placeholder="Enter your gift ideas here">
-                </div>
-                <div class="col-sm-1">
-                    <button type="button" [class.d-none]="item.pristine && item.value == '' && isLast" class="close m-1" aria-label="Close btn-danger" (click)="remove(i)">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <div formArrayName="items" *ngFor="let item of wishlistForm.get('items').controls; let i = index; last as isLast;" class="mb-4">
+                <div class="form-row" [formGroupName]="i">
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" name="itemName" formControlName="itemName" placeholder="Enter your gift ideas here">
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" [class.d-none]="false" class="close m-1" aria-label="Close btn-danger" (click)="remove(i)">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <input class="form-control" type="hidden" formControlName="itemUrl">
+                    <input class="form-control" type="hidden" formControlName="itemUid">
                 </div>
             </div>
 

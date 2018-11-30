@@ -1,4 +1,5 @@
 export interface WishlistItem {
-    name?: string;
-    url?: string;
+    name?: '';
+    url?: '';
+    uid?: '';
   }

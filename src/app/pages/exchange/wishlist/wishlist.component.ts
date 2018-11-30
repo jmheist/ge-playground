@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
-import { exists } from 'fs';
+import { WishlistItem } from 'src/app/models/wishlist.model';
 
 @Component({
     selector: 'app-wishlist',
@@ -20,10 +20,6 @@ export class WishlistComponent implements OnInit {
     public currentUser: User;
     private exchangeId: string;
     private exDoc;
-
-    wishlistForm = this.fb.group({
-        items: this.fb.array([])
-    });
 
     constructor(
         private router: ActivatedRoute,
@@ -42,7 +38,8 @@ export class WishlistComponent implements OnInit {
                 this.wishlist = this.db.getWishlist(this.exchangeId, this.currentUser.uid);
                 var sub = this.wishlist.subscribe(items => {
                     items.forEach(item => {
-                        this.addItem(item.name)
+                        console.log(item);
+                        this.addItem(item.name, item.url, item.uid)
                         sub.unsubscribe();
                     });
                     this.addItem() // add a blank
@@ -56,12 +53,24 @@ export class WishlistComponent implements OnInit {
         });
     }
 
+    wishlistForm = this.fb.group({
+        items: this.fb.array([])
+    });
+
+    createItemFields(name = "", url = "", uid = ""): FormGroup {
+        return this.fb.group({
+            itemName: [name],
+            itemUrl: [url],
+            itemUid: [uid]
+        })
+    }
+
     get items() {
         return this.wishlistForm.get('items') as FormArray;
     }
 
-    addItem(itemName = '') {
-        this.items.push(this.fb.control(itemName));
+    addItem(name = "", url = "", uid = "") {
+        this.items.push(this.createItemFields(name, url, uid));
     }
 
     submitData() {
@@ -70,15 +79,19 @@ export class WishlistComponent implements OnInit {
 
     remove(i) {
         //delete this.items[i];
-        const index = this.items.controls.indexOf(i, 0);
-        if (i > -1) {
-            if (this.items.controls.length === 1) {
-                this.items.controls[i].setValue("")
-            } else {
-                this.items.controls.splice(i, 1);
-                this.checkForBlank();
-            }
-        }
+        
+        this.items.removeAt(i);
+        
+        // const index = this.items.controls.indexOf(i, 0);
+        // if (i > -1) {
+        //     console.log(this.items);
+        //     if (this.items.controls.length === 1) {
+        //         this.items.controls[i].setValue("")
+        //     } else {
+        //         this.items.controls.splice(i, 1);
+        //         this.checkForBlank();
+        //     }
+        // }
 
     }
 
@@ -90,12 +103,13 @@ export class WishlistComponent implements OnInit {
             }
         });
         if (!blanks) {
-            this.addItem('');
+            this.addItem();
         }
     }
 
     ngOnInit() {
-
+        console.log();
+        console.log(this.items)
     }
 
 }
