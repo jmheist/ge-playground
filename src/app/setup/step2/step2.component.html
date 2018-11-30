@@ -22,11 +22,15 @@
         </div>
         <h3>Add Names</h3>
         <div class="addNamesSection">
+
           <div formArrayName="exchangees" *ngFor="let exchangee of step2Form.get('exchangees').controls; let i = index;">
+          
             <div class="form-row align-items-center" [formGroupName]="i">
               <div class="col-6">
                 <label class="sr-only" for="ExchangeeName1">Name</label>
+                
                 <input type="text" class="form-control mb-2" placeholder="Exchangee's Name" formControlName="name">
+              
               </div>
               <div class="col-6">
                 <input type="email" class="form-control mb-2" placeholder="Email" formControlName="email">
