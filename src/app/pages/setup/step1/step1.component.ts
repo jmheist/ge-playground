@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SetupService } from '../../services/setup.service';
+import { SetupService } from '../../../services/setup.service';
 
 @Component({
 	selector: 'app-step1',

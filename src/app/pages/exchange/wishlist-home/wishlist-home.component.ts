@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-wishlist-taxi',
-  templateUrl: './wishlist-taxi.component.html',
-  styleUrls: ['./wishlist-taxi.component.scss']
+  selector: 'app-wishlist-home',
+  templateUrl: './wishlist-home.component.html',
+  styleUrls: ['./wishlist-home.component.scss']
 })
-export class WishlistTaxiComponent implements OnInit {
+export class WishlistHomeComponent implements OnInit {
 
   constructor() {
     // if the user is viewing their wishlist, take them to edit page

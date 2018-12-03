@@ -6,11 +6,11 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './template/nav/nav.component';
 import { HomeComponent } from './pages/home/home.component';
 import { FooterComponent } from './template/footer/footer.component';
-import { Step2Component } from './setup/step2/step2.component';
-import { Step3Component } from './setup/step3/step3.component';
-import { Step1Component } from './setup/step1/step1.component';
-import { Step4Component } from './setup/step4/step4.component';
-import { FinalStepComponent } from './setup/final-step/final-step.component';
+import { Step2Component } from './pages/setup/step2/step2.component';
+import { Step3Component } from './pages/setup/step3/step3.component';
+import { Step1Component } from './pages/setup/step1/step1.component';
+import { Step4Component } from './pages/setup/step4/step4.component';
+import { FinalStepComponent } from './pages/setup/final-step/final-step.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -24,16 +24,18 @@ import { ListExchangesComponent } from './pages/list-exchanges/list-exchanges.co
 
 import { DbServiceService } from './services/db-service.service';
 import { SetupService } from './services/setup.service';
-import { SetupComponent } from './setup/setup.component';
+import { SetupComponent } from './pages/setup/setup.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { ExchangeAdminComponent } from './pages/admin/exchange-admin/exchange-admin.component';
-import { WishlistComponent } from './pages/exchange/wishlist-taxi/wishlist/wishlist.component';
+import { WishlistComponent } from './pages/exchange/wishlist-home/wishlist/wishlist.component';
 import { UpdateEmailComponent } from './pages/admin/update-email/update-email.component';
 import { ExchangeComponent } from './pages/exchange/exchange.component';
-import { DrawComponent } from './pages/exchange/wishlist-taxi/draw/draw.component';
+import { DrawComponent } from './pages/exchange/wishlist-home/draw/draw.component';
 import { GroupComponent } from './pages/exchange/group/group.component';
-import { WishlistSavedComponent } from './pages/exchange/wishlist-taxi/wishlist-saved/wishlist-saved.component';
-import { WishlistTaxiComponent } from './pages/exchange/wishlist-taxi/wishlist-taxi.component';
+import { WishlistSavedComponent } from './pages/exchange/wishlist-home/wishlist-saved/wishlist-saved.component';
+import { WishlistHomeComponent } from './pages/exchange/wishlist-home/wishlist-home.component';
+import { FirestoreService } from './services/firestore.service';
+import { ExchangeViewComponent } from './pages/exchange/exchange-view/exchange-view.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import { WishlistTaxiComponent } from './pages/exchange/wishlist-taxi/wishlist-t
     DrawComponent,
     GroupComponent,
     WishlistSavedComponent,
-    WishlistTaxiComponent,
+    WishlistHomeComponent,
+    ExchangeViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,6 +75,7 @@ import { WishlistTaxiComponent } from './pages/exchange/wishlist-taxi/wishlist-t
   providers: [
     DbServiceService,
     SetupService,
+    FirestoreService,
   ],
   bootstrap: [AppComponent]
 })

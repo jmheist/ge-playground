@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscribable } from 'rxjs';
 import { User } from 'src/app/models/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
@@ -20,6 +20,7 @@ export class WishlistComponent implements OnInit {
     public currentUser: User;
     private exchangeId: string;
     private exDoc;
+    private sub = undefined;
 
     constructor(
         private router: ActivatedRoute,
@@ -30,28 +31,20 @@ export class WishlistComponent implements OnInit {
 
     ) {
         this.router.parent.parent.params.subscribe(params => {
-            this.exchangeId = params['id'];
+            this.exchangeId = params['exchangeId'];
+            this.userSrv.setActiveUserId(params['curentUserId']);
         });
-        this.router.parent.params.subscribe(params => {
-            this.userSrv.setActiveUserId(params['userId']);
-        });
-        this.router.params.subscribe(params => {
-            this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(user => {
-                this.currentUser = user;
-                this.wishlist = this.db.getWishlist(this.exchangeId, this.currentUser.uid);
-                var sub = this.wishlist.subscribe(items => {
-                    items.forEach(item => {
-                        this.addItem(item.name, item.url, item.uid)
-                    });
-                    sub.unsubscribe();
-                    this.addItem() // add a blank
-                })
+        this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(user => {
+            this.currentUser = user;
+            this.wishlist = this.db.getWishlist(this.exchangeId, this.currentUser.uid);
+            var sub = this.wishlist.subscribe(items => {
+                items.forEach(item => {
+                    this.addItem(item.itemName, item.itemUrl, item.itemUid)
+                });
+                sub.unsubscribe();
+                this.addItem() // add a blank
+            })
 
-            });
-        });
-        this.exDoc = this.db.getExchange(this.exchangeId);
-        this.exDoc.subscribe(data => {
-            //console.log(data);
         });
     }
 
@@ -59,11 +52,11 @@ export class WishlistComponent implements OnInit {
         items: this.fb.array([])
     });
 
-    createItemFields(name = "", url = "", uid = ""): FormGroup {
+    createItemFields(itemName = "", itemUrl = "", itemUid = ""): FormGroup {
         return this.fb.group({
-            itemName: [name],
-            itemUrl: [url],
-            itemUid: [uid]
+            itemName: [itemName],
+            itemUrl: [itemUrl],
+            itemUid: [itemUid]
         })
     }
 
@@ -71,22 +64,25 @@ export class WishlistComponent implements OnInit {
         return this.wishlistForm.get('items') as FormArray;
     }
 
-    addItem(name = "", url = "", uid = "") {
-        this.items.push(this.createItemFields(name, url, uid));
+    addItem(itemName = "", itemUrl = "", itemUid = "") {
+        this.items.push(this.createItemFields(itemName, itemUrl, itemUid));
+        if (this.sub) {
+            this.sub.unsubscribe();
+        }
+        this.onChanges();
     }
 
     submitData() {
 
         for (const item in this.items.controls) {
-            var url = this.items.controls[item].get('itemName').value;
-            if (url.startsWith('http') && url.indexOf('amazon') > -1) {
-                this.items.controls[item].get('itemName').setValue(url+'&tag=jmheist-20');
+            var url = this.items.controls[item].get('itemUrl').value;
+            if (url && url.startsWith('http') && url.indexOf('amazon') > -1 && url.indexOf('jmheist-20') == -1) {
+                this.items.controls[item].get('itemUrl').setValue(url + '&tag=jmheist-20');
             }
-            
-        }
 
+        }
         this.db.setWishList(this.exchangeId, this.currentUser.uid, this.wishlistForm.value.items);
-        this.route.navigate(['/exchange/J56O1pNNIMY2QX5tvBtI/wishlist/p4Ffw5TIgdMo8AbmPad5/edit/wishlistSaved']);
+        this.route.navigate(['/exchange/J56O1pNNIMY2QX5tvBtI/p4Ffw5TIgdMo8AbmPad5/wishlist/edit/wishlistSaved']);
     }
 
     remove(i) {
@@ -112,9 +108,22 @@ export class WishlistComponent implements OnInit {
     }
 
     ngOnInit() {
-
         //console.log(this.items)
+    }
 
+    onChanges(): void {
+        var total = this.items.controls.length
+        for (const item in this.items.controls) {
+            var num = parseInt(item, 10);
+            if ((1 + num) == total) {
+                var form = this.items.controls[item].get('itemName');
+                this.sub = form.valueChanges.subscribe(val => {
+                    if (form.dirty) {
+                        this.addItem()
+                    }
+                });
+            }
+        }
     }
 
 }

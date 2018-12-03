@@ -28,7 +28,7 @@
     <div class="container">
       <div class="mt-2 mb-2 pt-2 pb-2 border-bottom" *ngFor="let ex of (people | async) ; let i of index;">
         <div class="row">
-          <div class="col-sm-4"><h4>{{ex.name}}</h4></div>
+          <div class="col-sm-4"><h4><a (click)="editWishlist(ex.uid)">{{ex.name}}</a></h4></div>
           <div class="col-sm-4 offset-md-4"><strong>Wishlist Status:</strong> not set</div>
         </div>
         <div class="row">

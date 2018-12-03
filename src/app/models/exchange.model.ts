@@ -3,7 +3,7 @@ export interface Exchange {
   name?: string;
   date?: {};
   budget?: string;
-  nameCount?: string;
+  nameCount?: "1";
   includeAdmin?: boolean;
   adminName?: string;
   adminEmail?: string;

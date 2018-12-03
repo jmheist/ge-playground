@@ -59,7 +59,7 @@ export class SetupService {
 	}
 
 	async addAdmin() {
-		console.log('adding addmin')
+		console.log('addAdmin(): adding addmin');
 		var user: User = {
 			name: this.setupData.adminName,
 			email: this.setupData.adminEmail,
@@ -67,20 +67,12 @@ export class SetupService {
 		await this.db.addUser(user);
 		const userData: User = await this.db.getUserOnce(user.email);
 		this.setupData.adminUid = userData.uid;
-		console.log('adding adminuid', userData.uid);
-		
-		// this.db.getUser(user.email).subscribe(async userData => {
-		// 	this.setupData['adminUid'] = await userData.uid;
-		// 	console.log('adding adminuid', userData.uid);
-		// 	this.handleUsers();
-		// });
+		console.log('addAdmin(): completed adding addmin');
 	}
 
 	async handleExchange() {
 		console.log('handleExchange(): Starting');
-		console.log(this.setupData);
 		const exId = await this.db.addExchange(this.setupData);
-		console.log('handleExchange(): Created in DB');
 		const properties = Object.keys(this.setupData.exchangees);
 		for (const prop of properties) {
 			await this.db.addExchangeesToExchange(exId, this.setupData.exchangees[prop]);
@@ -90,7 +82,7 @@ export class SetupService {
 
 	async handleUsers() {
 		console.log('handleUsers(): Started');
-		var newExs = {};
+		var newExs = {}, nameArray = {};
 		const properties = Object.keys(this.setupData.exchangees);
 		for (const prop of properties) {
 			let user = this.setupData.exchangees[prop];
@@ -98,9 +90,19 @@ export class SetupService {
 			const userData: User = await this.db.getUserOnce(user.email);
 			user.uid = userData.uid;
 			newExs[userData.uid] = user;
+			nameArray[userData.name] = userData;
 		}
+		await this.addDrawnUids(nameArray);
 		this.setupData.exchangees = newExs;
 		console.log('handleUsers(): Completed');
+	}
+
+	async addDrawnUids(names) {
+		const properties = Object.keys(this.setupData.exchangees);
+		for (const prop of properties) {
+			let user = this.setupData.exchangees[prop];
+			user.drawnUid = names[user.nameDrawn].uid
+		}
 	}
 
 	getData() {

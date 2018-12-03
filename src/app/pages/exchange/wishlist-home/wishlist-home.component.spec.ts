@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WishlistTaxiComponent } from './wishlist-taxi.component';
+import { WishlistHomeComponent } from './wishlist-home.component';
 
-describe('WishlistTaxiComponent', () => {
-  let component: WishlistTaxiComponent;
-  let fixture: ComponentFixture<WishlistTaxiComponent>;
+describe('WishlistHomeComponent', () => {
+  let component: WishlistHomeComponent;
+  let fixture: ComponentFixture<WishlistHomeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WishlistTaxiComponent ]
+      declarations: [ WishlistHomeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WishlistTaxiComponent);
+    fixture = TestBed.createComponent(WishlistHomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

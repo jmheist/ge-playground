@@ -130,7 +130,7 @@ export class DbServiceService {
   }
 
   getWishlist(exId, id): Observable<any> {
-    this.WishlistCollection = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(id).collection('wishlist');
+    this.WishlistCollection = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(id).collection('wishlist', ref => ref.orderBy('createdAt', 'asc'));
     return this.db.colWithIds$(this.WishlistCollection);
   }
 
@@ -138,18 +138,22 @@ export class DbServiceService {
     this.WishlistCollection = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(id).collection('wishlist');
     data.forEach(async item => {
       if (item.itemName != '') {
-        item.itemUrl = item.itemUrl == "" ? 'none' : item.itemUrl;
-        item.itemUid = item.itemUid == "" ? 'none' : item.itemUid;
-        var newItem = {name:item.itemName, url: item.itemUrl, uid: item.itemUid}
-        var uid = await this.db.upsertItem(this.WishlistCollection, newItem);
-        item.uid = uid;
+        var cleanItem = {itemName: item.itemName};
+        if (item.itemUrl != "") {
+          cleanItem['itemUrl'] = item.itemUrl;
+        }
+        if (item.itemUid != "") {
+          cleanItem['itemUid'] = item.itemUid;
+        }
+        var itemUid = await this.db.upsertItem(this.WishlistCollection, cleanItem);
+        item.itemUid = itemUid;
       }
     });
     return;
   }
 
-  removeWishlistItem(exId, userId, itemUid) {
-    this.WishlistDoc = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(userId).collection('wishlist').doc(itemUid);
+  removeWishlistItem(exId, userId, uid) {
+    this.WishlistDoc = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(userId).collection('wishlist').doc(uid);
     this.WishlistDoc.delete();
   }
   

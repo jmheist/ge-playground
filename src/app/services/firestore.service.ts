@@ -161,12 +161,12 @@ export class FirestoreService {
   }
 
   upsertItem<T>(ref: CollectionPredicate<T>, data: any, update = true): Promise<void> {
-    if (data.uid == "none") {
-      const uid = this.afs.createId();
-      data.uid = uid;
-      return this.set(this.col(ref).doc(data.uid), data)
+    if (!data.hasOwnProperty('itemUid')) {
+      const itemUid = this.afs.createId();
+      data['itemUid'] = itemUid;
+      return this.set(this.col(ref).doc(data.itemUid), data)
     } else {
-      return update ? this.update(this.col(ref).doc(data.uid), data) : null;
+      return update ? this.update(this.col(ref).doc(data.itemUid), data) : null;
     }
 
   }

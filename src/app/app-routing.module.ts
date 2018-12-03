@@ -2,21 +2,22 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './pages/home/home.component';
-import { SetupComponent } from './setup/setup.component';
-import { Step1Component } from './setup/step1/step1.component';
-import { Step2Component } from './setup/step2/step2.component';
-import { Step3Component } from './setup/step3/step3.component';
-import { Step4Component } from './setup/step4/step4.component';
-import { FinalStepComponent } from './setup/final-step/final-step.component';
+import { SetupComponent } from './pages/setup/setup.component';
+import { Step1Component } from './pages/setup/step1/step1.component';
+import { Step2Component } from './pages/setup/step2/step2.component';
+import { Step3Component } from './pages/setup/step3/step3.component';
+import { Step4Component } from './pages/setup/step4/step4.component';
+import { FinalStepComponent } from './pages/setup/final-step/final-step.component';
 import { ListExchangesComponent } from './pages/list-exchanges/list-exchanges.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { ExchangeAdminComponent } from './pages/admin/exchange-admin/exchange-admin.component';
 import { UpdateEmailComponent } from './pages/admin/update-email/update-email.component';
 import { ExchangeComponent } from './pages/exchange/exchange.component';
-import { WishlistComponent } from './pages/exchange/wishlist-taxi/wishlist/wishlist.component';
-import { DrawComponent } from './pages/exchange/wishlist-taxi/draw/draw.component';
-import { WishlistSavedComponent } from './pages/exchange/wishlist-taxi/wishlist-saved/wishlist-saved.component';
-import { WishlistTaxiComponent } from './pages/exchange/wishlist-taxi/wishlist-taxi.component';
+import { WishlistComponent } from './pages/exchange/wishlist-home/wishlist/wishlist.component';
+import { DrawComponent } from './pages/exchange/wishlist-home/draw/draw.component';
+import { WishlistSavedComponent } from './pages/exchange/wishlist-home/wishlist-saved/wishlist-saved.component';
+import { WishlistHomeComponent } from './pages/exchange/wishlist-home/wishlist-home.component';
+import { ExchangeViewComponent } from './pages/exchange/exchange-view/exchange-view.component';
 
 const routes: Routes = [
 	{ 
@@ -48,13 +49,14 @@ const routes: Routes = [
 		]
 	},
 	{
-		path: 'exchange/:id', 
+		path: 'exchange/:exchangeId/:curentUserId', 
 		component: ExchangeComponent,
 		children: [
-			{ path: 'wishlist/:userId', component: WishlistTaxiComponent, children: [
+			{ path: '', component: ExchangeViewComponent, },
+			{ path: 'wishlist', component: WishlistHomeComponent, children: [
 				{ path: 'edit', component: WishlistComponent },
 				{ path: 'edit/wishlistSaved', component: WishlistSavedComponent },
-				{ path: 'draw/:currentUser', component: DrawComponent }
+				{ path: 'drawn', component: DrawComponent }
 			]}
 		]
 	},

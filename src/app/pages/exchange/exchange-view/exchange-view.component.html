@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-sm-12">
+      <h1>{{ (exchange | async)?.name }}</h1>
+      <p *ngIf="currentUser">Welcome {{ currentUser?.name.capitalize() }}</p>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-sm-6">
+      <h3>For You <span *ngIf="isAdmin">(Admin)</span></h3>
+      <ul>
+        <li *ngIf="currentUser"><a [routerLink]="['/exchange', exchangeId, (currentUser)?.uid, 'wishlist', 'edit']">Set your wishlist</a></li>
+        <li *ngIf="currentUser"><a [routerLink]="['/exchange', exchangeId, (currentUser)?.uid, 'wishlist', 'drawn']">View {{currentUser?.nameDrawn}}'s wishlist</a></li>
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <h3>Settings</h3>
+      <ul>
+        <li>Budget: ${{ (exchange | async)?.budget }}</li>
+        <li>Date: {{ (exchange | async)?.date.month }}/{{ (exchange | async)?.date.day }}/{{ (exchange |
+          async)?.date.year }}</li>
+        <li>I'm Inclucded: {{ (exchange | async)?.includeAdmin }}</li>
+        <li># of Names Per Person: {{ (exchange | async)?.nameCount }}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>People</h3>
+      <div class="container">
+        <div class="mt-2 mb-2 pt-2 pb-2 border-bottom" *ngFor="let ex of (people | async) ; let i of index;">
+          <div class="row">
+            <div class="col-sm-4"><h4><a (click)="loadExchangeAs(ex.uid)">{{ex.name}}</a></h4></div>
+            <div class="col-sm-4 offset-md-4" *ngIf="isAdmin"><strong>Wishlist Status:</strong> not set</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">{{ ex.email }} <small *ngIf="isAdmin">(edit)</small></div>
+            <div class="col-sm-4 offset-md-4" *ngIf="isAdmin"><strong>Viewed Their Name's Wishlist:</strong> No</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

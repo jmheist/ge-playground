@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DbServiceService } from '../../../services/db-service.service';
 import { Observable } from 'rxjs';
 import { Exchange } from '../../../models/exchange.model';
@@ -17,6 +17,7 @@ export class ExchangeAdminComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private db: DbServiceService,
     
   ) { 
@@ -37,6 +38,10 @@ export class ExchangeAdminComponent implements OnInit {
 
   loadPeople() {
     this.people = this.db.getExchangePeople(this.id);
+  }
+
+  editWishlist(id) {
+    this.router.navigate(['/exchange/VY8jZdyROiybSOeugaPH/'+id+'/wishlist/edit']);
   }
 
 }

@@ -7,16 +7,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./wishlist-saved.component.scss']
 })
 export class WishlistSavedComponent implements OnInit {
-
+  prevUrl;
   constructor(
-    private router: Router
-  ) { }
-
+    private router: Router,
+  ) {
+  }
   ngOnInit() {
   }
 
   goBack() {
-    this.router.navigate(['/exchange/J56O1pNNIMY2QX5tvBtI/wishlist/p4Ffw5TIgdMo8AbmPad5/edit']);
+    console.log(this.prevUrl);
+    window.history.back()
   }
 
 }

@@ -4,7 +4,8 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-      <button type="button" class="btn btn-primary" (click)="testWishlist()">Test Wishlist</button>
+      <button type="button" class="btn btn-primary" (click)="testWishlist()">Edit Wishlist</button>
+      <button type="button" class="btn btn-primary" (click)="viewWishList()">View Wishlist</button>
     </div>
   </div>
   <div class="row">
@@ -12,7 +13,7 @@
       <h3>Exchanges</h3>
       <ul>
         <li class="text" *ngFor="let exchange of exchanges | async">
-          <a [routerLink]="['/admin', exchange.id]">
+          <a [routerLink]="['/exchange', exchange.id, 'p4Ffw5TIgdMo8AbmPad5']">
             {{exchange.name}}
           </a>
         </li>
