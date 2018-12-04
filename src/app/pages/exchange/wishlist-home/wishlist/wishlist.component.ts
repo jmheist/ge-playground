@@ -18,6 +18,8 @@ export class WishlistComponent implements OnInit {
     public wishlistSaved: [];
     public exchange: {};
     public currentUser: User;
+    public savedMsg: string;
+    public isDirty = false;
     private exchangeId: string;
     private exDoc;
     private sub = undefined;
@@ -43,8 +45,8 @@ export class WishlistComponent implements OnInit {
                 });
                 sub.unsubscribe();
                 this.addItem() // add a blank
+                this.watchForm();
             })
-
         });
     }
 
@@ -69,11 +71,10 @@ export class WishlistComponent implements OnInit {
         if (this.sub) {
             this.sub.unsubscribe();
         }
-        this.onChanges();
+        this.addEmpyRow();
     }
 
     submitData() {
-
         for (const item in this.items.controls) {
             var url = this.items.controls[item].get('itemUrl').value;
             if (url && url.startsWith('http') && url.indexOf('amazon') > -1 && url.indexOf('jmheist-20') == -1) {
@@ -82,7 +83,18 @@ export class WishlistComponent implements OnInit {
 
         }
         this.db.setWishList(this.exchangeId, this.currentUser.uid, this.wishlistForm.value.items);
-        this.route.navigate(['/exchange/J56O1pNNIMY2QX5tvBtI/p4Ffw5TIgdMo8AbmPad5/wishlist/edit/wishlistSaved']);
+        this.setSavedMsg('Your wishlist has been saved!');
+        this.isDirty = false;
+        // this.route.navigate(['/exchange/J56O1pNNIMY2QX5tvBtI/p4Ffw5TIgdMo8AbmPad5/wishlist/edit/wishlistSaved']);
+    }
+
+    setSavedMsg(txt = "") {
+        this.savedMsg = txt;
+        if (this.savedMsg && this.savedMsg != '') {
+            setTimeout(() => {
+                this.savedMsg = null;
+            }, 12000);
+        }
     }
 
     remove(i) {
@@ -111,7 +123,14 @@ export class WishlistComponent implements OnInit {
         //console.log(this.items)
     }
 
-    onChanges(): void {
+    watchForm() {
+        var sub = this.wishlistForm.statusChanges.subscribe(val => {
+            this.isDirty = true;
+            sub.unsubscribe();
+        });
+    }
+
+    addEmpyRow(): void {
         var total = this.items.controls.length
         for (const item in this.items.controls) {
             var num = parseInt(item, 10);

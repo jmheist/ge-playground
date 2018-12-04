@@ -1,7 +1,9 @@
 <div class="row pb-4">
     <div class="col-sm-12">
         <h2>Wishlist for {{ currentUser?.name }}</h2>
-        <small>Create your own wishlist by adding gift suggestions and links.</small>
+        <p>
+            &laquo; Go back to exchange. <span *ngIf="savedMsg" class="text-success font-weight-bold">{{ savedMsg }}</span>
+        </p>
     </div>
 </div>
 <!-- <div class="row">
