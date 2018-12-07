@@ -20,12 +20,12 @@ Things to complete:
     ☐ Option to select 2 names per exchangee
  
   Email System:
-    ☐ Enable sending email
-    ☐ Determine how to trigger emails
+    ✔ Enable sending email @done(18-12-07 16:44)
+    ✔ Determine how to trigger emails @done(18-12-07 16:44)
       - New Exhange Created
-        ☐ Email sent to admin to verify email address
+        ✔ Email sent to admin to verify email address @done(18-12-07 16:44)
       - Admin Email Verified
-        ☐ Email sent to admin confirming exchange was created and everyone was emailed
+        ✔ Email sent to admin confirming exchange was created and everyone was emailed @done(18-12-07 16:44)
           - can have their link to create wishlist
         ☐ Emails sent to all exchangees
       - Wishlist saved/updated

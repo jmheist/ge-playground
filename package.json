@@ -29,6 +29,8 @@
     "core-js": "^2.5.4",
     "cryptiles": "^4.1.2",
     "firebase": "^5.5.9",
+    "firebase-admin": "^6.3.0",
+    "firebase-functions": "^2.1.0",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.5",
     "rxjs": "^6.3.3",
