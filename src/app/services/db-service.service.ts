@@ -100,7 +100,7 @@ export class DbServiceService {
 
   async addExchangeesToExchange(exchangeId, data) {
     this.exchDoc = this.afs.collection<Exchange>(`exchanges`).doc(exchangeId).collection<User>('exchangees').doc(data.uid);
-    await this.db.set(this.exchDoc, data);
+    await this.db.upsertUser(this.exchDoc, data);
   }
 
   getUsers() {

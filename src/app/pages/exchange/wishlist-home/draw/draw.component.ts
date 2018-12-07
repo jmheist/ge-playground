@@ -36,6 +36,11 @@ export class DrawComponent implements OnInit {
       // var sub = this.wishlist.subscribe(items => { 
       //   console.log(items)
       // });
+      if (!this.currentUser.viewedDrawnWishlist) {
+        this.currentUser.viewedDrawnWishlist = true;
+        console.log(this.currentUser.viewedDrawnWishlist);
+        this.db.addExchangeesToExchange( this.exchangeId, this.currentUser );
+      }
     });
   }
 

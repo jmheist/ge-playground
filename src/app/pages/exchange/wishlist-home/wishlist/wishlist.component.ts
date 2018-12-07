@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { UserService } from 'src/app/services/user.service';
 import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
-import { currentId } from 'async_hooks';
 
 @Component({
     selector: 'app-wishlist',
@@ -85,6 +84,10 @@ export class WishlistComponent implements OnInit {
         this.db.setWishList(this.exchangeId, this.currentUser.uid, this.wishlistForm.value.items);
         this.setSavedMsg('Your wishlist has been saved!');
         this.isDirty = false;
+        if (!this.currentUser.wishlistCreated) {
+            this.currentUser.wishlistCreated = true;
+            this.db.addExchangeesToExchange( this.exchangeId, this.currentUser );
+        }
         // this.route.navigate(['/exchange/J56O1pNNIMY2QX5tvBtI/p4Ffw5TIgdMo8AbmPad5/wishlist/edit/wishlistSaved']);
     }
 

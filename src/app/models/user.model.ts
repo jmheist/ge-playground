@@ -7,4 +7,6 @@ export interface User {
   uid?: string;
   isAdmin?: string;
   drawnUid?: string;
+  viewedDrawnWishlist?: boolean;
+  wishlistCreated?: boolean;
 }

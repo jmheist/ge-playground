@@ -30,11 +30,19 @@
         <div class="mt-2 mb-2 pt-2 pb-2 border-bottom" *ngFor="let ex of (people | async) ; let i of index;">
           <div class="row">
             <div class="col-sm-4"><h4><a (click)="loadExchangeAs(ex.uid)">{{ex.name}}</a></h4></div>
-            <div class="col-sm-4 offset-md-4" *ngIf="isAdmin"><strong>Wishlist Status:</strong> not set</div>
+            <div class="col-sm-4 offset-md-4" *ngIf="isAdmin">
+              Their Wishlist:&nbsp;
+              <span class='text-success' *ngIf="ex.wishlistCreated">Wishlist Set</span>
+              <span class='text-danger' *ngIf="!ex.wishlistCreated"><strong>Wishlist Not Set</strong></span>
+            </div>
           </div>
           <div class="row">
             <div class="col-sm-4">{{ ex.email }} <small *ngIf="isAdmin">(edit)</small></div>
-            <div class="col-sm-4 offset-md-4" *ngIf="isAdmin"><strong>Viewed Their Name's Wishlist:</strong> No</div>
+            <div class="col-sm-4 offset-md-4" *ngIf="isAdmin">
+              Viewed Their Name's Wishlist:&nbsp;
+              <span *ngIf="ex.viewedDrawnWishlist" class='text-success'>Yes</span>
+              <span *ngIf="!ex.viewedDrawnWishlist" class='text-danger'><strong>No</strong></span>
+            </div>
           </div>
         </div>
       </div>

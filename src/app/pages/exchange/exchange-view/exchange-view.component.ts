@@ -33,7 +33,7 @@ export class ExchangeViewComponent implements OnInit {
       await this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(async user => {
         this.currentUser = await user;
         this.isAdmin = (this.currentUser.isAdmin == 'true') || false;
-        console.log(this.isAdmin);
+        console.log(this.currentUser)
       });
       await this.loadExchange();
       await this.loadPeople();
@@ -54,6 +54,10 @@ export class ExchangeViewComponent implements OnInit {
 
   loadExchangeAs(id) {
     this.router.navigate(['/exchange/' + this.exchangeId + '/' + id]);
+  }
+
+  viewed(viewed: boolean) {
+    return viewed ? "<span class='text-success'>Yes</span>" : "<span class='text-danger'>No</span>"
   }
 
 }
