@@ -16,6 +16,7 @@ export class DrawComponent implements OnInit {
   public wishlistSaved: [];
   public exchange: {};
   public currentUser: User;
+  public currentUserUid: string;
   private exchangeId: string;
   private exDoc;
 
@@ -32,13 +33,13 @@ export class DrawComponent implements OnInit {
     });
     this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(user => {
       this.currentUser = user;
+      this.currentUserUid = this.currentUser.uid;
       this.wishlist = this.db.getWishlist(this.exchangeId, this.currentUser.drawnUid);
       // var sub = this.wishlist.subscribe(items => { 
       //   console.log(items)
       // });
       if (!this.currentUser.viewedDrawnWishlist) {
         this.currentUser.viewedDrawnWishlist = true;
-        console.log(this.currentUser.viewedDrawnWishlist);
         this.db.addExchangeesToExchange( this.exchangeId, this.currentUser );
       }
     });

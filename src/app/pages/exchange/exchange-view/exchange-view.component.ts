@@ -33,7 +33,6 @@ export class ExchangeViewComponent implements OnInit {
       await this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(async user => {
         this.currentUser = await user;
         this.isAdmin = (this.currentUser.isAdmin == 'true') || false;
-        console.log(this.currentUser)
       });
       await this.loadExchange();
       await this.loadPeople();

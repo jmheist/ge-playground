@@ -17,6 +17,7 @@ export class WishlistComponent implements OnInit {
     public wishlistSaved: [];
     public exchange: {};
     public currentUser: User;
+    public currentUserUid: string;
     public savedMsg: string;
     public isDirty = false;
     private exchangeId: string;
@@ -35,8 +36,9 @@ export class WishlistComponent implements OnInit {
             this.exchangeId = params['exchangeId'];
             this.userSrv.setActiveUserId(params['curentUserId']);
         });
-        this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(user => {
+        var exSub = this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(user => {
             this.currentUser = user;
+            this.currentUserUid = this.currentUser.uid;
             this.wishlist = this.db.getWishlist(this.exchangeId, this.currentUser.uid);
             var sub = this.wishlist.subscribe(items => {
                 items.forEach(item => {
@@ -45,7 +47,8 @@ export class WishlistComponent implements OnInit {
                 sub.unsubscribe();
                 this.addItem() // add a blank
                 this.watchForm();
-            })
+            });
+            exSub.unsubscribe();
         });
     }
 
@@ -79,7 +82,6 @@ export class WishlistComponent implements OnInit {
             if (url && url.startsWith('http') && url.indexOf('amazon') > -1 && url.indexOf('jmheist-20') == -1) {
                 this.items.controls[item].get('itemUrl').setValue(url + '&tag=jmheist-20');
             }
-
         }
         this.db.setWishList(this.exchangeId, this.currentUser.uid, this.wishlistForm.value.items);
         this.setSavedMsg('Your wishlist has been saved!');
@@ -88,7 +90,7 @@ export class WishlistComponent implements OnInit {
             this.currentUser.wishlistCreated = true;
             this.db.addExchangeesToExchange( this.exchangeId, this.currentUser );
         }
-        // this.route.navigate(['/exchange/J56O1pNNIMY2QX5tvBtI/p4Ffw5TIgdMo8AbmPad5/wishlist/edit/wishlistSaved']);
+        //this.route.navigate(['/exchange/J56O1pNNIMY2QX5tvBtI/p4Ffw5TIgdMo8AbmPad5/wishlist/edit/wishlistSaved']);
     }
 
     setSavedMsg(txt = "") {

@@ -2,15 +2,16 @@ Things to complete:
 
   Page Setup Completion: 
     ✔ Exchange Setup @done(18-11-26 11:34)
+    ☐ Exchange Admin Confirm Email page
     ✔ Exchange Admin Page @done(18-11-26 11:34)
       ☐ Update email page 
       ☐ Send email page
     ☐ Exchangee Home Page
-      ☐ group page
+      ✔ group page @done(18-12-07 14:57)
         ☐ send group email
-      ☐ view name's wishlist
+      ✔ view name's wishlist @done(18-12-07 14:57)
         ☐ ask name a question
-      ☐ Set their own wishlist 
+      ✔ Set their own wishlist @done(18-12-07 14:57)
       ☐ see gift idea list
 
   Exchange Setup Phase:
@@ -21,8 +22,16 @@ Things to complete:
   Email System:
     ☐ Enable sending email
     ☐ Determine how to trigger emails
-      - firebase has a way to do this
-      - sign up for a email vendor free service
+      - New Exhange Created
+        ☐ Email sent to admin to verify email address
+      - Admin Email Verified
+        ☐ Email sent to admin confirming exchange was created and everyone was emailed
+          - can have their link to create wishlist
+        ☐ Emails sent to all exchangees
+      - Wishlist saved/updated
+        ☐ Email send to whoever has that persons name letting them know to go and check the wishlist
+      - Wishlist not created
+        ☐ Email sent asking exchangee to set their wishlist
 
   Things to consider eventually:
     ☐ Add exchange Id to users document when exchangee intereacts with exchange

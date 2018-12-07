@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <h2>Wishlist for {{ currentUser?.name }}</h2>
         <p>
-            &laquo; Go back to exchange. <span *ngIf="savedMsg" class="text-success font-weight-bold">{{ savedMsg }}</span>
+            <a [class.disabled]="isDirty" [routerLink]="['/exchange', exchangeId, currentUserUid]">&laquo; Go back to exchange.  </a><span *ngIf="savedMsg" class="text-success font-weight-bold">{{ savedMsg }}</span>
         </p>
     </div>
 </div>
