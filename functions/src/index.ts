@@ -30,6 +30,7 @@ exports.newExchangeCreated = functions.firestore.document("exchanges/{exchangeId
 
 exports.adminVerifiedEmail = functions.firestore.document("exchanges/{exchangeId}").onUpdate(function (change, context) {
     const exchangeUpdate = change.after.data();
+    console.log(change)
     if (!!exchangeUpdate.adminVerifiedEmail) {
         // console.log(exchange);
         const msg = {
@@ -42,8 +43,13 @@ exports.adminVerifiedEmail = functions.firestore.document("exchanges/{exchangeId
                 name: exchangeUpdate.name
             }
         };
+        sendExchangeeEmails();
         return sgMail.send(msg);
+
     } else {
         return;
+    }
+    function sendExchangeeEmails() {
+        console.log(`sending emails to all exchangees of exchange `)
     }
 });
