@@ -105,7 +105,7 @@ exports.wishListSet = functions.firestore.document("exchanges/{exchangeId}/excha
     if (!!exchangee.wishlistCreated) {
         // send email to who has their name so they can go check the wishlist
         console.log(`Wishlist Created: exchangee: ${params.exchangeeUid}, wishlistCreated: ${exchangee.wishlistCreated}`);
-        await db.document(`exchanges/${params.exchangeId}/exchangees/${exchangee.drawnUid}`).get().then(async snap => {
+        await db.doc(`exchanges/${params.exchangeId}/exchangees/${exchangee.drawnUid}`).get().then(async snap => {
             const ex = snap.data();
             const msgOptions = {
                 "personalizations": [
