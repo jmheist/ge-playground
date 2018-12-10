@@ -29,7 +29,7 @@
     "core-js": "^2.6.0",
     "cryptiles": "^4.1.2",
     "firebase": "^5.7.0",
-    "firebase-admin": "^6.3.0",
+    "firebase-admin": "^6.0.0",
     "firebase-functions": "^2.1.0",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.6",
