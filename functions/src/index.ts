@@ -11,6 +11,7 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 const SENDGRID_API_KEY = functions.config().sendgrid.key;
 sgMail.setApiKey(SENDGRID_API_KEY);
+sgMail.setSubstitutionWrappers('{{','}}');
 
 exports.newExchangeCreated = functions.firestore.document("exchanges/{exchangeId}").onCreate(function (snap, context) {
     const exchange = snap.data();
@@ -20,7 +21,6 @@ exports.newExchangeCreated = functions.firestore.document("exchanges/{exchangeId
         from: "jmheist@gmail.com",
         subject: "New Exchange",
         templateId: "d-0591b5d5fb0a42a4a05d0135d6774a60",
-        substitutionWrappers: ["{{", "}}"],
         substitutions: {
             name: exchange.name
         }
@@ -28,28 +28,43 @@ exports.newExchangeCreated = functions.firestore.document("exchanges/{exchangeId
     return sgMail.send(msg);
 });
 
-exports.adminVerifiedEmail = functions.firestore.document("exchanges/{exchangeId}").onUpdate(function (change, context) {
+exports.adminVerifiedEmail = functions.firestore.document("exchanges/{exchangeId}").onUpdate(async function (change, context) {
     const exchangeUpdate = change.after.data();
-    console.log(change)
-    if (!!exchangeUpdate.adminVerifiedEmail) {
-        // console.log(exchange);
-        const msg = {
-            to: exchangeUpdate.adminEmail,
-            from: "jmheist@gmail.com",
-            subject: "exchange has been verified",
-            templateId: "d-0591b5d5fb0a42a4a05d0135d6774a60",
-            substitutionWrappers: ["{{", "}}"],
-            substitutions: {
-                name: exchangeUpdate.name
-            }
-        };
-        sendExchangeeEmails();
-        return sgMail.send(msg);
+    // const exchangeId = change.after.id;
 
-    } else {
-        return;
+    if (!!exchangeUpdate.adminVerifiedEmail) {
+        console.log('is verified');
+
+        await change.after.ref.collection('exchangees').get().then(async snaps => {
+            snaps.forEach(async snap => {
+                const ex = snap.data();
+                const msgOptions = {
+                    "personalizations": [
+                      {
+                        "to": [
+                          {
+                            "email": "jmheist@gmail.com",
+                            "name": ex.name
+                          }
+                        ],
+                        "dynamic_template_data": {
+                          "exchangeeName": ex.name,
+                        }
+                      }
+                    ],
+                    "from": {
+                      "email": "jacob@highpointealtoona.com",
+                      "name": "Jacob Heisterkamp"
+                    // },
+                    // "reply_to": {
+                    //   "email": "jacob@highpointealtoona.com",
+                    //   "name": "Sam Smith"
+                    },
+                    "template_id": "d-0591b5d5fb0a42a4a05d0135d6774a60"
+                  }
+                await sgMail.send(msgOptions);
+            });
+        });
     }
-    function sendExchangeeEmails() {
-        console.log(`sending emails to all exchangees of exchange `)
-    }
+    return 0;
 });
