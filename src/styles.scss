@@ -1,5 +1,47 @@
+// using the scss method here to include boostrap and overrides
+
+@import 'src/assets/scss/boostrap-overrides.scss';
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+// overrides
+
 /* You can add global styles to this file, and also import other style files */
+
+// Global Settings
+@media only screen and (min-width: 1200px) { 
+    .container {
+        max-width: 1600px; 
+    }
+}
+
+body {
+    background-color: $bg-purple;
+    color: white;
+}
+
 input[type=radio],input[type=checkbox] {
     width: 20px;
     height: 20px;
+}
+
+main a {
+    color: $linkColor;
+    &:visited {
+        color: $linkVisitedColor;
+    }
+    &:active {
+        color: $linkActiveColor;
+    }
+    &:hover {
+        color: $linkActiveColor;
+    }
+}
+
+#header {
+    color: $secondary;
+    background-color: white;
+    #logo {
+        min-width: 350px;
+        max-width: 500px;
+        }
 }

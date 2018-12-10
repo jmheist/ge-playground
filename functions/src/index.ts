@@ -1,5 +1,6 @@
 //
-// After saving changes, run this in console at root of project: firebase deploy --only functions
+// After saving changes, run this in console at root of project: 
+// firebase deploy --only functions
 //
 
 // Context Object Example
@@ -19,6 +20,9 @@
 const functions = require('firebase-functions');
 const sgMail = require('@sendgrid/mail');
 const admin = require('firebase-admin');
+
+const fromAddress = 'info@thegreatgiftexchange.com';
+const fromName = 'The Great Gift Exchange';
 
 admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
@@ -44,8 +48,8 @@ exports.newExchangeCreated = functions.firestore.document("exchanges/{exchangeId
             }
         ],
         "from": {
-            "email": "jacob@highpointealtoona.com",
-            "name": "Jacob Heisterkamp"
+            "email": fromAddress,
+            "name": fromName,
             // },
             // "reply_to": {
             //   "email": "jacob@highpointealtoona.com",
@@ -56,7 +60,7 @@ exports.newExchangeCreated = functions.firestore.document("exchanges/{exchangeId
     return sgMail.send(msgOptions);
 });
 
-exports.adminVerifiedEmail = functions.firestore.document("exchanges/{exchangeId}").onUpdate(async function (change, context) {
+exports.adminVerifiedEmail = functions.firestore.document("exchanges/{exchangeId}").onUpdate(async (change, context) => {
     const exchangeUpdate = change.after.data();
     // const exchangeId = change.after.id;
 
@@ -81,8 +85,8 @@ exports.adminVerifiedEmail = functions.firestore.document("exchanges/{exchangeId
                         }
                     ],
                     "from": {
-                        "email": "jacob@highpointealtoona.com",
-                        "name": "Jacob Heisterkamp"
+                        "email": fromAddress,
+                        "name": fromName,
                         // },
                         // "reply_to": {
                         //   "email": "jacob@highpointealtoona.com",
@@ -98,41 +102,52 @@ exports.adminVerifiedEmail = functions.firestore.document("exchanges/{exchangeId
 });
 
 
-exports.wishListSet = functions.firestore.document("exchanges/{exchangeId}/exchangees/{exchangeeUid}").onUpdate(async function (change, context) {
+exports.wishListSet = functions.firestore.document("exchanges/{exchangeId}/exchangees/{exchangeeUid}").onUpdate(async (change, context) => {
     const exchangee = change.after.data();
+    const firstRef = change.after.ref;
     const params = context.params;
-    console.log(exchangee);
-    if (!!exchangee.wishlistCreated) {
+    if (!!exchangee.wishlistCreated && !exchangee.wishlistCreatedSent) {
         // send email to who has their name so they can go check the wishlist
         console.log(`Wishlist Created: exchangee: ${params.exchangeeUid}, wishlistCreated: ${exchangee.wishlistCreated}`);
-        await db.doc(`exchanges/${params.exchangeId}/exchangees/${exchangee.drawnUid}`).get().then(async snap => {
+        const ref = db.doc(`exchanges/${params.exchangeId}/exchangees/${exchangee.drawnUid}`);
+        await ref.get().then(async snap => {
             const ex = snap.data();
+            console.log(ex);
+            console.log(exchangee);
             const msgOptions = {
                 "personalizations": [
-                  {
-                    "to": [
-                      {
-                        "email": "jmheist@gmail.com",
-                        "name": ex.name
-                      }
-                    ],
-                    "dynamic_template_data": {
-                      "exchangeeName": `${ex.name}, ${exchangee.name} has created their wishlist. Go check it out.`,
+                    {
+                        "to": [
+                            {
+                                "email": "jmheist@gmail.com",
+                                "name": ex.name
+                            }
+                        ],
+                        "dynamic_template_data": {
+                            "exchangeeName": `${ex.name}, ${exchangee.name} has created their wishlist. Go check it out.`,
+                        }
                     }
-                  }
                 ],
                 "from": {
-                  "email": "jacob@highpointealtoona.com",
-                  "name": "Jacob Heisterkamp"
-                // },
-                // "reply_to": {
-                //   "email": "jacob@highpointealtoona.com",
-                //   "name": "Sam Smith"
+                    "email": fromAddress,
+                    "name": fromName,
+                    // },
+                    // "reply_to": {
+                    //   "email": "jacob@highpointealtoona.com",
+                    //   "name": "Sam Smith"
                 },
                 "template_id": "d-0591b5d5fb0a42a4a05d0135d6774a60"
-              }
+            }
             await sgMail.send(msgOptions);
         });
+        exchangee.wishlistCreatedSent = true;
+        await firstRef.set(exchangee)
     }
     return 0;
 });
+
+// Function to remind people to set wishlist after a week
+
+// Function to remind people to check their drawn name's wishlist after a week
+
+// Function to remind everyone that exchange date is only 10 days away (as long as exchange was setup more than XX days before 10 days away. etc. think through this.)

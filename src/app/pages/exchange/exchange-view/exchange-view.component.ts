@@ -30,12 +30,21 @@ export class ExchangeViewComponent implements OnInit {
       this.exchangeId = params['exchangeId'];
       this.userSrv.setActiveUserId(params['curentUserId']);
       this.curentUserId = this.userSrv.getActiveUserId();
-      await this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(async user => {
-        this.currentUser = await user;
-        this.isAdmin = (this.currentUser.isAdmin == 'true') || false;
-      });
       await this.loadExchange();
       await this.loadPeople();
+      await this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(async user => {
+        if (user) {
+          this.currentUser = await user;
+          this.isAdmin = (this.currentUser.isAdmin == 'true') || false;
+        } else {
+          this.exchange.subscribe(async exchange => {
+            if (!exchange.includeAdmin && this.curentUserId === exchange.adminUid) {
+              this.isAdmin = true;
+            }
+          })
+        }
+      });
+
     });
   }
 

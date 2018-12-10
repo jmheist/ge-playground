@@ -18,6 +18,7 @@ import { DrawComponent } from './pages/exchange/wishlist-home/draw/draw.componen
 import { WishlistSavedComponent } from './pages/exchange/wishlist-home/wishlist-saved/wishlist-saved.component';
 import { WishlistHomeComponent } from './pages/exchange/wishlist-home/wishlist-home.component';
 import { ExchangeViewComponent } from './pages/exchange/exchange-view/exchange-view.component';
+import { SendLoginEmailComponent } from './pages/send-login-email/send-login-email.component';
 
 const routes: Routes = [
 	{ 
@@ -60,6 +61,7 @@ const routes: Routes = [
 			]}
 		]
 	},
+	{ path: 'sendLoginEmail', component: SendLoginEmailComponent },
 	{ path: 'list-all', component: ListExchangesComponent }
 ];
 

@@ -99,8 +99,9 @@ export class DbServiceService {
   }
 
   async addExchangeesToExchange(exchangeId, data) {
+    console.log(data);
     this.exchDoc = this.afs.collection<Exchange>(`exchanges`).doc(exchangeId).collection<User>('exchangees').doc(data.uid);
-    await this.db.upsertUser(this.exchDoc, data);
+    await this.db.upsertExchangeeUser(this.exchDoc, data);
   }
 
   getUsers() {
@@ -119,7 +120,7 @@ export class DbServiceService {
       .then((user: User) => user);
   }
 
-  getExchangee(exId, id): Observable<User> {
+  getExchangee(exId, id): Observable<any> {
     this.exchDoc = this.afs.collection<Exchange>(`exchanges`).doc(exId).collection<User>('exchangees').doc(id);
     return this.db.doc$(this.exchDoc);
   }

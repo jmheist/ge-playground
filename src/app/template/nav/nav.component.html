@@ -1,4 +1,27 @@
-<nav class="navbar navbar-expand-md navbar-dark static-top bg-dark">
+
+
+
+
+
+
+<div id="header" class="container-fluid py-4 mt-4">
+  <div class="row">
+    <div class="col-sm-2">
+      left
+    </div>
+    <div class="col text-center">
+        <a [routerLink]="['/']"><img id="logo" src="../assets/images/Logo.svg" class="img-fluid"></a>
+    </div>
+    <div class="col-sm-2 text-right">
+      <a [routerLink]="['/list-all']">list-all</a>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- admin nav bar  -->
+<!-- <nav class="navbar navbar-expand-md navbar-dark static-top bg-dark">
   <a class="navbar-brand" href="#">{{ title }}</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -28,4 +51,4 @@
       </li>
     </ul>
   </div>
-</nav>
+</nav> -->

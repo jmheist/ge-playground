@@ -160,6 +160,17 @@ export class FirestoreService {
     });
   }
 
+  upsertExchangeeUser<T>(ref: DocPredicate<T>, data: any, update = true): Promise<void> {
+    const doc = this.doc(ref)
+      .snapshotChanges()
+      .pipe(take(1))
+      .toPromise();
+
+    return doc.then((snap: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
+      return snap.payload.exists ? this.update(ref, data) : this.set(ref, data);
+    });
+  }
+
   upsertItem<T>(ref: CollectionPredicate<T>, data: any, update = true): Promise<void> {
     if (!data.hasOwnProperty('itemUid')) {
       const itemUid = this.afs.createId();

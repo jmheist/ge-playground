@@ -3,17 +3,11 @@
 </div>
 <div class="container">
   <div class="row">
-    <div class="col-sm-12">
-      <button type="button" class="btn btn-primary" (click)="testWishlist()">Edit Wishlist</button>
-      <button type="button" class="btn btn-primary" (click)="viewWishList()">View Wishlist</button>
-    </div>
-  </div>
-  <div class="row">
     <div class="col-sm-6">
       <h3>Exchanges</h3>
       <ul>
         <li class="text" *ngFor="let exchange of exchanges | async">
-          <a [routerLink]="['/exchange', exchange.id, 'p4Ffw5TIgdMo8AbmPad5']">
+          <a [routerLink]="[ '/exchange', exchange.id, exchange.adminUid ]">
             {{exchange.name}}
           </a>
         </li>
@@ -23,7 +17,7 @@
       <h3>Users</h3>
       <ul>
         <li class="text" *ngFor="let user of users | async">
-          <a (click)="getUser(user.email)">{{user.name}}</a>
+          <a (click)="getUser(user.email)">{{user.name}} - {{user.email}}</a>
         </li>
       </ul>
     </div>

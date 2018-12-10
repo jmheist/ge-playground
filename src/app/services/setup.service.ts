@@ -31,8 +31,7 @@ export class SetupService {
 			"nameCount": "1",
 			"includeAdmin": true,
 			"adminAdded": true,
-			"welcomeMessage":
-				"Hello Everyone!"
+			"welcomeMessage": "Hello Everyone!",
 		};
 		// this.setupData = {};
 	}
@@ -94,6 +93,7 @@ export class SetupService {
 		}
 		await this.addDrawnUids(nameArray);
 		this.setupData.exchangees = newExs;
+		console.log(newExs)
 		console.log('handleUsers(): Completed');
 	}
 

@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  start() {
+  startSetup() {
     this.router.navigate(['setup/step1']);
   }
 

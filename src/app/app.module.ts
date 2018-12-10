@@ -36,6 +36,7 @@ import { WishlistSavedComponent } from './pages/exchange/wishlist-home/wishlist-
 import { WishlistHomeComponent } from './pages/exchange/wishlist-home/wishlist-home.component';
 import { FirestoreService } from './services/firestore.service';
 import { ExchangeViewComponent } from './pages/exchange/exchange-view/exchange-view.component';
+import { SendLoginEmailComponent } from './pages/send-login-email/send-login-email.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { ExchangeViewComponent } from './pages/exchange/exchange-view/exchange-v
     WishlistSavedComponent,
     WishlistHomeComponent,
     ExchangeViewComponent,
+    SendLoginEmailComponent,
   ],
   imports: [
     BrowserModule,

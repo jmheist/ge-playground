@@ -34,12 +34,4 @@ export class ListExchangesComponent implements OnInit {
 			console.log(this.user.uid);
 		});
 	}
-
-	testWishlist() {
-		this.router.navigate(['/exchange/VY8jZdyROiybSOeugaPH/p4Ffw5TIgdMo8AbmPad5/wishlist/edit']);
-	}
-
-	viewWishList() {
-		this.router.navigate(['/exchange/VY8jZdyROiybSOeugaPH/p4Ffw5TIgdMo8AbmPad5/wishlist/drawn']);
-	}
 }

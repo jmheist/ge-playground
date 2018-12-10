@@ -1,30 +1,25 @@
-<!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron">
-    <div class="container">
-        <h1 class="display-3">Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a
-            jumbotron and three supporting pieces of content. Use it as a starting point to create something more
-            unique.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+<!-- Example row of columns -->
+<div class="row align-items-center my-7">
+    <div class="col-12 col-xl-4 offset-xl-1 col-lg-4 offset-lg-1 col-md-7 mt-3">
+        <h1 class="pr-4">Create a gift exchange and draw names!</h1>
+        <p>The Great Exchange makes it easy to setup your secret santa gift exchange.</p>
+        <ul>
+            <li>Names are drawn randomly</li>
+            <li>No one gets their own name</li>
+            <li>You can exclude people from drawing certian people</li>
+            <li>We’ll email everyone for you so everything stays a secret</li>
+            <li>It's free...</li>
+        </ul>
+        <div class="row justify-content-center"><button class="btn btn-primary px-3 mr-lg-4" (click)="startSetup()">Create Your Exchange Now &raquo;</button></div>
+    </div>
+    <div class="col-12 col-xl-5 offset-xl-1 col-lg-6 offset-lg-1 col-md-5 px-lg-6 px-5">
+        <img src="../assets/images/teal_giftbox.svg" class="img-fluid">
     </div>
 </div>
-<div class="container">
-    <!-- Example row of columns -->
-    <div class="row">
-        <div class="col-md-4">
-            <h3>Start a Gift Exchange</h3>
-            <ul class="list">
-                <li>Start with your name and email address</li>
-                <li>Next, set some rules</li>
-                <li>Then, add people</li>
-                <li>Finally, let everyone know its time to get in the holiday spirit.</li>
-            </ul>
-        </div>
-        <div class="col-md-4">
-            <button type="button" class="btn btn-primary" (click)="start()">Get Started &raquo;</button>
-        </div>
-        <div class="col-md-4">
-        </div>
+<div class="row mt-5 pt-4 justify-content-center">
+    <div class="col-5 text-center mt-3 pt-5 border-top">
+        <h3>Already apart of an exchange?</h3>
+        <p>Check your email for a link to login to your exchange.<br>
+        <a [routerLink]="['/sendLoginEmail']">Or, click here to send a new email!</a></p>
     </div>
-    <hr>
-</div> <!-- /container -->
+</div>
