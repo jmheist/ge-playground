@@ -23,7 +23,7 @@
       <li>Budget: ${{ (exchange | async)?.budget }}</li>
       <li>Date: {{ (exchange | async)?.date.month }}/{{ (exchange | async)?.date.day }}/{{ (exchange |
         async)?.date.year }}</li>
-      <li>I'm Inclucded: {{ (exchange | async)?.includeAdmin }}</li>
+      <li *ngIf="isAdmin">I'm Inclucded: {{ (exchange | async)?.includeAdmin }}</li>
       <!-- <li># of Names Per Person: {{ (exchange | async)?.nameCount }}</li> -->
     </ul>
   </div>

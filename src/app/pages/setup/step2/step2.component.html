@@ -14,36 +14,38 @@
       <form [formGroup]="step2Form" novalidate (ngSubmit)="submitData()">
         <h3>Your Info</h3>
         <div class="form-group has-feedback has-clear">
-          <input type="text" class="form-control" placeholder="Your Name" formControlName="adminName">
+          <input type="text" [class.is-invalid]="step2Form.get('adminName').invalid && step2Form.get('adminName').touched" class="form-control" placeholder="Your Name" formControlName="adminName">
           <span class="form-control-clear glyphicon glyphicon-remove form-control-feedback hidden"></span>
+          <small class="text-warning" *ngIf="step2Form.get('adminName').invalid && step2Form.get('adminName').touched">*required</small>
         </div>
         <div class="form-group">
-          <input type="email" class="form-control" placeholder="Your Email Address" formControlName="adminEmail">
+          <input type="email" [class.is-invalid]="step2Form.get('adminEmail').invalid && step2Form.get('adminEmail').touched" class="form-control" placeholder="Your Email Address" formControlName="adminEmail">
+          <small class="text-warning" *ngIf="step2Form.get('adminEmail').invalid && step2Form.get('adminEmail').touched">*required and must be formatted correctly</small>
         </div>
         <h3>Add Names</h3>
         <div class="addNamesSection">
 
           <div formArrayName="exchangees" *ngFor="let exchangee of step2Form.get('exchangees').controls; let i = index;">
           
-            <div class="form-row align-items-center" [formGroupName]="i">
+            <div class="form-row align-items-top" [formGroupName]="i">
               <div class="col-6">
-                <label class="sr-only" for="ExchangeeName1">Name</label>
-                
-                <input type="text" class="form-control mb-2" placeholder="Exchangee's Name" formControlName="name">
-              
+                <input [class.is-invalid]="getExchangees().controls[i].get('name').invalid && getExchangees().controls[i].get('name').touched" name="name" type="text" class="form-control mb-2" placeholder="Exchangee's Name" formControlName="name">
+                <small *ngIf="getExchangees().controls[i].get('name').invalid && getExchangees().controls[i].get('name').touched" class="text-warning">*required</small>
               </div>
               <div class="col-6">
-                <input type="email" class="form-control mb-2" placeholder="Email" formControlName="email">
+                <input type="email" [class.is-invalid]="getExchangees().controls[i].get('email').invalid && getExchangees().controls[i].get('email').touched" class="form-control mb-2" placeholder="Email" formControlName="email">
+                <small *ngIf="getExchangees().controls[i].get('email').invalid && getExchangees().controls[i].get('email').touched" class="text-warning">*required and must be formatted correctly</small>
               </div>
+              {{ (getExchangees().controls[i].get('email').Validators) | json }}
             </div>
           </div>
-          <div class="form-group">
-            <button type="button" class="btn-secondary btn-sm m-2" (click)="addNames()">Add Names</button>
-          </div>
+          
+          <button type="button" class="btn-secondary btn-sm my-3" (click)="addNames()">Add Names</button>
+          
         </div>
         <div class="form-group">
-          <button type="submit" class="btn btn-success">Submit</button>
-          <button type="button" class="btn btn-secondary ml-2" (click)="back()">back</button>
+          <button type="button" class="btn btn-secondary ml-2" (click)="back()">Back</button>
+          <button type="submit" [disabled]="step2Form.invalid" class="btn btn-success">Next</button>
         </div>
       </form>
     </div>
