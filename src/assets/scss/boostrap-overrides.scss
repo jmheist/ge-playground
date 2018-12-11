@@ -7,13 +7,17 @@ $icon-font-path: '../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 // base colors
 $bg-purple: #3F3E52;
 
-$linkColor: rgba(255, 255, 255, 0.85);
-$linkActiveColor: white;
-$linkVisitedColor: rgba(255, 255, 255, 0.85);
+$linkColor: #ff7481;
+$linkActiveColor:#D14B64;
+$linkVisitedColor: #ff7481;
 
 // theme colors
 $theme-colors: (
   primary: #D14B64,
+  secondary: #EEBB95,
+  success: #FDBE61,
+  warning: #ff7481,
+  danger: #ff7481,
 );
 
 // variable overrides

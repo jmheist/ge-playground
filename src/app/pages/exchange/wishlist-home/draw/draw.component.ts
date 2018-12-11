@@ -48,9 +48,22 @@ export class DrawComponent implements OnInit {
   ngOnInit() {
   }
 
+  updateQueryStringParameter(uri, key, value) {
+    var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+    if (uri.match(re)) {
+      return uri.replace(re, '$1' + key + "=" + value + '$2');
+    }
+    else {
+      return uri + separator + key + "=" + value;
+    }
+  }
+
   openItemUrl(item) {
-    console.log(item);
     if (item.itemUrl) {
+      if (item.itemUrl.match(/https?:\/\/(?=(?:....)?amazon|smile)(www|smile)\S+com(((?:\/(?:dp|gp)\/([A-Z0-9]+))?\S*[?&]?(?:tag=))?\S*?)(?:#)?(\w*?-\w{2})?(\S*)(#?\S*)+/g)) {
+        item.itemUrl = this.updateQueryStringParameter(item.itemUrl, 'tag', 'jmheist-20');
+      }
       window.open(item.itemUrl,'_blank');
     } else {
       const url = "https://www.amazon.com/s/?field-keywords="+item.itemName.split(" ").join("+")+"&tag=jmheist-20"

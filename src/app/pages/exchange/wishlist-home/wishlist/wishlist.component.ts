@@ -4,7 +4,7 @@ import { User } from 'src/app/models/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DbServiceService } from 'src/app/services/db-service.service';
 import { UserService } from 'src/app/services/user.service';
-import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-wishlist',
@@ -57,9 +57,10 @@ export class WishlistComponent implements OnInit {
     });
 
     createItemFields(itemName = "", itemUrl = "", itemUid = ""): FormGroup {
+        const reg = "";
         return this.fb.group({
             itemName: [itemName],
-            itemUrl: [itemUrl],
+            itemUrl: [itemUrl, Validators.pattern(/^(ftp|http|https):\/\/[^ "]+$/)],
             itemUid: [itemUid]
         })
     }
@@ -69,6 +70,7 @@ export class WishlistComponent implements OnInit {
     }
 
     addItem(itemName = "", itemUrl = "", itemUid = "") {
+        
         this.items.push(this.createItemFields(itemName, itemUrl, itemUid));
         if (this.sub) {
             this.sub.unsubscribe();
@@ -77,12 +79,6 @@ export class WishlistComponent implements OnInit {
     }
 
     submitData() {
-        for (const item in this.items.controls) {
-            var url = this.items.controls[item].get('itemUrl').value;
-            if (url && url.startsWith('http') && url.indexOf('amazon') > -1 && url.indexOf('jmheist-20') == -1) {
-                this.items.controls[item].get('itemUrl').setValue(url + '&tag=jmheist-20');
-            }
-        }
         this.db.setWishList(this.exchangeId, this.currentUser.uid, this.wishlistForm.value.items);
         this.setSavedMsg('Your wishlist has been saved!');
         this.isDirty = false;

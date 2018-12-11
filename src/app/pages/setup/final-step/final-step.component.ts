@@ -10,6 +10,8 @@ import { FormBuilder, FormArray, FormGroup, Validator } from '@angular/forms';
 })
 export class FinalStepComponent implements OnInit {
 
+  private sent: boolean;
+
   constructor(
     private _setupService: SetupService,
     private router: Router,
@@ -19,7 +21,10 @@ export class FinalStepComponent implements OnInit {
   public formData = this._setupService.getData();
 
   ngOnInit() {
-    
+    if (!this.sent) {
+      this.send();
+      this.sent = true;
+    }
   }
 
   send() {

@@ -17,6 +17,7 @@ export class ExchangeViewComponent implements OnInit {
   public people: Observable<any>;
   public currentUser: User;
   public isAdmin: boolean;
+  public participant: boolean;
   private exchangeId: string;
   private curentUserId: string;
 
@@ -26,6 +27,10 @@ export class ExchangeViewComponent implements OnInit {
     private db: DbServiceService,
     private userSrv: UserService,
   ) {
+    
+  }
+
+  async ngOnInit() {
     this.route.parent.params.subscribe(async params => {
       this.exchangeId = params['exchangeId'];
       this.userSrv.setActiveUserId(params['curentUserId']);
@@ -36,19 +41,19 @@ export class ExchangeViewComponent implements OnInit {
         if (user) {
           this.currentUser = await user;
           this.isAdmin = (this.currentUser.isAdmin == 'true') || false;
+          this.participant = true;
         } else {
           this.exchange.subscribe(async exchange => {
             if (!exchange.includeAdmin && this.curentUserId === exchange.adminUid) {
+              this.currentUser = {name: exchange.adminName}
               this.isAdmin = true;
+              this.participant = false;
             }
           })
         }
       });
 
     });
-  }
-
-  async ngOnInit() {
   }
 
   async loadExchange() {

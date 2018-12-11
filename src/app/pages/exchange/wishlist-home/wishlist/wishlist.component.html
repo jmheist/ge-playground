@@ -1,9 +1,12 @@
 <div class="row pb-4">
-    <div class="col-sm-12">
+    <div class="col col-lg-5">
         <h2>Wishlist for {{ currentUser?.name }}</h2>
         <p>
             <a [class.disabled]="isDirty" [routerLink]="['/exchange', exchangeId, currentUserUid]">&laquo; Go back to exchange.  </a><span *ngIf="savedMsg" class="text-success font-weight-bold">{{ savedMsg }}</span>
         </p>
+    </div>
+    <div class="col col-lg-7 text-right align-self-end">
+        <p><small>Hint: You can add links to items from amazon and other sites!</small></p>
     </div>
 </div>
 <!-- <div class="row">
@@ -24,37 +27,39 @@
             <div formArrayName="items" *ngFor="let item of wishlistForm.get('items').controls; let i = index; last as isLast;"
                 class="mb-3 pb-3 border-bottom">
                 <div class="" [formGroupName]="i">
-                    <div class="row">
-                        <label for="itemName" class="col-sm-2 col-form-label">Name</label>
+                    <div class="row pb-1">
+                        <label for="itemName" class="col-sm-2 col-form-label">Wishlist Item</label>
                         <div class="col-sm-10 btn-group">
                             <input type="text" class="form-control" name="itemName" formControlName="itemName"
                                 placeholder="Enter your gift ideas here">
                             <button type="button" [class.d-none]="wishlistForm.get('items').controls[i].get('itemName').pristine && wishlistForm.get('items').controls[i].get('itemName').value == '' && isLast"
-                                class="close m-1" aria-label="Close btn-danger" (click)="remove(i)">
-                                <span aria-hidden="true">&times;</span>
+                                class="close mx-1" aria-label="Close" (click)="remove(i)">
+                                <span class="text-primary" aria-hidden="true">&times;</span>
                             </button>
                         </div>
                     </div>
                     <div class="row">
-                        <label for="itemUrl" class="col-sm-2 col-form-label">Link</label>
+                        <label for="itemUrl" class="col-sm-2 col-form-label">Item Link</label>
                         <div class="col-sm-10">
-                            <input class="form-control" type="text" formControlName="itemUrl" name="itemUrl">
+                            <input [class.is-invalid]="wishlistForm.get('items').controls[i].get('itemUrl').invalid" class="form-control" type="text" formControlName="itemUrl" name="itemUrl" placeholder="Optionally add a link to the item">
+                            <small class="text-warning" *ngIf="wishlistForm.get('items').controls[i].get('itemUrl').invalid">*url is not in correct format. </small> 
+                            <!-- && wishlistForm.get('items').controls[i].get('itemUrl').value.length > 0 -->
                         </div>
                     </div>
                     <input class="form-control" type="hidden" formControlName="itemUid">
                 </div>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                <button type="submit" class="btn btn-primary btn-sm" [disabled]="wishlistForm.invalid">Submit</button>
                 <button type="button" class="btn-secondary btn-sm ml-2" (click)="addItem()">Add another Gift Idea</button>
             </div>
         </form>
     </div>
     <div class="col-sm-4">
-        <h3>Hints</h3>
+        <!-- <h3>Hints</h3>
         <ul>
             <li>You can add links to gift ideas from sites like amazon!</li>
-        </ul>
+        </ul> -->
     </div>
 </div>
 <div class="row">

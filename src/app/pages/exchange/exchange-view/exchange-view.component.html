@@ -6,8 +6,8 @@
 </div>
 <div class="row mt-3">
   <div class="col-sm-6">
-    <h3>{{ currentUser?.name.capitalize() }}<span *ngIf="isAdmin"> (Admin)</span></h3>
-    <ul>
+    <h3>{{ currentUser?.name.capitalize() }}<span *ngIf="isAdmin"> (Admin) </span></h3>
+    <ul *ngIf="participant">
       <li *ngIf="currentUser">
         <a [routerLink]="['/exchange', exchangeId, (currentUser)?.uid, 'wishlist', 'edit']">
           {{ !currentUser?.wishlistCreated ? "Create your wishlist" : "Update your wish list" }}

@@ -1,39 +1,33 @@
 // using the scss method here to include boostrap and overrides
-
 @import 'src/assets/scss/boostrap-overrides.scss';
 @import '../node_modules/bootstrap/scss/bootstrap';
-
 // overrides
-
 /* You can add global styles to this file, and also import other style files */
 
 // Global Settings
-@media only screen and (min-width: 1200px) { 
-    .container {
-        max-width: 1600px; 
-    }
-}
-
 body {
     background-color: $bg-purple;
     color: white;
 }
 
-input[type=radio],input[type=checkbox] {
+input[type=radio],
+input[type=checkbox] {
     width: 20px;
     height: 20px;
 }
 
-main a {
-    color: $linkColor;
-    &:visited {
-        color: $linkVisitedColor;
-    }
-    &:active {
-        color: $linkActiveColor;
-    }
-    &:hover {
-        color: $linkActiveColor;
+main {
+    a {
+        color: $linkColor;
+        &:visited {
+            color: $linkVisitedColor;
+        }
+        &:active {
+            color: $linkActiveColor;
+        }
+        &:hover {
+            color: $linkActiveColor;
+        }
     }
 }
 
@@ -43,5 +37,38 @@ main a {
     #logo {
         min-width: 350px;
         max-width: 500px;
-        }
+    }
 }
+
+// form elements
+.form-control {
+    color: map_get($theme-colors, 'primary');
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0 20px;
+    font-size: 16px;
+    border: none; // -color: map_get($theme-colors, 'secondary');
+    &.is-invalid {
+        outline: 2px  map_get($theme-colors, 'warning') solid;
+    }
+}
+
+button {
+    &.close {
+        opacity: 1;
+        font-size: 2rem;
+        text-shadow: none;
+        font-weight: 800;
+    }
+}
+
+// media size specific styles
+@media only screen and (min-width: 1200px) {
+    #home {
+        &.container {
+            max-width: 1600px;
+        }
+    }
+}
+
+// pages

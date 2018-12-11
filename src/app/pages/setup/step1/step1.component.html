@@ -17,17 +17,21 @@
     <div class="col-sm-8">
       <form #setup1form="ngForm" novalidate (ngSubmit)="submitData()">
         <div class="form-group">
-          <h4><label for="exhangeName">Name Your Gift Exchange</label></h4>
-          <input type="text" class="form-control form-control-lg" id="exhangeName" name="exhangeName" placeholder="Family Gift Exchange" [(ngModel)]="formData.name">
+          <h4><label for="exchangeName">Name Your Gift Exchange</label></h4>
+          <input required minlength="4" [class.is-invalid]="name.invalid && name.dirty" #name='ngModel' type="text" class="form-control form-control-lg" id="exchangeName" name="exchangeName" placeholder="Exchange Name" [(ngModel)]="formData.name">
+          <small class="text-warning" *ngIf="name.invalid && name.dirty">*Exchange Must have a name greater than 3 characters</small>
         </div>
-        <div class="form-group">
-          <h4>Date of Exchange</h4>
+        <h4 for="datePicker">Date of Exchange</h4>
+        <div class="form-inline form-group">
           <!-- <ngb-datepicker #d></ngb-datepicker> -->
-          <input type="text" ngbDatepicker #d="ngbDatepicker" name="datePicker" [(ngModel)]="formData.date" /><button (click)="d.toggle()" novalidate type="button">Toggle</button>
+          <input required placeholder="year-m-d" type="text" #date='ngModel' class="form-control" ngbDatepicker #d="ngbDatepicker" name="datePicker" [(ngModel)]="formData.date" /><button class="btn btn-secondary btn-sm mx-2" (click)="d.toggle()" novalidate type="button">Date Picker</button>
+          <div class="clearfix"></div>
+          
         </div>
         <div class="form-group">
-          <h4><label for="exchangeBudget">Budget Max Per Gift?</label></h4>
-          <input type="text" class="form-control form-control-lg" id="exchangeBudget" name="exchangeBudget" placeholder="$20" [(ngModel)]="formData.budget">
+          <h4><label for="exchangeBudget">Max Budget Per Gift?</label></h4>
+          <input #budget='ngModel' type="text" pattern="^[$]?[0-9,]+(\.[0-9]{1,2})?$" [class.is-invalid]="budget.invalid && budget.dirty" required class="form-control form-control-lg" id="exchangeBudget" name="exchangeBudget" placeholder="$20" [(ngModel)]="formData.budget || $20">
+          <small class="col-12 mt-2 pl-0 text-warning d-block" *ngIf="budget.invalid && budget.dirty">*Please use only numbers, $'s, commans and periods</small>
         </div>
         <!-- <h4>Each person draws # names?</h4>
         <div class="form-check form-check-inline">
@@ -47,12 +51,12 @@
           <input type="checkbox" class="form-check-input form-control-lg" id="includeMeCheck" name="includeMeCheck" [(ngModel)]="formData.includeAdmin">
           <label class="form-check-label" for="exampleCheck1">Include My Name in Drawing</label>
         </div>
-        <div class="form-group form-check">
+        <!-- <div class="form-group form-check">
           <input type="checkbox" class="form-check-input form-control-lg" id="notSecretCheck" name="notSecretCheck" [(ngModel)]="formData.visibleNames">
           <label class="form-check-label" for="exampleCheck2">Show me who drew who</label>
-        </div>
+        </div> -->
         <div class="form-group">
-          <button type="submit" class="btn btn-success">Submit</button>
+          <button [disabled]="setup1form.form.invalid" type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
     </div>
