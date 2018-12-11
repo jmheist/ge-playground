@@ -15,22 +15,22 @@ export class SetupService {
 		private db: DbServiceService,
 	) {
 		this.setupData = {
-			"adminName": "Jacob Heisterkamp",
-			"adminEmail": "jmheist@gmail.com",
-			"exchangees": [
-				{ "name": "stacey", "email": "stacey@email.com" },
-				{ "name": "dave", "email": "dave@email.com", "excluded": "deb" },
-				{ "name": "deb", "email": "deb@email.com", "excluded": "dave" },
-				{ "name": "grant", "email": "grant@email.com", "excluded": "kristin" },
-				{ "name": "kristin", "email": "kristin@email.com", "excluded": "grant" },
-			],
-			"name": "Best Heisterkamp Family Exchange",
-			"date": { "year": 2018, "month": 11, "day": 15 },
-			"budget": "20",
-			"nameCount": "1",
-			"includeAdmin": true,
-			"adminAdded": true,
-			"welcomeMessage": "Hello Everyone!",
+			// "adminName": "Jacob Heisterkamp",
+			// "adminEmail": "jmheist@gmail.com",
+			// "exchangees": [
+			// 	{ "name": "stacey", "email": "stacey@email.com" },
+			// 	{ "name": "dave", "email": "dave@email.com", "excluded": "deb" },
+			// 	{ "name": "deb", "email": "deb@email.com", "excluded": "dave" },
+			// 	{ "name": "grant", "email": "grant@email.com", "excluded": "kristin" },
+			// 	{ "name": "kristin", "email": "kristin@email.com", "excluded": "grant" },
+			// ],
+			// "name": "Best Heisterkamp Family Exchange",
+			// "date": { "year": 2018, "month": 11, "day": 15 },
+			// "budget": "20",
+			// "nameCount": "1",
+			// "includeAdmin": true,
+			// "adminAdded": true,
+			// "welcomeMessage": "Hello Everyone!",
 		};
 	}
 
