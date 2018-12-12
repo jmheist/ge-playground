@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DbServiceService } from '../services/db-service.service';
 import { User } from '../models/user.model';
-import { database } from 'firebase';
-import { promise } from 'protractor';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,22 +13,22 @@ export class SetupService {
 		private db: DbServiceService,
 	) {
 		this.setupData = {
-			// "adminName": "Jacob Heisterkamp",
-			// "adminEmail": "jmheist@gmail.com",
-			// "exchangees": [
-			// 	{ "name": "stacey", "email": "stacey@email.com" },
-			// 	{ "name": "dave", "email": "dave@email.com", "excluded": "deb" },
-			// 	{ "name": "deb", "email": "deb@email.com", "excluded": "dave" },
-			// 	{ "name": "grant", "email": "grant@email.com", "excluded": "kristin" },
-			// 	{ "name": "kristin", "email": "kristin@email.com", "excluded": "grant" },
-			// ],
-			// "name": "Best Heisterkamp Family Exchange",
-			// "date": { "year": 2018, "month": 11, "day": 15 },
-			// "budget": "20",
-			// "nameCount": "1",
-			// "includeAdmin": true,
-			// "adminAdded": true,
-			// "welcomeMessage": "Hello Everyone!",
+			"adminName": "Jacob Heisterkamp",
+			"adminEmail": "jmheist@gmail.com",
+			"exchangees": [
+				{ "name": "stacey", "email": "stacey@email.com" },
+				{ "name": "dave", "email": "dave@email.com", "excluded": "deb" },
+				{ "name": "deb", "email": "deb@email.com", "excluded": "dave" },
+				{ "name": "grant", "email": "grant@email.com", "excluded": "kristin" },
+				{ "name": "kristin", "email": "kristin@email.com", "excluded": "grant" },
+			],
+			"name": "Best Heisterkamp Family Exchange",
+			"date": { "year": 2018, "month": 11, "day": 15 },
+			"budget": "20",
+			"nameCount": "1",
+			"includeAdmin": false,
+			"adminAdded": false,
+			"welcomeMessage": "Hello Everyone!",
 		};
 	}
 
@@ -47,6 +45,7 @@ export class SetupService {
 		await this.drawNames();
 		await this.handleUsers();
 		await this.handleExchange();
+		await this.updateUsersWithExchangeId();
 		this.finish();
 	}
 
@@ -54,6 +53,22 @@ export class SetupService {
 		// console.log('im done');
 	}
 
+	async updateUsersWithExchangeId() {
+		console.log('updateUsersWithExchangeId(): Starting');
+		let emails = [];
+		if (!this.setupData.includeAdmin) {
+			emails.push(this.setupData.adminEmail);
+		}
+		for (const ex in this.setupData.exchangees) {
+			emails.push(this.setupData.exchangees[ex].email);
+		}
+		for (const email of emails) {
+			console.log(email, this.setupData.uid)
+			await this.db.addExchangeIdToUser(email, this.setupData.uid)
+		}
+		console.log('updateUsersWithExchangeId(): Finished');
+	}
+	
 	async addAdmin() {
 		console.log('addAdmin(): adding addmin');
 		var user: User = {
@@ -68,10 +83,10 @@ export class SetupService {
 
 	async handleExchange() {
 		console.log('handleExchange(): Starting');
-		const exId = await this.db.addExchange(this.setupData);
+		this.setupData.uid = await this.db.addExchange(this.setupData);
 		const properties = Object.keys(this.setupData.exchangees);
 		for (const prop of properties) {
-			await this.db.addExchangeesToExchange(exId, this.setupData.exchangees[prop]);
+			await this.db.addExchangeesToExchange(this.setupData.uid, this.setupData.exchangees[prop]);
 		}
 		console.log('handleExchange(): Completed processing');
 	}

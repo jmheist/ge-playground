@@ -51,10 +51,10 @@
           <input type="checkbox" class="form-check-input form-control-lg" id="includeMeCheck" name="includeMeCheck" [(ngModel)]="formData.includeAdmin">
           <label class="form-check-label" for="exampleCheck1">Include My Name in Drawing</label>
         </div>
-        <!-- <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input form-control-lg" id="notSecretCheck" name="notSecretCheck" [(ngModel)]="formData.visibleNames">
-          <label class="form-check-label" for="exampleCheck2">Show me who drew who</label>
-        </div> -->
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input form-control-lg" id="showAdminNames" name="showAdminNames" [(ngModel)]="formData.showAdminNames">
+          <label class="form-check-label" for="showAdminNames">Show me who drew who</label>
+        </div>
         <div class="form-group">
           <button [disabled]="setup1form.form.invalid" type="submit" class="btn btn-primary">Submit</button>
         </div>

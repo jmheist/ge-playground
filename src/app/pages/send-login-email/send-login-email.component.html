@@ -1,3 +1,23 @@
-<p>
-  send-login-email works!
-</p>
+<div class="container my-4">
+  <div class="row">
+    <div class="col col-lg-10 justify-content-md-center">
+      <h1>Retreieve Your Email</h1>
+      <p>Enter the email address you used for the exchange and we will send you a new login link.</p>
+      <p *ngIf="savedMsg" [class.text-success]="savedMsgPass" [class.text-warning]="!savedMsgPass" class="font-weight-bold">{{
+        savedMsg }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col col-lg-8 justify-content-md-center">
+      <form class="col-6" [formGroup]="emailForm" novalidate (ngSubmit)="submitData()">
+        <div class="form-group">
+          <input type="email" [class.is-invalid]="emailForm.get('email').invalid && emailForm.get('email').touched"
+            class="form-control" placeholder="Your Email Address" formControlName="email">
+          <small class="text-warning" *ngIf="emailForm.get('email').invalid && emailForm.get('email').touched">*required
+            and must be formatted correctly</small>
+        </div>
+        <button type="submit" [disabled]="emailForm.invalid && emailForm.touched" class="btn btn-success">Send Email</button>
+      </form>
+    </div>
+  </div>
+</div>

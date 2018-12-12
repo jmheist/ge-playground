@@ -17,6 +17,8 @@ export class ExchangeViewComponent implements OnInit {
   public people: Observable<any>;
   public currentUser: User;
   public isAdmin: boolean;
+  public showAdminNames: boolean;
+  public includeAdmin: boolean;
   public participant: boolean;
   private exchangeId: string;
   private curentUserId: string;
@@ -42,9 +44,15 @@ export class ExchangeViewComponent implements OnInit {
           this.currentUser = await user;
           this.isAdmin = (this.currentUser.isAdmin == 'true') || false;
           this.participant = true;
+          this.exchange.subscribe(async exchange => {
+            this.showAdminNames = exchange.showAdminNames;
+            this.includeAdmin = exchange.includeAdmin;
+          });
         } else {
           this.exchange.subscribe(async exchange => {
             if (!exchange.includeAdmin && this.curentUserId === exchange.adminUid) {
+              this.showAdminNames = exchange.showAdminNames;
+              this.includeAdmin = exchange.includeAdmin;
               this.currentUser = {name: exchange.adminName}
               this.isAdmin = true;
               this.participant = false;
