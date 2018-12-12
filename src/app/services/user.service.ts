@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
+  public emailToUpdate: string;
   private activeUserId: string;
 
   constructor(

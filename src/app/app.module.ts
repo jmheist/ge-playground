@@ -25,10 +25,10 @@ import { ListExchangesComponent } from './pages/list-exchanges/list-exchanges.co
 import { DbServiceService } from './services/db-service.service';
 import { SetupService } from './services/setup.service';
 import { SetupComponent } from './pages/setup/setup.component';
-import { AdminComponent } from './pages/admin/admin.component';
-import { ExchangeAdminComponent } from './pages/admin/exchange-admin/exchange-admin.component';
+// import { AdminComponent } from './pages/admin/admin.component';
+// import { ExchangeAdminComponent } from './pages/admin/exchange-admin/exchange-admin.component';
 import { WishlistComponent } from './pages/exchange/wishlist-home/wishlist/wishlist.component';
-import { UpdateEmailComponent } from './pages/admin/update-email/update-email.component';
+// import { UpdateEmailComponent } from './pages/admin/update-email/update-email.component';
 import { ExchangeComponent } from './pages/exchange/exchange.component';
 import { DrawComponent } from './pages/exchange/wishlist-home/draw/draw.component';
 import { GroupComponent } from './pages/exchange/group/group.component';
@@ -37,6 +37,7 @@ import { WishlistHomeComponent } from './pages/exchange/wishlist-home/wishlist-h
 import { FirestoreService } from './services/firestore.service';
 import { ExchangeViewComponent } from './pages/exchange/exchange-view/exchange-view.component';
 import { SendLoginEmailComponent } from './pages/send-login-email/send-login-email.component';
+import { UpdateEmailComponent } from './pages/exchange/exchange-view/update-email/update-email.component';
 
 @NgModule({
   declarations: [
@@ -51,10 +52,10 @@ import { SendLoginEmailComponent } from './pages/send-login-email/send-login-ema
     FinalStepComponent,
     ListExchangesComponent,
     SetupComponent,
-    AdminComponent,
-    ExchangeAdminComponent,
+    // AdminComponent,
+    // ExchangeAdminComponent,
     WishlistComponent,
-    UpdateEmailComponent,
+    // UpdateEmailComponent,
     ExchangeComponent,
     DrawComponent,
     GroupComponent,
@@ -62,6 +63,7 @@ import { SendLoginEmailComponent } from './pages/send-login-email/send-login-ema
     WishlistHomeComponent,
     ExchangeViewComponent,
     SendLoginEmailComponent,
+    UpdateEmailComponent
   ],
   imports: [
     BrowserModule,

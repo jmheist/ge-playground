@@ -53,7 +53,7 @@ export class ExchangeViewComponent implements OnInit {
             if (!exchange.includeAdmin && this.curentUserId === exchange.adminUid) {
               this.showAdminNames = exchange.showAdminNames;
               this.includeAdmin = exchange.includeAdmin;
-              this.currentUser = {name: exchange.adminName}
+              this.currentUser = {name: exchange.adminName, uid: exchange.adminUid};
               this.isAdmin = true;
               this.participant = false;
             }

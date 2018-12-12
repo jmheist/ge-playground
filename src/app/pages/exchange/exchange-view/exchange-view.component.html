@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-4">{{ ex.email }} <small *ngIf="isAdmin">(edit)</small></div>
+          <div class="col-sm-4">{{ ex.email }} <small *ngIf="isAdmin">(<a [routerLink]="['/exchange', exchangeId, (currentUser)?.uid,'update-email', ex.uid]">edit</a>)</small></div>
           <div class="col-sm-4 offset-md-4" *ngIf="isAdmin">
             Viewed Their Name's Wishlist:&nbsp;
             <span *ngIf="ex.viewedDrawnWishlist" class='text-success'>Yes</span>
