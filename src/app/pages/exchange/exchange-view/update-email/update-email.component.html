@@ -1,9 +1,13 @@
 <div class="row">
-  <div class="col col-lg-10 justify-content-md-center">
-    <h1>Retreieve Your Email</h1>
-    <p>Enter the email address you used for the exchange and we will send you a new login link.</p>
-    <p *ngIf="savedMsg" [class.text-success]="savedMsgPass" [class.text-warning]="!savedMsgPass" class="font-weight-bold">{{
-      savedMsg }}</p>
+  <div class="col col-lg-12 justify-content-md-center">
+    <h1>Update {{ (userToUpdate)?.name }}'s Email Address</h1>
+    <p><a [routerLink]="['/exchange', exchangeId, curentUserId]">&laquo; Go back to
+        exchange. </a></p>
+    <p *ngIf="savedMsg" [class.text-success]="savedMsgPass" [class.text-warning]="!savedMsgPass" class="font-weight-bold">
+      {{ savedMsg }}
+    </p>
+    <h5>Current Email Adddress: {{ (userToUpdate)?.email }}</h5>
+    <p>Just enter the new email address below and click save.</p>
   </div>
 </div>
 <div class="row">
@@ -15,7 +19,8 @@
         <small class="text-warning" *ngIf="emailForm.get('email').invalid && emailForm.get('email').touched">*required
           and must be formatted correctly</small>
       </div>
-      <button type="submit" [disabled]="emailForm.invalid && emailForm.touched" class="btn btn-success">Send Email</button>
+      <button type="submit" [disabled]="emailForm.invalid && emailForm.touched" class="btn btn-success">Save New Email
+        Address</button>
     </form>
   </div>
 </div>

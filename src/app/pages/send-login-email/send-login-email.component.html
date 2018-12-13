@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col col-lg-10 justify-content-md-center">
       <h1>Retreieve Your Email</h1>
+      <p><a [routerLink]="['/']">&laquo; Go back</a></p>
       <p>Enter the email address you used for the exchange and we will send you a new login link.</p>
       <p *ngIf="savedMsg" [class.text-success]="savedMsgPass" [class.text-warning]="!savedMsgPass" class="font-weight-bold">{{
         savedMsg }}</p>

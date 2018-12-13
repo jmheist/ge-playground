@@ -17,7 +17,10 @@ input[type=checkbox] {
 }
 
 main {
-    a {
+    a, [ng-click],
+    [data-ng-click],
+    [x-ng-click], a:not([href]):not([tabindex]) {
+        cursor: pointer;
         color: $linkColor;
         &:visited {
             color: $linkVisitedColor;

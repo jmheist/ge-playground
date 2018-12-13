@@ -38,8 +38,8 @@ export class WishlistComponent implements OnInit {
         });
         var exSub = this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(user => {
             this.currentUser = user;
-            this.currentUserUid = this.currentUser.uid;
-            this.wishlist = this.db.getWishlist(this.exchangeId, this.currentUser.uid);
+            this.currentUserUid = this.currentUser.id;
+            this.wishlist = this.db.getWishlist(this.exchangeId, this.currentUser.id);
             var sub = this.wishlist.subscribe(items => {
                 items.forEach(item => {
                     this.addItem(item.itemName, item.itemUrl, item.itemUid)
@@ -79,7 +79,7 @@ export class WishlistComponent implements OnInit {
     }
 
     submitData() {
-        this.db.setWishList(this.exchangeId, this.currentUser.uid, this.wishlistForm.value.items);
+        this.db.setWishList(this.exchangeId, this.currentUser.id, this.wishlistForm.value.items);
         this.setSavedMsg('Your wishlist has been saved!');
         this.isDirty = false;
         if (!this.currentUser.wishlistCreated) {
@@ -102,7 +102,7 @@ export class WishlistComponent implements OnInit {
         const itemUid = this.items.controls[i].get('itemUid').value;
         // remove from db
         if (itemUid && itemUid != '') {
-            this.db.removeWishlistItem(this.exchangeId, this.currentUser.uid, itemUid);
+            this.db.removeWishlistItem(this.exchangeId, this.currentUser.id, itemUid);
         }
         // remove from form
         this.items.removeAt(i);

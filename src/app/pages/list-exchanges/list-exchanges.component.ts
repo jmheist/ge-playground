@@ -30,7 +30,7 @@ export class ListExchangesComponent implements OnInit {
   getUser(id) {
     this._dbservice.getUser(id).subscribe(user => {
       this.user = user as User;
-      console.log(this.user.uid);
+      console.log(this.user.id);
     });
   }
 }

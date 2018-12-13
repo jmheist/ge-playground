@@ -29,6 +29,11 @@ const SENDGRID_API_KEY = functions.config().sendgrid.key;
 sgMail.setApiKey(SENDGRID_API_KEY);
 sgMail.setSubstitutionWrappers("{{", "}}");
 
+function createButton(text, link) {
+  var html = `<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding-top: 25px;" class="padding"><table border="0" cellspacing="0" cellpadding="0" class="mobile-button-container"><tr><td align="center" style="border-radius: 3px;" bgcolor="#256F9C"><a href="${link}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid #256F9C; display: inline-block;" class="mobile-button">${text}</a></td></tr></table></td></tr></table>`;
+  return html;
+}
+
 exports.newExchangeCreated = functions.firestore
   .document("exchanges/{exchangeId}")
   .onCreate(function (snap, context) {
@@ -41,7 +46,10 @@ exports.newExchangeCreated = functions.firestore
           name: exchange.name
         }],
         dynamic_template_data: {
-          exchangeeName: exchange.name
+          emailSubject: 'Verify your email address',
+          emailHeadline: 'Click to Verify',
+          emailBody: '<p>Your exchange is saved and ready to go, click here to verify and get your exchange started!<p>',
+          emailButtonCode: createButton('Verify Now','http://localhost:4200/')
         }
       }],
       from: {
@@ -83,7 +91,10 @@ exports.adminVerifiedEmail = functions.firestore
                   name: ex.name
                 }],
                 dynamic_template_data: {
-                  exchangeeName: ex.name
+                  emailSubject: 'Your Gift Exchange Has Started',
+                  emailHeadline: 'View the name you drew!',
+                  emailBody: '<p>Your gift exchange is officially started and names have been drawn! Click the link below to login to the gift exchange and see your drawn name, and create a wishlist!<p>',
+                  emailButtonCode: createButton('View Gift Exchange','http://localhost:4200/')
                 }
               }],
               from: {
@@ -130,9 +141,10 @@ exports.wishListSet = functions.firestore
               name: ex.name
             }],
             dynamic_template_data: {
-              exchangeeName: `${ex.name}, ${
-                  exchangee.name
-                } has created their wishlist. Go check it out.`
+              emailSubject: `See what's on ${ex.name}'s wishlist!`,
+              emailHeadline: `${ex.name} has set their wishlist`,
+              emailBody: `<p${ex.name} has decided on a few good gift suggestions for you! Check them out now and get a head start on your shopping.<p>`,
+              emailButtonCode: createButton(`See ${ex.name}'s Wishlist`,`http://localhost:4200/`)
             }
           }],
           from: {
@@ -161,8 +173,7 @@ exports.userRequestedExchangeLinks = functions.firestore
     const userAfter = change.after.data();
     const ref = change.after.ref;
     const params = context.params;
-    const res = userBefore.requestedEmail.isEqual(userAfter.requestedEmail);
-    console.log(userBefore.requestedEmail, userAfter.requestedEmail, res);
+    const res = (userBefore.requestedEmail && userAfter.requestedEmail && userBefore.requestedEmail.isEqual(userAfter.requestedEmail));
     // console.log(exchange);
     if (
       userAfter.requestedEmail &&
@@ -177,9 +188,10 @@ exports.userRequestedExchangeLinks = functions.firestore
             name: userAfter.name
           }],
           dynamic_template_data: {
-            exchangeeName: `${
-                userAfter.name
-              } requested their exahnges: ${userAfter.exchanges.join(", ")}`
+            emailSubject: 'You requested a new link to your exchange',
+            emailHeadline: 'Lost your first email?',
+            emailBody: `<p>No worries, we looked up your email address and found it apart of these exchange(s):<br><br>${userAfter.exchanges.join(", ")}<p>`,
+            emailButtonCode: createButton('Verify Now','http://localhost:4200/')
           }
         }],
         from: {

@@ -14,16 +14,69 @@ import { SetupService } from "src/app/services/setup.service";
   styleUrls: ["./update-email.component.scss"]
 })
 export class UpdateEmailComponent implements OnInit {
-  public emailForm: FormGroup;
   public savedMsg: string;
   public savedMsgPass: boolean;
+  private exchangeId: string;
+  private curentUserId: string;
+  private uidToUpdate: string;
+  private userToUpdate: any;
+  public emailForm: FormGroup;
+
+  public exchange: Observable<Exchange>;
+  public currentUser: User;
+  public isAdmin: boolean;
 
   constructor(
     private _setupService: SetupService,
     private router: Router,
+    private route: ActivatedRoute,
     private fb: FormBuilder,
-    private db: DbServiceService
-  ) {}
+    private db: DbServiceService,
+    private userSrv: UserService
+  ) {
+    this.route.parent.params.subscribe(async params => {
+      this.exchangeId = params["exchangeId"];
+      this.curentUserId = params["curentUserId"];
+      await this.route.params.subscribe(async params => {
+        this.uidToUpdate = params["uidToUpdate"];
+      });
+      this.exchange = await this.db.getExchange(this.exchangeId);
+      await this.db
+        .getExchangee(this.exchangeId, this.curentUserId)
+        .subscribe(async user => {
+          if (user) {
+            this.currentUser = user;
+            this.isAdmin = this.currentUser.isAdmin || false;
+            this.exchange.subscribe(async exchange => {
+              // this.showAdminNames = exchange.showAdminNames ? "Yes" : "No";
+              // this.includeAdmin = exchange.includeAdmin;
+            });
+          } else {
+            this.exchange.subscribe(async exchange => {
+              if (
+                !exchange.includeAdmin &&
+                this.curentUserId === exchange.adminUid
+              ) {
+                this.currentUser = {
+                  name: exchange.adminName,
+                  uid: exchange.adminUid
+                };
+                this.isAdmin = true;
+              }
+            });
+          }
+          if (this.uidToUpdate != "self") {
+            await this.db
+              .getExchangee(this.exchangeId, this.uidToUpdate)
+              .subscribe(async user => {
+                this.userToUpdate = user;
+              });
+          } else {
+            this.userToUpdate = this.currentUser;
+          }
+        });
+    });
+  }
 
   ngOnInit() {
     this.emailForm = this.fb.group({
@@ -32,20 +85,47 @@ export class UpdateEmailComponent implements OnInit {
   }
 
   submitData() {
-    const email = this.emailForm.get('email').value;;
-    console.log(email);
-    this.db.getUserOnce(email).then(user => {
-      if (user) {
-        console.log(user.exchanges);
-        this.db.userRequestedEmail(email);
-        this.setSavedMsg(`An email has been sent to ${email}!`, true);
+    const newEmail = this.emailForm.get("email").value;
+
+    if (this.uidToUpdate == "self") {
+      // update your own email address
+      this.db
+        .updateExchagee(this.exchangeId, this.currentUser.id, {
+          email: newEmail
+        })
+        .then(updatedUser => {
+          this.db.addUser(this.userToUpdate, this.exchangeId).then(data => {
+            console.log("saved msg");
+            this.setSavedMsg(
+              `${this.userToUpdate.name}'s Email Address Has Been Updated.`,
+              true
+            );
+          });
+        });
+    } else if (this.uidToUpdate && this.uidToUpdate != "") {
+      // update some one elses email address
+      if (this.isAdmin) {
+        this.db
+          .updateExchagee(this.exchangeId, this.uidToUpdate, {
+            email: newEmail
+          })
+          .then(updatedUser => {
+            this.db.addUser(this.userToUpdate, this.exchangeId).then(data => {
+              console.log("saved msg");
+              this.setSavedMsg(
+                `${this.userToUpdate.name}'s Email Address Has Been Updated.`,
+                true
+              );
+            });
+          });
       } else {
-        this.setSavedMsg('Email address was not found', false);
+        console.log("you are not an admin");
       }
-    });
+      this.setSavedMsg(`There was a problem.`, false);
+    }
   }
 
-  setSavedMsg(txt = "", pass: boolean) {
+  setSavedMsg(txt, pass: boolean) {
     this.savedMsg = txt;
     this.savedMsgPass = pass;
     if (this.savedMsg && this.savedMsg != "") {
@@ -56,4 +136,3 @@ export class UpdateEmailComponent implements OnInit {
     }
   }
 }
-

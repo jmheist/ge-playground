@@ -1,10 +1,9 @@
-
 ///// https://angularfirebase.com/lessons/firestore-advanced-usage-angularfire/#4-Upsert-Update-or-Create-Method
 ///// https://angularfirebase.com/lessons/firestore-advanced-usage-angularfire/#4-Upsert-Update-or-Create-Method
 ///// https://angularfirebase.com/lessons/firestore-advanced-usage-angularfire/#4-Upsert-Update-or-Create-Method
 ///// https://angularfirebase.com/lessons/firestore-advanced-usage-angularfire/#4-Upsert-Update-or-Create-Method
 
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   AngularFirestore,
   AngularFirestoreDocument,
@@ -12,32 +11,40 @@ import {
   DocumentChangeAction,
   Action,
   DocumentSnapshotDoesNotExist,
-  DocumentSnapshotExists,
-} from '@angular/fire/firestore';
-import { Observable, from } from 'rxjs';
-import { map, tap, take, switchMap, mergeMap, expand, takeWhile } from 'rxjs/operators';
+  DocumentSnapshotExists
+} from "@angular/fire/firestore";
+import { Observable, from } from "rxjs";
+import {
+  map,
+  tap,
+  take,
+  switchMap,
+  mergeMap,
+  expand,
+  takeWhile
+} from "rxjs/operators";
 
-import * as firebase from 'firebase/app';
+import * as firebase from "firebase/app";
 
 type CollectionPredicate<T> = string | AngularFirestoreCollection<T>;
 type DocPredicate<T> = string | AngularFirestoreDocument<T>;
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class FirestoreService {
-  constructor(private afs: AngularFirestore) { }
+  constructor(private afs: AngularFirestore) {}
 
   /// **************
   /// Get a Reference
   /// **************
 
   col<T>(ref: CollectionPredicate<T>, queryFn?): AngularFirestoreCollection<T> {
-    return typeof ref === 'string' ? this.afs.collection<T>(ref, queryFn) : ref;
+    return typeof ref === "string" ? this.afs.collection<T>(ref, queryFn) : ref;
   }
 
   doc<T>(ref: DocPredicate<T>): AngularFirestoreDocument<T> {
-    return typeof ref === 'string' ? this.afs.doc<T>(ref) : ref;
+    return typeof ref === "string" ? this.afs.doc<T>(ref) : ref;
   }
 
   /// **************
@@ -48,10 +55,16 @@ export class FirestoreService {
     return this.doc(ref)
       .snapshotChanges()
       .pipe(
-        map((doc: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
-          const data = doc.payload.data();
-          return data as T;
-        }),
+        map(
+          (
+            doc: Action<
+              DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>
+            >
+          ) => {
+            const data = doc.payload.data();
+            return data as T;
+          }
+        )
       );
   }
 
@@ -59,11 +72,21 @@ export class FirestoreService {
     return this.doc(ref)
       .snapshotChanges()
       .pipe(
-        map((doc: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
-          const data = doc.payload.data();
-          data['id'] = doc.payload.id;
-          return data as T;
-        }),
+        map(
+          (
+            doc: Action<
+              DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>
+            >
+          ) => {
+            if (doc.payload.exists) {
+              const data = doc.payload.data();
+              data["id"] = doc.payload.id;
+              return data as T;
+            } else {
+              return null;
+            }
+          }
+        )
       );
   }
 
@@ -72,8 +95,10 @@ export class FirestoreService {
       .snapshotChanges()
       .pipe(
         map((docs: DocumentChangeAction<T>[]) => {
-          return docs.map((a: DocumentChangeAction<T>) => a.payload.doc.data()) as T[];
-        }),
+          return docs.map((a: DocumentChangeAction<T>) =>
+            a.payload.doc.data()
+          ) as T[];
+        })
       );
   }
 
@@ -88,7 +113,7 @@ export class FirestoreService {
             const id = a.payload.doc.id;
             return { id, ...data };
           });
-        }),
+        })
       );
   }
 
@@ -112,14 +137,14 @@ export class FirestoreService {
     return this.doc(ref).set({
       ...data,
       updatedAt: timestamp,
-      createdAt: timestamp,
+      createdAt: timestamp
     });
   }
 
   update<T>(ref: DocPredicate<T>, data: any): Promise<void> {
     return this.doc(ref).update({
       ...data,
-      updatedAt: this.timestamp,
+      updatedAt: this.timestamp
     });
   }
 
@@ -127,12 +152,15 @@ export class FirestoreService {
     return this.doc(ref).delete();
   }
 
-  add<T>(ref: CollectionPredicate<T>, data): Promise<firebase.firestore.DocumentReference> {
+  add<T>(
+    ref: CollectionPredicate<T>,
+    data
+  ): Promise<firebase.firestore.DocumentReference> {
     const timestamp = this.timestamp;
     return this.col(ref).add({
       ...data,
       updatedAt: timestamp,
-      createdAt: timestamp,
+      createdAt: timestamp
     });
   }
 
@@ -147,39 +175,54 @@ export class FirestoreService {
       .pipe(take(1))
       .toPromise();
 
-    return doc.then((snap: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
-      if (snap.payload.exists) {
-        delete data.uid;
-        return update ? this.update(ref, data) : null;
-      } else {
-        const uid = this.afs.createId();
-        data.uid = uid;
-        return this.set(ref, data)
+    return doc.then(
+      (
+        snap: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>
+      ) => {
+        return snap.payload.exists
+          ? update
+            ? this.update(ref, data)
+            : null
+          : this.set(ref, data);
       }
-      // return snap.payload.exists ? (update ? this.update(ref, data) : null) : this.set(ref, data);
-    });
+    );
   }
 
-  upsertExchangeeUser<T>(ref: DocPredicate<T>, data: any, update = true): Promise<void> {
-    const doc = this.doc(ref)
+  upsertExchangeeUser<T>(
+    ref: CollectionPredicate<any>,
+    data: any
+  ): Promise<void> {
+    const uid = data.id ? data.id : this.afs.createId();
+    const doc = this.col(ref)
+      .doc(uid)
       .snapshotChanges()
       .pipe(take(1))
       .toPromise();
 
-    return doc.then((snap: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
-      return snap.payload.exists ? this.update(ref, data) : this.set(ref, data);
-    });
+    return doc.then(
+      (
+        snap: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>
+      ) => {
+        snap.payload.exists
+          ? this.update(this.col(ref).doc(uid), data)
+          : this.set(this.col(ref).doc(uid), data);
+        return uid;
+      }
+    );
   }
 
-  upsertItem<T>(ref: CollectionPredicate<T>, data: any, update = true): Promise<void> {
-    if (!data.hasOwnProperty('itemUid')) {
+  upsertItem<T>(
+    ref: CollectionPredicate<T>,
+    data: any,
+    update = true
+  ): Promise<void> {
+    if (!data.hasOwnProperty("itemUid")) {
       const itemUid = this.afs.createId();
-      data['itemUid'] = itemUid;
-      return this.set(this.col(ref).doc(data.itemUid), data)
+      data["itemUid"] = itemUid;
+      return this.set(this.col(ref).doc(data.itemUid), data);
     } else {
       return update ? this.update(this.col(ref).doc(data.itemUid), data) : null;
     }
-
   }
 
   /// **************
@@ -192,10 +235,16 @@ export class FirestoreService {
       .snapshotChanges()
       .pipe(
         take(1),
-        tap((d: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<any>>) => {
-          const tock = new Date().getTime() - tick;
-          console.log(`Loaded Document in ${tock}ms`, d);
-        }),
+        tap(
+          (
+            d: Action<
+              DocumentSnapshotDoesNotExist | DocumentSnapshotExists<any>
+            >
+          ) => {
+            const tock = new Date().getTime() - tick;
+            console.log(`Loaded Document in ${tock}ms`, d);
+          }
+        )
       )
       .subscribe();
   }
@@ -209,7 +258,7 @@ export class FirestoreService {
         tap((c: DocumentChangeAction<any>[]) => {
           const tock = new Date().getTime() - tick;
           console.log(`Loaded Collection in ${tock}ms`, c);
-        }),
+        })
       )
       .subscribe();
   }
@@ -233,7 +282,7 @@ export class FirestoreService {
           }
         }
         return doc;
-      }),
+      })
     );
   }
 
@@ -246,8 +295,8 @@ export class FirestoreService {
     const batch = firebase.firestore().batch();
     /// add your operations here
 
-    const itemDoc = firebase.firestore().doc('items/myCoolItem');
-    const userDoc = firebase.firestore().doc('users/userId');
+    const itemDoc = firebase.firestore().doc("items/myCoolItem");
+    const userDoc = firebase.firestore().doc("users/userId");
 
     const currentTime = this.timestamp;
 
@@ -269,13 +318,15 @@ export class FirestoreService {
     // expand will call deleteBatch recursively until the collection is deleted
     return source.pipe(
       expand(val => this.deleteBatch(path, batchSize)),
-      takeWhile(val => val > 0),
+      takeWhile(val => val > 0)
     );
   }
 
   // Detetes documents as batched transaction
   private deleteBatch(path: string, batchSize: number): Observable<any> {
-    const colRef = this.afs.collection(path, ref => ref.orderBy('__name__').limit(batchSize));
+    const colRef = this.afs.collection(path, ref =>
+      ref.orderBy("__name__").limit(batchSize)
+    );
 
     return colRef.snapshotChanges().pipe(
       take(1),
@@ -287,7 +338,7 @@ export class FirestoreService {
         });
 
         return from(batch.commit()).pipe(map(() => snapshot.length));
-      }),
+      })
     );
   }
 }

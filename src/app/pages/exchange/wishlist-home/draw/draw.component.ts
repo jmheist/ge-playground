@@ -33,7 +33,7 @@ export class DrawComponent implements OnInit {
     });
     this.db.getExchangee(this.exchangeId, this.userSrv.getActiveUserId()).subscribe(user => {
       this.currentUser = user;
-      this.currentUserUid = this.currentUser.uid;
+      this.currentUserUid = this.currentUser.id;
       this.wishlist = this.db.getWishlist(this.exchangeId, this.currentUser.drawnUid);
       // var sub = this.wishlist.subscribe(items => { 
       //   console.log(items)

@@ -8,8 +8,9 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  public emailToUpdate: string;
+  public emailToUpdateId: string;
   private activeUserId: string;
+  public currentUser: User;
 
   constructor(
     private db: DbServiceService

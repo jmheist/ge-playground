@@ -10,28 +10,55 @@ export class SetupService {
 
   constructor(private db: DbServiceService) {
     this.setupData = {
-      name: "asdasdda",
-      date: { year: 2018, month: 11, day: 14 },
-      budget: "20",
-      includeAdmin: true,
-      adminName: "Jacob Heisterkamp",
+      adminame: "Jacob Heisterkamp",
       adminEmail: "jmheist@gmail.com",
-      // "adminName": "Jacob Heisterkamp",
-      // "adminEmail": "jmheist@gmail.com",
-      // "exchangees": [
-      // 	{ "name": "stacey", "email": "stacey@email.com" },
-      // 	{ "name": "dave", "email": "dave@email.com", "excluded": "deb" },
-      // 	{ "name": "deb", "email": "deb@email.com", "excluded": "dave" },
-      // 	{ "name": "grant", "email": "grant@email.com", "excluded": "kristin" },
-      // 	{ "name": "kristin", "email": "kristin@email.com", "excluded": "grant" },
-      // ],
-      // "name": "Best Heisterkamp Family Exchange",
-      // "date": { "year": 2018, "month": 11, "day": 15 },
-      // "budget": "20",
-      // "nameCount": "1",
-      // "includeAdmin": false,
-      // "adminAdded": false,
-      // "welcomeMessage": "Hello Everyone!",
+      exchangees: [
+        {
+          name: "stacey",
+          email: "stacey@email.com",
+          excluded: "dave",
+          tempId: 55634668
+        },
+        {
+          name: "dave",
+          email: "dave@email.com",
+          excluded: "",
+          tempId: 16286482
+        },
+        {
+          name: "deb",
+          email: "deb@email.com",
+          excluded: "Jacob Heisterkamp",
+          tempId: 43515227
+        },
+        {
+          name: "grant",
+          email: "grant@email.com",
+          excluded: "",
+          tempId: 86040254
+        },
+        {
+          name: "kristin",
+          email: "kristin@email.com",
+          excluded: "",
+          tempId: 55653552
+        },
+        {
+          name: "Jacob Heisterkamp",
+          email: "jmheist@gmail.com",
+          isAdmin: true,
+          tempId: 99072227,
+          excluded: ""
+        }
+      ],
+      name: "Best Heisterkamp Family Exchange",
+      date: { year: 2018, month: 11, day: 15 },
+      budget: "20",
+      nameCount: "1",
+      includeAdmin: true,
+      welcomeMessage: "Hello Everyone!",
+      adminName: "Jacob Heisterkamp",
+      adminAdded: true
     };
   }
 
@@ -43,97 +70,91 @@ export class SetupService {
     }
   }
 
+  async createExchange() {
+    let exchangees = {};
+    let adminUid;
+    console.log("createExchange(): Starting");
+    this.setupData.uid = await this.db.addExchange(this.setupData);
+    const properties = Object.keys(this.setupData.exchangees);
+    for (const prop of properties) {
+      await this.db
+        .addExchangeesToExchange(
+          this.setupData.uid,
+          this.setupData.exchangees[prop]
+        )
+        .then(exId => {
+          if (this.setupData.exchangees[prop].isAdmin) {
+            adminUid = exId;
+          }
+          exchangees[exId] = this.setupData.exchangees[prop];
+        });
+    }
+    await this.addDrawnIds(exchangees);
+    // add adminUid to exchange
+    if (adminUid) {
+      await this.db.updateExchange(this.setupData.uid, {'adminUid': adminUid});
+    } else {
+      await this.db.createAdminUid(this.setupData.uid);
+    }
+    console.log("createExchange(): Finished");
+  }
+
+  async addDrawnIds(exchangees) {
+    console.log("addDrawnIds(): Starting");
+    const properties = Object.keys(exchangees);
+    for (const id of properties) {
+      let ex = exchangees[id];
+
+      for (const drawnId of properties) {
+        let exDrawn = exchangees[drawnId];
+        if (ex.nameDrawn === exDrawn.name) {
+          ex.drawnUid = drawnId;
+        }
+      }
+
+      if (!!ex.drawnUid) {
+        await this.db.updateExchagee(this.setupData.uid, id, ex);
+      }
+
+    }
+    console.log("addDrawnIds(): Finished");
+    return;
+  }
+
+  async addUsers() {
+    console.log("addUsers(): Started");
+    // add admin if not included
+    if (!this.setupData.includeAdmin) {
+      const admin = {'name': this.setupData.adminName, 'email': this.setupData.adminEmail}
+      console.log(`adding ${admin.name}`)
+      await this.db.addUser(admin, this.setupData.uid);
+    }
+    const properties = Object.keys(this.setupData.exchangees);
+    for (const prop of properties) {
+      var user = this.setupData.exchangees[prop];
+      console.log(`adding ${user.name}`)
+      await this.db.addUser(user, this.setupData.uid);
+    }
+    console.log("addUsers(): Completed");
+  }
+
   async sendSetupToFirestore() {
-    await this.addAdmin();
     await this.drawNames();
-    await this.handleUsers();
-    await this.handleExchange();
-    await this.updateUsersWithExchangeId();
+    await this.createExchange();
+    await this.addUsers();
     this.finish();
   }
 
   finish() {
-    // console.log('im done');
-  }
-
-  async updateUsersWithExchangeId() {
-    console.log("updateUsersWithExchangeId(): Starting");
-    let emails = [];
-    if (!this.setupData.includeAdmin) {
-      emails.push(this.setupData.adminEmail);
-    }
-    for (const ex in this.setupData.exchangees) {
-      emails.push(this.setupData.exchangees[ex].email);
-    }
-    for (const email of emails) {
-      console.log(email, this.setupData.uid);
-      await this.db.addExchangeIdToUser(email, this.setupData.uid);
-    }
-    console.log("updateUsersWithExchangeId(): Finished");
-  }
-
-  async addAdmin() {
-    console.log("addAdmin(): adding addmin");
-    var user: User = {
-      name: this.setupData.adminName,
-      email: this.setupData.adminEmail
-    };
-    await this.db.addUser(user);
-    const userData: User = await this.db.getUserOnce(user.email);
-    this.setupData.adminUid = userData.uid;
-    console.log("addAdmin(): completed adding addmin");
-  }
-
-  async handleExchange() {
-    console.log("handleExchange(): Starting");
-    this.setupData.uid = await this.db.addExchange(this.setupData);
-    const properties = Object.keys(this.setupData.exchangees);
-    for (const prop of properties) {
-      await this.db.addExchangeesToExchange(
-        this.setupData.uid,
-        this.setupData.exchangees[prop]
-      );
-    }
-    console.log("handleExchange(): Completed processing");
-  }
-
-  async handleUsers() {
-    console.log("handleUsers(): Started");
-    var newExs = {},
-      nameArray = {};
-    const properties = Object.keys(this.setupData.exchangees);
-    for (const prop of properties) {
-      let user = this.setupData.exchangees[prop];
-      user.tempId = "" + Math.floor(Math.random() * 100000000 + 1);
-      await this.db.addUser(user);
-      const userData: User = await this.db.getUserOnce(user.email);
-      user.uid = userData.uid;
-      newExs[userData.uid] = user;
-      nameArray[newExs[userData.uid].tempId] = newExs[userData.uid];
-    }
-    await this.addDrawnUids(nameArray);
-    this.setupData.exchangees = newExs;
-    console.log(newExs);
-    console.log("handleUsers(): Completed");
-  }
-
-  async addDrawnUids(names) {
-    const properties = Object.keys(this.setupData.exchangees);
-    for (const prop of properties) {
-      console.log(properties);
-      let user = this.setupData.exchangees[prop];
-      console.log(user);
-      console.log(names);
-      user.drawnUid = names[user.tempId].uid;
-    }
-  }
-
-  getData() {
-    return this.setupData;
+    console.log('im done');
   }
 
   printData() {
     console.log(this.setupData ? this.setupData : "no data in this.setupData");
+  }
+
+  getData() {
+    return this.setupData;
   }
 
   async drawNames(prod = true) {
@@ -159,7 +180,7 @@ export class SetupService {
 
     const assignGiftPartners = function(people) {
       var peopleLeftToAssign = people.map(person => person.name);
-
+      console.log(peopleLeftToAssign);
       people.forEach(function(person) {
         var choices = peopleLeftToAssign.filter(function(personToAssign) {
           return (
@@ -172,6 +193,7 @@ export class SetupService {
         }
         if (choices.length === 0) {
         } else {
+          console.log(choices);
           person.nameDrawn = choices[0];
           var index = peopleLeftToAssign.indexOf(choices[0]);
           peopleLeftToAssign.splice(index, 1);

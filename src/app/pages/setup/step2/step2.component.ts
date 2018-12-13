@@ -87,6 +87,10 @@ export class Step2Component implements OnInit {
     this.router.navigate(["setup/step1"]);
   }
 
+  get getTempId() {
+    return Math.floor(Math.random() * 100000000 + 1);
+  }
+
   submitData() {
     // prevent blanks, and long live exlcudes saved previously
     var cleanedExs = [];
@@ -106,6 +110,7 @@ export class Step2Component implements OnInit {
             }
           }
         }
+        // ex.tempId = this.getTempId;
         cleanedExs.push(ex);
       }
     }
@@ -117,7 +122,8 @@ export class Step2Component implements OnInit {
       cleanedExs.push({
         name: this.step2Form.value.adminName,
         email: this.step2Form.value.adminEmail,
-        isAdmin: true
+        isAdmin: true,
+        // tempId: this.getTempId
       });
       this.formData.adminAdded = true;
     }

@@ -5,7 +5,7 @@ export interface User {
   email?: string;
   exchanges?: [];
   uid?: string;
-  isAdmin?: string;
+  isAdmin?: boolean;
   drawnUid?: string;
   tempId?: string; 
   viewedDrawnWishlist?: boolean;

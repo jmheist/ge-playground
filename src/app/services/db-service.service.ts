@@ -59,7 +59,7 @@ export class DbServiceService {
   }
 
   getExchanges() {
-    return this.db.colWithIds$('exchanges');
+    return this.db.colWithIds$("exchanges");
   }
 
   getExchange(id): Observable<Exchange> {
@@ -75,7 +75,7 @@ export class DbServiceService {
       includeAdmin: exchange.includeAdmin,
       adminName: exchange.adminName,
       adminEmail: exchange.adminEmail,
-      adminUid: exchange.adminUid,
+      // adminUid: exchange.adminUid,
       welcomeMessage: exchange.welcomeMessage || ""
     };
 
@@ -92,19 +92,31 @@ export class DbServiceService {
     this.exDoc.delete();
   }
 
-  updateExchange(exchange: Exchange) {
-    this.exDoc = this.afs.doc(`exchanges/${exchange.id}`);
-    this.exDoc.update(exchange);
+  updateExchange(id, data) {
+    const exDoc = this.afs.doc(`exchanges/${id}`);
+    this.db.update(exDoc, data);
   }
 
-  async addExchangeesToExchange(exchangeId, data) {
-    console.log(data);
-    this.exchDoc = this.afs
+  async createAdminUid(exId) {
+    const id = await this.afs.createId();
+    this.updateExchange(exId, {'adminUid': id})
+  }
+
+  async addExchangeesToExchange(exchangeId, data): Promise<any> {
+    const ref = this.afs
       .collection<Exchange>(`exchanges`)
       .doc(exchangeId)
+      .collection<User>("exchangees");
+    return await this.db.upsertExchangeeUser(ref, data);
+  }
+
+  updateExchagee(exId, id, data) {
+    const exchDoc = this.afs
+      .collection<Exchange>(`exchanges`)
+      .doc(exId)
       .collection<User>("exchangees")
-      .doc(data.uid);
-    await this.db.upsertExchangeeUser(this.exchDoc, data);
+      .doc(id);
+    return this.db.update(exchDoc, data);
   }
 
   getUsers() {
@@ -112,17 +124,20 @@ export class DbServiceService {
   }
 
   getUser(id): Observable<User> {
-    return this.db.doc$(`users/${id}`);
+    return this.db.docWithIds$(`users/${id}`);
   }
 
-  getUserOnce(id): Promise<any> {
-    return this.afs
-      .collection("users")
-      .doc(id)
-      .valueChanges()
-      .take(1)
-      .toPromise()
-      .then((user: User) => user);
+  getUserOnce(id) {
+    // return this.afs
+    //   .collection("users")
+    //   .doc(id)
+    //   .valueChanges()
+    //   .take(1)
+    //   .toPromise()
+    //   .then((user: User) => user);
+    const ref = this.afs.collection("users").doc(id);
+    return this.db.docWithIds$(ref).take(1)
+      .toPromise().then((user: User) => user);
   }
 
   getExchangee(exId, id): Observable<any> {
@@ -131,7 +146,7 @@ export class DbServiceService {
       .doc(exId)
       .collection<User>("exchangees")
       .doc(id);
-    return this.db.doc$(this.exchDoc);
+    return this.db.docWithIds$(this.exchDoc);
   }
 
   getExchangePeople(exId): Observable<any> {
@@ -189,13 +204,16 @@ export class DbServiceService {
     this.WishlistDoc.delete();
   }
 
-  addUser(user): Promise<void> {
+  async addUser(user, exId = null): Promise<void> {
     const data = {
       name: user.name,
       email: user.email
     };
 
-    return this.db.upsertUser(`users/${data.email}`, data, true);
+    await this.db.upsertUser(`users/${data.email}`, data, true);
+    if (!!exId) {
+      this.addExchangeIdToUser(data.email, exId);
+    }
   }
 
   deleteUser(user: User) {
@@ -216,7 +234,7 @@ export class DbServiceService {
   userRequestedEmail(userEmail): Promise<any> {
     const ref = this.afs.collection("users").doc(userEmail);
     const stamp = this.db.timestamp;
-    console.log(stamp)
+    console.log(stamp);
     return ref.update({ requestedEmail: this.db.timestamp });
   }
 }
