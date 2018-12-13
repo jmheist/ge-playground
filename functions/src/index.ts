@@ -157,7 +157,7 @@ exports.wishListSet = functions.firestore
 exports.userRequestedExchangeLinks = functions.firestore
   .document("users/{userEmail}")
   .onUpdate(function (change, context) {
-    const userBefore = change.after.data();
+    const userBefore = change.before.data();
     const userAfter = change.after.data();
     const ref = change.after.ref;
     const params = context.params;

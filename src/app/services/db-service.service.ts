@@ -215,6 +215,8 @@ export class DbServiceService {
 
   userRequestedEmail(userEmail): Promise<any> {
     const ref = this.afs.collection("users").doc(userEmail);
+    const stamp = this.db.timestamp;
+    console.log(stamp)
     return ref.update({ requestedEmail: this.db.timestamp });
   }
 }
