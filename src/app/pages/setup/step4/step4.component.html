@@ -9,6 +9,7 @@
         <li>Write a message to everyone in the gift Exchange</li>
         <li>Send it and get this party started</li>
       </ul>
+      {{formData|json}}
     </div>
     <div class="col-sm-8">
       <form [formGroup]="step4Form" novalidate (ngSubmit)="submitData()">

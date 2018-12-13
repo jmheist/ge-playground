@@ -31,23 +31,19 @@ sgMail.setSubstitutionWrappers("{{", "}}");
 
 exports.newExchangeCreated = functions.firestore
   .document("exchanges/{exchangeId}")
-  .onCreate(function(snap, context) {
+  .onCreate(function (snap, context) {
     const exchange = snap.data();
     // console.log(exchange);
     const msgOptions = {
-      personalizations: [
-        {
-          to: [
-            {
-              email: "jmheist@gmail.com",
-              name: exchange.name
-            }
-          ],
-          dynamic_template_data: {
-            exchangeeName: exchange.name
-          }
+      personalizations: [{
+        to: [{
+          email: "jmheist@gmail.com",
+          name: exchange.name
+        }],
+        dynamic_template_data: {
+          exchangeeName: exchange.name
         }
-      ],
+      }],
       from: {
         email: fromAddress,
         name: fromName
@@ -68,7 +64,10 @@ exports.adminVerifiedEmail = functions.firestore
     const exchangePrev = change.before.data();
     // const exchangeId = change.after.id;
 
-    if (!!exchangeUpdate.adminVerifiedEmail && exchangeUpdate != exchangeUpdate) {
+    if (
+      !!exchangeUpdate.adminVerifiedEmail &&
+      exchangePrev.adminVerifiedEmail != exchangeUpdate.adminVerifiedEmail
+    ) {
       console.log("is verified");
 
       await change.after.ref
@@ -78,19 +77,15 @@ exports.adminVerifiedEmail = functions.firestore
           snaps.forEach(async snap => {
             const ex = snap.data();
             const msgOptions = {
-              personalizations: [
-                {
-                  to: [
-                    {
-                      email: "jmheist@gmail.com",
-                      name: ex.name
-                    }
-                  ],
-                  dynamic_template_data: {
-                    exchangeeName: ex.name
-                  }
+              personalizations: [{
+                to: [{
+                  email: "jmheist@gmail.com",
+                  name: ex.name
+                }],
+                dynamic_template_data: {
+                  exchangeeName: ex.name
                 }
-              ],
+              }],
               from: {
                 email: fromAddress,
                 name: fromName
@@ -129,21 +124,17 @@ exports.wishListSet = functions.firestore
         console.log(ex);
         console.log(exchangee);
         const msgOptions = {
-          personalizations: [
-            {
-              to: [
-                {
-                  email: "jmheist@gmail.com",
-                  name: ex.name
-                }
-              ],
-              dynamic_template_data: {
-                exchangeeName: `${ex.name}, ${
+          personalizations: [{
+            to: [{
+              email: "jmheist@gmail.com",
+              name: ex.name
+            }],
+            dynamic_template_data: {
+              exchangeeName: `${ex.name}, ${
                   exchangee.name
                 } has created their wishlist. Go check it out.`
-              }
             }
-          ],
+          }],
           from: {
             email: fromAddress,
             name: fromName
@@ -165,32 +156,32 @@ exports.wishListSet = functions.firestore
 // Function to send email to those who lost exhange link
 exports.userRequestedExchangeLinks = functions.firestore
   .document("users/{userEmail}")
-  .onUpdate(function(change, context) {
+  .onUpdate(function (change, context) {
     const userBefore = change.after.data();
     const userAfter = change.after.data();
     const ref = change.after.ref;
     const params = context.params;
+    const res = userBefore.requestedEmail.isEqual(userAfter.requestedEmail);
+    console.log(userBefore.requestedEmail, userAfter.requestedEmail, res);
     // console.log(exchange);
     if (
       userAfter.requestedEmail &&
-      userBefore.requestedEmail != userAfter.requestedEmail
+      !res
     ) {
       console.log("user requested email");
       console.log(userAfter.requestedEmail);
       const msgOptions = {
-        personalizations: [
-          {
-            to: [
-              {
-                email: "jmheist@gmail.com",
-                name: userAfter.name
-              }
-            ],
-            dynamic_template_data: {
-              exchangeeName: `${userAfter.name} requested their exahnges: ${userAfter.exchanges.join(', ')}`
-            }
+        personalizations: [{
+          to: [{
+            email: "jmheist@gmail.com",
+            name: userAfter.name
+          }],
+          dynamic_template_data: {
+            exchangeeName: `${
+                userAfter.name
+              } requested their exahnges: ${userAfter.exchanges.join(", ")}`
           }
-        ],
+        }],
         from: {
           email: fromAddress,
           name: fromName

@@ -51,6 +51,9 @@ main {
     &.is-invalid {
         outline: 2px  map_get($theme-colors, 'warning') solid;
     }
+    &::placeholder {
+        color: $light-grey
+    }
 }
 
 button {

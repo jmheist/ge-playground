@@ -9,6 +9,8 @@
         <li>Your Info</li>
         <li>Add Names</li>
       </ul>
+      <p>{{step2Form.value | json}}</p>
+      <p>{{formData | json}}</p>
     </div>
     <div class="col-lg-8">
       <form [formGroup]="step2Form" novalidate (ngSubmit)="submitData()">

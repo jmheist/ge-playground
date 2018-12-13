@@ -59,7 +59,7 @@ export class DbServiceService {
   }
 
   getExchanges() {
-    return this.exchanges;
+    return this.db.colWithIds$('exchanges');
   }
 
   getExchange(id): Observable<Exchange> {
@@ -71,12 +71,12 @@ export class DbServiceService {
       name: exchange.name,
       date: exchange.date,
       budget: exchange.budget,
-      nameCount: exchange.nameCount,
+      // nameCount: exchange.nameCount,
       includeAdmin: exchange.includeAdmin,
       adminName: exchange.adminName,
       adminEmail: exchange.adminEmail,
       adminUid: exchange.adminUid,
-      welcomeMessage: exchange.welcomeMessage
+      welcomeMessage: exchange.welcomeMessage || ""
     };
 
     // db.set('items/ID', data) })

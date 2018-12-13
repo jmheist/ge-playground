@@ -90,7 +90,8 @@ export class Step2Component implements OnInit {
   submitData() {
     // prevent blanks, and long live exlcudes saved previously
     var cleanedExs = [];
-
+    console.log(this.formData)
+    console.log(this.step2Form.value);
     for (let i = 0; i < this.step2Form.value.exchangees.length; i++) {
       const ex = this.step2Form.value.exchangees[i];
       if (ex.name != "" && ex.email != "") {
@@ -108,18 +109,21 @@ export class Step2Component implements OnInit {
         cleanedExs.push(ex);
       }
     }
-
+    console.log(cleanedExs);
     // add admin to exchangees if aplicable
     if (this.formData.includeAdmin && !this.formData.adminAdded) {
+      console.log(this.formData.includeAdmin,!this.formData.adminAdded)
+      console.log(this.formData)
       cleanedExs.push({
-        name: this.formData.adminName,
-        email: this.formData.adminEmail,
+        name: this.step2Form.value.adminName,
+        email: this.step2Form.value.adminEmail,
         isAdmin: true
       });
       this.formData.adminAdded = true;
     }
 
     this.step2Form.value.exchangees = cleanedExs;
+    console.log(this.step2Form.value)
     this._setupService.addData(this.step2Form.value);
     this.router.navigate(["setup/step3"]);
   }

@@ -1,5 +1,6 @@
 PRELAUNCH TODO LIST:
   ✔ Page: Send exchange email for those who lost theirs @done(18-12-12 16:45)
+  ☐ Fix user requested login email trigger
   ☐ Page: Admin edit someones email address
   ☐ Email Templates
     ☐ Verify Email

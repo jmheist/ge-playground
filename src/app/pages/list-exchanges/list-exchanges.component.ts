@@ -10,8 +10,8 @@ import { Router } from "@angular/router";
   styleUrls: ["./list-exchanges.component.scss"]
 })
 export class ListExchangesComponent implements OnInit {
-  public exchanges = {};
-  public users = {};
+  public exchanges;
+  public users;
   public userDoc;
   public user: User;
 
@@ -24,7 +24,8 @@ export class ListExchangesComponent implements OnInit {
     this.users = this._dbservice.users;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   getUser(id) {
     this._dbservice.getUser(id).subscribe(user => {

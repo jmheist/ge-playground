@@ -10,5 +10,5 @@ export interface Exchange {
   adminEmail?: string;
   adminUid?: string;
   exchangees?: [];
-  welcomeMessage?: string;
+  welcomeMessage?: "";
 }

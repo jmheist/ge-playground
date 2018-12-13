@@ -16,7 +16,10 @@
         <div class="container">
           <div class="row">
             <div class="col-sm-6" formArrayName="exchangees" *ngFor="let exchangee of formData.exchangees; let i = index">
-              <h5>{{ exchangee.name }}</h5>
+              <p>
+              <strong>{{ exchangee.name }}</strong>
+              <br>
+              <small>{{ exchangee.email }}</small></p>
               <div class="form-group">
                 <select class="form-control" id="exampleFormControlSelect1" formControlName="exclude" [formControlName]='i'>
                   <option value="" default>none</option>

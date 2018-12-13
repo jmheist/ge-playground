@@ -30,7 +30,7 @@
         </div>
         <div class="form-group">
           <h4><label for="exchangeBudget">Max Budget Per Gift?</label></h4>
-          <input #budget='ngModel' type="text" pattern="^[$]?[0-9,]+(\.[0-9]{1,2})?$" [class.is-invalid]="budget.invalid && budget.dirty" required class="form-control form-control-lg" id="exchangeBudget" name="exchangeBudget" placeholder="$20" [(ngModel)]="formData.budget || $20">
+          <input #budget='ngModel' type="text" pattern="^[$]?[0-9,]+(\.[0-9]{1,2})?$" [class.is-invalid]="budget.invalid && budget.dirty" class="form-control form-control-lg" id="exchangeBudget" name="exchangeBudget" placeholder="Example $20" [(ngModel)]="formData.budget">
           <small class="col-12 mt-2 pl-0 text-warning d-block" *ngIf="budget.invalid && budget.dirty">*Please use only numbers, $'s, commans and periods</small>
         </div>
         <!-- <h4>Each person draws # names?</h4>
@@ -48,8 +48,8 @@
         </div> -->
         <h4>Options</h4>
         <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input form-control-lg" id="includeMeCheck" name="includeMeCheck" [(ngModel)]="formData.includeAdmin">
-          <label class="form-check-label" for="exampleCheck1">Include My Name in Drawing</label>
+          <input type="checkbox" class="form-check-input form-control-lg" id="includeAdmin" name="includeAdmin" [(ngModel)]="formData.includeAdmin">
+          <label class="form-check-label" for="includeAdmin">Include My Name in Drawing</label>
         </div>
         <div class="form-group form-check">
           <input type="checkbox" class="form-check-input form-control-lg" id="showAdminNames" name="showAdminNames" [(ngModel)]="formData.showAdminNames">
