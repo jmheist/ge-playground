@@ -11,4 +11,5 @@ export interface Exchange {
   adminUid?: string;
   exchangees?: [];
   welcomeMessage?: "";
+  adminVerifiedEmail?: false;
 }

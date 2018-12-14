@@ -20,6 +20,8 @@ import { WishlistHomeComponent } from './pages/exchange/wishlist-home/wishlist-h
 import { ExchangeViewComponent } from './pages/exchange/exchange-view/exchange-view.component';
 import { SendLoginEmailComponent } from './pages/send-login-email/send-login-email.component';
 import { UpdateEmailComponent } from './pages/exchange/exchange-view/update-email/update-email.component';
+import { VerifyEmailComponent } from './pages/exchange/verify-email/verify-email.component';
+import { ExchangeLookupComponent } from './pages/exchange-lookup/exchange-lookup.component';
 
 const routes: Routes = [
 	{ 
@@ -37,24 +39,12 @@ const routes: Routes = [
 			{ path: 'finalize', component: FinalStepComponent },
 		]
 	},
-	// { 
-	// 	path: 'admin', 
-	// 	component: AdminComponent,
-	// 	children: [
-	// 		{ 
-	// 			path: ':id', // check user id here too, if not admin, send to normal group page
-	// 			component: ExchangeAdminComponent,
-	// 			children: [
-	// 				{ path: 'updateEmail/:idToUpdate', component: UpdateEmailComponent }
-	// 			]
-	// 		},
-	// 	]
-	// },
 	{
 		path: 'exchange/:exchangeId/:curentUserId', 
 		component: ExchangeComponent,
 		children: [
 			{ path: '', component: ExchangeViewComponent,  },
+			{ path: 'verify', component: VerifyEmailComponent},
 			{ path: 'update-email/:uidToUpdate', component: UpdateEmailComponent },
 			{ path: 'wishlist', component: WishlistHomeComponent, children: [
 				{ path: 'edit', component: WishlistComponent },
@@ -63,6 +53,7 @@ const routes: Routes = [
 			]}
 		]
 	},
+	{ path: 'exchange-lookup/:userEmail', component: ExchangeLookupComponent },
 	{ path: 'sendLoginEmail', component: SendLoginEmailComponent },
 	{ path: 'list-all', component: ListExchangesComponent }
 ];

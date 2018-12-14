@@ -140,6 +140,19 @@ export class DbServiceService {
       .toPromise().then((user: User) => user);
   }
 
+  getExchangeOnce(id) {
+    // return this.afs
+    //   .collection("users")
+    //   .doc(id)
+    //   .valueChanges()
+    //   .take(1)
+    //   .toPromise()
+    //   .then((user: User) => user);
+    const ref = this.afs.collection("exchanges").doc(id);
+    return this.db.docWithIds$(ref).take(1)
+      .toPromise().then((exchange: Exchange) => exchange);
+  }
+
   getExchangee(exId, id): Observable<any> {
     this.exchDoc = this.afs
       .collection<Exchange>(`exchanges`)
@@ -149,12 +162,13 @@ export class DbServiceService {
     return this.db.docWithIds$(this.exchDoc);
   }
 
-  getExchangePeople(exId): Observable<any> {
+  getExchangePeople(exId) {
     this.PeopleCollection = this.afs
       .collection<Exchange>(`exchanges`)
       .doc(exId)
       .collection<User>("exchangees");
-    return this.db.colWithIds$(this.PeopleCollection);
+    return this.db.colWithIds$(this.PeopleCollection).take(1)
+      .toPromise().then((people: [User]) => people);
   }
 
   getWishlist(exId, id): Observable<any> {

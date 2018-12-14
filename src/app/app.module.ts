@@ -38,6 +38,8 @@ import { FirestoreService } from './services/firestore.service';
 import { ExchangeViewComponent } from './pages/exchange/exchange-view/exchange-view.component';
 import { SendLoginEmailComponent } from './pages/send-login-email/send-login-email.component';
 import { UpdateEmailComponent } from './pages/exchange/exchange-view/update-email/update-email.component';
+import { VerifyEmailComponent } from './pages/exchange/verify-email/verify-email.component';
+import { ExchangeLookupComponent } from './pages/exchange-lookup/exchange-lookup.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { UpdateEmailComponent } from './pages/exchange/exchange-view/update-emai
     WishlistHomeComponent,
     ExchangeViewComponent,
     SendLoginEmailComponent,
-    UpdateEmailComponent
+    UpdateEmailComponent,
+    VerifyEmailComponent,
+    ExchangeLookupComponent
   ],
   imports: [
     BrowserModule,

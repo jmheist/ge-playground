@@ -13,7 +13,7 @@ import { UserService } from "src/app/services/user.service";
 })
 export class ExchangeViewComponent implements OnInit {
   public exchange: Observable<Exchange>;
-  public people: Observable<any>;
+  public people;
   public currentUser: User;
   public isAdmin: boolean;
   public showAdminNames: string;
@@ -85,7 +85,9 @@ export class ExchangeViewComponent implements OnInit {
   }
 
   loadPeople() {
-    this.people = this.db.getExchangePeople(this.exchangeId);
+    this.db.getExchangePeople(this.exchangeId).then(async people => {
+      this.people = people;
+    });
   }
 
   loadExchangeAs(id) {

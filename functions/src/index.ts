@@ -18,7 +18,8 @@
 
 const functions = require("firebase-functions");
 const sgMail = require("@sendgrid/mail");
-const admin = require("firebase-admin");
+
+import * as admin from "firebase-admin";
 
 const fromAddress = "info@thegreatgiftexchange.com";
 const fromName = "The Great Gift Exchange";
@@ -29,171 +30,84 @@ const SENDGRID_API_KEY = functions.config().sendgrid.key;
 sgMail.setApiKey(SENDGRID_API_KEY);
 sgMail.setSubstitutionWrappers("{{", "}}");
 
-function createButton(text, link) {
-  var html = `<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding-top: 25px;" class="padding"><table border="0" cellspacing="0" cellpadding="0" class="mobile-button-container"><tr><td align="center" style="border-radius: 3px;" bgcolor="#256F9C"><a href="${link}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid #256F9C; display: inline-block;" class="mobile-button">${text}</a></td></tr></table></td></tr></table>`;
-  return html;
-}
+///////////////////////////////////////////
+
+import { Change, EventContext } from "firebase-functions";
+import { isEqual } from "lodash";
+import DocumentSnapshot = admin.firestore.DocumentSnapshot;
+import FieldPath = admin.firestore.FieldPath;
+
+const isEquivalent = (before: any, after: any) => {
+  return before && typeof before.isEqual === "function"
+    ? before.isEqual(after)
+    : isEqual(before, after);
+};
+
+const conditions = {
+  CHANGED: (fieldBefore: any, fieldAfter: any) =>
+    fieldBefore !== undefined &&
+    fieldAfter !== undefined &&
+    !isEquivalent(fieldBefore, fieldAfter),
+
+  ADDED: (fieldBefore: any, fieldAfter: any) =>
+    fieldBefore === undefined && fieldAfter,
+
+  REMOVED: (fieldBefore: any, fieldAfter: any) =>
+    fieldBefore && fieldAfter === undefined
+};
+
+const field = (
+  fieldPath: string | FieldPath,
+  operation: "ADDED" | "REMOVED" | "CHANGED",
+  handler: (
+    change: Change<DocumentSnapshot>,
+    context: EventContext
+  ) => PromiseLike<any> | any
+) => {
+  return function(change: Change<DocumentSnapshot>, context: EventContext) {
+    const fieldBefore = change.before.get(fieldPath);
+    const fieldAfter = change.after.get(fieldPath);
+    return conditions[operation](fieldBefore, fieldAfter)
+      ? handler(change, context)
+      : Promise.resolve();
+  };
+};
+
+///////////////////////////////////////////
+
+// function createButton(text, link) {
+//   var html = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding-top: 25px;" class="padding"><table border="0" cellspacing="0" cellpadding="0" class="mobile-button-container"><tr><td align="center" style="border-radius: 3px;" bgcolor="#256F9C"><a href="${link}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid #256F9C; display: inline-block;" class="mobile-button">'+text+'</a></td></tr></table></td></tr></table>';
+//   return html;
+// }
 
 exports.newExchangeCreated = functions.firestore
   .document("exchanges/{exchangeId}")
-  .onCreate(function (snap, context) {
-    const exchange = snap.data();
-    // console.log(exchange);
-    const msgOptions = {
-      personalizations: [{
-        to: [{
-          email: "jmheist@gmail.com",
-          name: exchange.name
-        }],
-        dynamic_template_data: {
-          emailSubject: 'Verify your email address',
-          emailHeadline: 'Click to Verify',
-          emailBody: '<p>Your exchange is saved and ready to go, click here to verify and get your exchange started!<p>',
-          emailButtonCode: createButton('Verify Now','http://localhost:4200/')
-        }
-      }],
-      from: {
-        email: fromAddress,
-        name: fromName
-        // },
-        // "reply_to": {
-        //   "email": "jacob@highpointealtoona.com",
-        //   "name": "Sam Smith"
-      },
-      template_id: "d-0591b5d5fb0a42a4a05d0135d6774a60"
-    };
-    return sgMail.send(msgOptions);
-  });
-
-exports.adminVerifiedEmail = functions.firestore
-  .document("exchanges/{exchangeId}")
-  .onUpdate(async (change, context) => {
-    const exchangeUpdate = change.after.data();
-    const exchangePrev = change.before.data();
-    // const exchangeId = change.after.id;
-
-    if (
-      !!exchangeUpdate.adminVerifiedEmail &&
-      exchangePrev.adminVerifiedEmail != exchangeUpdate.adminVerifiedEmail
-    ) {
-      console.log("is verified");
-
-      await change.after.ref
-        .collection("exchangees")
-        .get()
-        .then(async snaps => {
-          snaps.forEach(async snap => {
-            const ex = snap.data();
-            const msgOptions = {
-              personalizations: [{
-                to: [{
-                  email: "jmheist@gmail.com",
-                  name: ex.name
-                }],
-                dynamic_template_data: {
-                  emailSubject: 'Your Gift Exchange Has Started',
-                  emailHeadline: 'View the name you drew!',
-                  emailBody: '<p>Your gift exchange is officially started and names have been drawn! Click the link below to login to the gift exchange and see your drawn name, and create a wishlist!<p>',
-                  emailButtonCode: createButton('View Gift Exchange','http://localhost:4200/')
-                }
-              }],
-              from: {
-                email: fromAddress,
-                name: fromName
-                // },
-                // "reply_to": {
-                //   "email": "jacob@highpointealtoona.com",
-                //   "name": "Sam Smith"
-              },
-              template_id: "d-0591b5d5fb0a42a4a05d0135d6774a60"
-            };
-            await sgMail.send(msgOptions);
-          });
-        });
-    }
-    return 0;
-  });
-
-exports.wishListSet = functions.firestore
-  .document("exchanges/{exchangeId}/exchangees/{exchangeeUid}")
-  .onUpdate(async (change, context) => {
-    const exchangee = change.after.data();
-    const firstRef = change.after.ref;
-    const params = context.params;
-    if (!!exchangee.wishlistCreated && !exchangee.wishlistCreatedSent) {
-      // send email to who has their name so they can go check the wishlist
-      console.log(
-        `Wishlist Created: exchangee: ${
-          params.exchangeeUid
-        }, wishlistCreated: ${exchangee.wishlistCreated}`
-      );
-      const ref = db.doc(
-        `exchanges/${params.exchangeId}/exchangees/${exchangee.drawnUid}`
-      );
-      await ref.get().then(async snap => {
-        const ex = snap.data();
-        console.log(ex);
-        console.log(exchangee);
-        const msgOptions = {
-          personalizations: [{
-            to: [{
-              email: "jmheist@gmail.com",
-              name: ex.name
-            }],
-            dynamic_template_data: {
-              emailSubject: `See what's on ${ex.name}'s wishlist!`,
-              emailHeadline: `${ex.name} has set their wishlist`,
-              emailBody: `<p${ex.name} has decided on a few good gift suggestions for you! Check them out now and get a head start on your shopping.<p>`,
-              emailButtonCode: createButton(`See ${ex.name}'s Wishlist`,`http://localhost:4200/`)
-            }
-          }],
-          from: {
-            email: fromAddress,
-            name: fromName
-            // },
-            // "reply_to": {
-            //   "email": "jacob@highpointealtoona.com",
-            //   "name": "Sam Smith"
-          },
-          template_id: "d-0591b5d5fb0a42a4a05d0135d6774a60"
-        };
-        await sgMail.send(msgOptions);
-      });
-      exchangee.wishlistCreatedSent = true;
-      await firstRef.set(exchangee);
-    }
-    return 0;
-  });
-
-// Function to send email to those who lost exhange link
-exports.userRequestedExchangeLinks = functions.firestore
-  .document("users/{userEmail}")
-  .onUpdate(function (change, context) {
-    const userBefore = change.before.data();
-    const userAfter = change.after.data();
-    const ref = change.after.ref;
-    const params = context.params;
-    const res = (userBefore.requestedEmail && userAfter.requestedEmail && userBefore.requestedEmail.isEqual(userAfter.requestedEmail));
-    // console.log(exchange);
-    if (
-      userAfter.requestedEmail &&
-      !res
-    ) {
-      console.log("user requested email");
-      console.log(userAfter.requestedEmail);
+  .onUpdate(
+    field("adminUid", "ADDED", (change, context) => {
+      console.log("AdminUid Was Added");
+      const exchangeAfter = change.after.data();
+      // console.log(exchange);
       const msgOptions = {
-        personalizations: [{
-          to: [{
-            email: "jmheist@gmail.com",
-            name: userAfter.name
-          }],
-          dynamic_template_data: {
-            emailSubject: 'You requested a new link to your exchange',
-            emailHeadline: 'Lost your first email?',
-            emailBody: `<p>No worries, we looked up your email address and found it apart of these exchange(s):<br><br>${userAfter.exchanges.join(", ")}<p>`,
-            emailButtonCode: createButton('Verify Now','http://localhost:4200/')
+        personalizations: [
+          {
+            to: [
+              {
+                email: exchangeAfter.adminEmail,
+                name: exchangeAfter.adminName
+              }
+            ],
+            dynamic_template_data: {
+              exchange_name: exchangeAfter.name,
+              name: exchangeAfter.adminName,
+              email_button_link:
+                "http://localhost:4200/exchange/" +
+                change.after.id +
+                "/" +
+                exchangeAfter.adminUid +
+                "/verify"
+            }
           }
-        }],
+        ],
         from: {
           email: fromAddress,
           name: fromName
@@ -205,12 +119,197 @@ exports.userRequestedExchangeLinks = functions.firestore
         template_id: "d-0591b5d5fb0a42a4a05d0135d6774a60"
       };
       return sgMail.send(msgOptions);
-    } else {
-      console.log("no change");
-    }
+    })
+  );
 
-    return 0;
-  });
+exports.adminVerifiedEmail = functions.firestore
+  .document("exchanges/{exchangeId}")
+  .onUpdate(
+    field("adminVerifiedEmail", "ADDED", (change, context) => {
+      console.log("adminVerifiedEmail Was Added");
+      const exchange = change.after.data();
+
+      if (!exchange.adminIncluded) {
+        const msgOptions = {
+          personalizations: [
+            {
+              to: [
+                {
+                  email: exchange.adminEmail,
+                  name: exchange.adminName
+                }
+              ],
+              dynamic_template_data: {
+                exchange_name: exchange.name,
+                name: exchange.adminName,
+                email_button_link:
+                  "http://localhost:4200/exchange/" +
+                  change.after.id +
+                  "/" +
+                  exchange.adminUid
+              }
+            }
+          ],
+          from: {
+            email: fromAddress,
+            name: fromName
+            // },
+            // "reply_to": {
+            //   "email": "jacob@highpointealtoona.com",
+            //   "name": "Sam Smith"
+          },
+          template_id: "d-4616262c5be54280b56938ce4ab9d417"
+        };
+      }
+
+      change.after.ref
+        .collection("exchangees")
+        .get()
+        .then(async snaps => {
+          snaps.forEach(async snap => {
+            const ex = snap.data();
+            const msgOptions = {
+              personalizations: [
+                {
+                  to: [
+                    {
+                      email: ex.email,
+                      name: ex.name
+                    }
+                  ],
+                  dynamic_template_data: {
+                    exchange_name: exchange.name,
+                    name: ex.name,
+                    email_button_link:
+                      "http://localhost:4200/exchange/" +
+                      change.after.id +
+                      "/" +
+                      snap.id
+                  }
+                }
+              ],
+              from: {
+                email: fromAddress,
+                name: fromName
+                // },
+                // "reply_to": {
+                //   "email": "jacob@highpointealtoona.com",
+                //   "name": "Sam Smith"
+              },
+              template_id: "d-8b64ba686c03424a8741c3ca2189ecce"
+            };
+            await sgMail.send(msgOptions);
+          });
+        });
+      return 0;
+    })
+  );
+
+exports.wishListSet = functions.firestore
+  .document("exchanges/{exchangeId}/exchangees/{exchangeeUid}")
+  .onUpdate(
+    field("wishlistCreated", "ADDED", (change, context) => {
+      console.log("wishlistCreated Was Added");
+      const exchangee = change.after.data();
+      const firstRef = change.after.ref;
+      const params = context.params;
+      // if (!!exchangee.wishlistCreated && !exchangee.wishlistCreatedSent) {
+      // send email to who has their name so they can go check the wishlist
+      console.log(
+        `Wishlist Created: exchangee: ${
+          params.exchangeeUid
+        }, wishlistCreated: ${exchangee.wishlistCreated}`
+      );
+      const ref = db.collection(`exchanges/${params.exchangeId}/exchangees/`);
+      ref.get().then(snapshot => {
+        if (snapshot.empty) {
+          console.log("No matching documents.");
+          return;
+        }
+
+        snapshot.forEach(doc => {
+          console.log(doc.id, "=>", doc.data());
+          const ex = doc.data();
+          if (ex.drawnUid === exchangee.id) {
+            console.log("got em");
+            const msgOptions = {
+              personalizations: [
+                {
+                  to: [
+                    {
+                      email: ex.email,
+                      name: ex.name
+                    }
+                  ],
+                  dynamic_template_data: {
+                    name: ex.name,
+                    drawn_name: exchangee.name,
+                    email_button_link:
+                      "http://localhost:4200/exchange/" +
+                      params.exchangeId +
+                      "/" +
+                      doc.id +
+                      "/wishlist/drawn"
+                  }
+                }
+              ],
+              from: {
+                email: fromAddress,
+                name: fromName
+                // },
+                // "reply_to": {
+                //   "email": "jacob@highpointealtoona.com",
+                //   "name": "Sam Smith"
+              },
+              template_id: "d-8e387b2ccd7b489b934a33af006674d4"
+            };
+            sgMail.send(msgOptions);
+          }
+        });
+        exchangee.wishlistCreatedSent = true;
+        firstRef.set(exchangee);
+      });
+      return 0;
+    })
+  );
+
+// Function to send email to those who lost exhange link
+exports.userRequestedExchangeLinks = functions.firestore
+  .document("users/{userEmail}")
+  .onUpdate(
+    field("requestedEmail", "CHANGED", (change, context) => {
+      const user = change.after.data();
+      console.log("user requested email");
+      const msgOptions = {
+        personalizations: [
+          {
+            to: [
+              {
+                email: user.email,
+                name: user.name
+              }
+            ],
+            dynamic_template_data: {
+              name: user.name,
+              email_button_link:
+                "http://localhost:4200/exchange-lookup/" +
+                user.email
+            }
+          }
+        ],
+        from: {
+          email: fromAddress,
+          name: fromName
+          // },
+          // "reply_to": {
+          //   "email": "jacob@highpointealtoona.com",
+          //   "name": "Sam Smith"
+        },
+        template_id: "d-d3085df6c30b4ad1a07dc2339e425f84"
+      };
+      return sgMail.send(msgOptions);
+    })
+  );
 
 // Function to remind people to set wishlist after a week
 
