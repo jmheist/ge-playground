@@ -4,21 +4,22 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-4">
-      <h3>Instructions</h3>
+      <h3>Complete the setup by writing everyone a message</h3>
       <ul>
-        <li>Write a message to everyone in the gift Exchange</li>
-        <li>Send it and get this party started</li>
+        <li>Welcome everyone to the gift exchange!</li>
+        <li>Submit it to save your exchange.</li>
+        <li>Next we'll email you to verify your email address is correct.</li>
+        <li>Once verified, we'll email everyone in your exchange with the names they drew!</li>
       </ul>
-      {{formData|json}}
     </div>
     <div class="col-sm-8">
       <form [formGroup]="step4Form" novalidate (ngSubmit)="submitData()">
         <div class="form-group">
-          <label for="exampleFormControlTextarea1">Example textarea</label>
+          <label for="exampleFormControlTextarea1">Email Welcome Message</label>
           <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" formControlName="welcomeMessage"></textarea>
         </div>
-        <button type="button" class="btn btn-secondary ml-2" (click)="back()">Back</button>
-        <button type="submit" class="btn btn-success">Finish and Verify Your Email Address</button>
+        <button type="button" class="btn btn-secondary" (click)="back()">Back</button>
+        <button type="submit" class="btn btn-success ml-2">Finish and Verify Your Email Address</button>
       </form>
     </div>
   </div>

@@ -16,10 +16,10 @@ import { SetupService } from "src/app/services/setup.service";
 export class UpdateEmailComponent implements OnInit {
   public savedMsg: string;
   public savedMsgPass: boolean;
-  private exchangeId: string;
-  private curentUserId: string;
-  private uidToUpdate: string;
-  private userToUpdate: any;
+  public exchangeId: string;
+  public curentUserId: string;
+  public uidToUpdate: string;
+  public userToUpdate: any;
   public emailForm: FormGroup;
 
   public exchange: Observable<Exchange>;
@@ -95,7 +95,7 @@ export class UpdateEmailComponent implements OnInit {
         })
         .then(updatedUser => {
           this.db.addUser(this.userToUpdate, this.exchangeId).then(data => {
-            console.log("saved msg");
+            // console.log("saved msg");
             this.setSavedMsg(
               `${this.userToUpdate.name}'s Email Address Has Been Updated.`,
               true
@@ -111,7 +111,7 @@ export class UpdateEmailComponent implements OnInit {
           })
           .then(updatedUser => {
             this.db.addUser(this.userToUpdate, this.exchangeId).then(data => {
-              console.log("saved msg");
+              // console.log("saved msg");
               this.setSavedMsg(
                 `${this.userToUpdate.name}'s Email Address Has Been Updated.`,
                 true
@@ -119,7 +119,7 @@ export class UpdateEmailComponent implements OnInit {
             });
           });
       } else {
-        console.log("you are not an admin");
+        // console.log("you are not an admin");
       }
       this.setSavedMsg(`There was a problem.`, false);
     }

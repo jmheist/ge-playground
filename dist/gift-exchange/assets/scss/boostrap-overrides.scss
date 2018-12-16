@@ -1,0 +1,32 @@
+//
+// pre init boostrap vars here to overwrite them
+//
+
+$icon-font-path: '../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
+
+// base colors
+$bg-purple: #3F3E52;
+
+$linkColor: #ff7481;
+$linkActiveColor:#D14B64;
+$linkVisitedColor: #ff7481;
+$light-grey: rgb(194, 194, 194);
+
+// theme colors
+$theme-colors: (
+  primary: #D14B64,
+  secondary: #EEBB95,
+  success: #FDBE61,
+  warning: #ff7481,
+  danger: #ff7481,
+);
+
+// variable overrides
+$spacer: 1rem;
+$spacers: (
+    6: ($spacer * 6),
+    7: ($spacer * 7),
+    8: ($spacer * 8),
+    9: ($spacer * 9),
+    10: ($spacer * 10)
+);

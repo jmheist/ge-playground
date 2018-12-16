@@ -22,17 +22,17 @@
         <li>We’ll email everyone for you so everything stays a secret</li>
         <li>It's free!</li>
       </ul>
-      <button class="btn btn-md btn-primary mt-4" (click)="startSetup()">
+      <button class="btn btn-md btn-primary mt-4" (click)="buttonClick()">
         Create Your Exchange Now &raquo;
       </button>
     </div>
-    <div class="col-12 col-xl-5 offset-xl-0 col-lg-6 offset-lg-1 col-md-5 pl-lg-8 px-sm-5 my-5 align-self-center text-right">
+    <div class="col-12 col-xl-5 offset-xl-0 col-lg-6 offset-lg-1 col-md-5 pl-lg-8 px-sm-5 my-5 align-self-center text-lg-right text-center">
       <img src="../assets/images/teal_giftbox.svg" class="img-fluid" style="max-width:350px;" />
     </div>
   </div>
   <div class="row mt-5 pt-4 justify-content-center">
-    <div class="col-5 text-center mt-3 pt-5 border-top">
-      <h3>Already apart of an exchange?</h3>
+    <div class="col col-10 text-center mt-3 pt-5 border-top">
+      <h3>Already a part of an exchange?</h3>
       <p>
         Check your email for a link to login to your exchange.<br />
         <a [routerLink]="['/sendLoginEmail']">Or, click here to send a new email!</a>

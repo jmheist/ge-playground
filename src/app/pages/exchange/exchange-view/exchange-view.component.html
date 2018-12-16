@@ -1,27 +1,29 @@
-<div class="row">
-  <div class="col-sm-12">
-    <h1>{{ (exchange | async)?.name }}</h1>
-    <!-- <p *ngIf="currentUser">Welcome {{ currentUser?.name.capitalize() }}</p> -->
+<div class="row mb-5">
+  <div class="col text-center">
+    <h3>{{ (exchange | async)?.name }}</h3>
   </div>
 </div>
 <div class="row mt-3">
-  <div class="col-sm-6">
-    <h3>{{ currentUser?.name.capitalize() }}<span *ngIf="isAdmin"> (Admin) </span></h3>
+  <div class="col-sm-8">
+    <h4>Welcome {{ currentUser?.name.capitalize() }} <small *ngIf="isAdmin">  (Admin) </small></h4>
     <ul *ngIf="participant">
       <li *ngIf="currentUser && participant">
         <a [routerLink]="['/exchange', exchangeId, (currentUser)?.id, 'wishlist', 'edit']">
           {{ !currentUser?.wishlistCreated ? "Create your wishlist" : "Update your wish list" }}
         </a>
       </li>
-      <li *ngIf="currentUser && participant"><a [routerLink]="['/exchange', exchangeId, (currentUser)?.id, 'wishlist', 'drawn']">View
-          {{currentUser?.nameDrawn}}'s wishlist</a></li>
       <li>
         <a (click)="updateUsersEmail()">Change your email address</a>
       </li>
     </ul>
+    <h4 class="text-success">You drew {{currentUser?.nameDrawn.capitalize()}}'s name!</h4>
+    <ul *ngIf="participant">
+      <li *ngIf="currentUser && participant"><a [routerLink]="['/exchange', exchangeId, (currentUser)?.id, 'wishlist', 'drawn']">View
+          {{currentUser?.nameDrawn.capitalize()}}'s wishlist</a></li>
+    </ul>
   </div>
-  <div class="col-sm-6">
-    <h3>Settings</h3>
+  <div class="col-sm-4">
+    <h5>Settings</h5>
     <ul>
       <li>Budget: ${{ (exchange | async)?.budget }}</li>
       <li>Date: {{ (exchange | async)?.date.month }}/{{ (exchange | async)?.date.day }}/{{ (exchange |
@@ -39,10 +41,10 @@
       <div class="mt-2 mb-2 pt-2 pb-2 border-bottom" *ngFor="let ex of (people | async) ; let i of index;">
         <div class="row">
           <div class="col-sm-4">
-            <h4><span (click)="loadExchangeAs(ex.id)">{{ex.name}}</span></h4>
+            <h4><span (click)="loadExchangeAs(ex.id)">{{ex.name.capitalize()}}</span></h4>
           </div>
           <div class="col col-sm-4">
-            <span *ngIf="isAdmin && showAdminNames">Name drawn: {{ex.nameDrawn}}</span>
+            <span *ngIf="isAdmin && showAdminNames == 'Yes'">Name drawn: {{ex.nameDrawn.capitalize()}}</span>
           </div>
           <div class="col-sm-4" *ngIf="isAdmin">
             Their Wishlist:&nbsp;

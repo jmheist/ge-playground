@@ -242,7 +242,7 @@ export class FirestoreService {
             >
           ) => {
             const tock = new Date().getTime() - tick;
-            console.log(`Loaded Document in ${tock}ms`, d);
+            // console.log(`Loaded Document in ${tock}ms`, d);
           }
         )
       )
@@ -257,7 +257,7 @@ export class FirestoreService {
         take(1),
         tap((c: DocumentChangeAction<any>[]) => {
           const tock = new Date().getTime() - tick;
-          console.log(`Loaded Collection in ${tock}ms`, c);
+          // console.log(`Loaded Collection in ${tock}ms`, c);
         })
       )
       .subscribe();

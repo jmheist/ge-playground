@@ -16,6 +16,12 @@ input[type=checkbox] {
     height: 20px;
 }
 
+h1,h2,h3,h4,h5 {
+    small {
+        font-size: 55%;
+    }
+}
+
 main {
     a, [ng-click],
     [data-ng-click],
@@ -38,7 +44,6 @@ main {
     color: $secondary;
     background-color: white;
     #logo {
-        min-width: 350px;
         max-width: 500px;
     }
 }

@@ -16,7 +16,7 @@ export class WishlistSavedComponent implements OnInit {
   }
 
   goBack() {
-    console.log(this.prevUrl);
+    // console.log(this.prevUrl);
     window.history.back()
   }
 

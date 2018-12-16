@@ -20,7 +20,7 @@ export class WishlistComponent implements OnInit {
     public currentUserUid: string;
     public savedMsg: string;
     public isDirty = false;
-    private exchangeId: string;
+    public exchangeId: string;
     private exDoc;
     private sub = undefined;
 

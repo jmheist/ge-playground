@@ -22,13 +22,10 @@ export class ExchangeLookupComponent implements OnInit {
     this.route.params.subscribe(async params => {
       this.userEmail = params["userEmail"];
     });
-    console.log(this.userEmail);
     this.db.getUserOnce(this.userEmail).then(async user => {
-      console.log(user);
       this.user = user;
       this.userExchanges = this.user.exchanges;
       for (let ex of this.userExchanges) {
-        console.log(ex);
         const exData = await this.getExchangeInfo(ex, this.userEmail);
         await this.exchanges.push({
           id: ex,
@@ -48,9 +45,8 @@ export class ExchangeLookupComponent implements OnInit {
       if ((userEmail = exchange.adminEmail)) {
         exData["userId"] = await exchange.adminUid;
       } else {
-        await this.db.getExchangePeople(exId).then(async people => {
+        await this.db.getExchangePeopleOnce(exId).then(async people => {
           for (let person in people) {
-            console.log(people[person]);
             if (people[person].email == userEmail) {
               exData["userId"] = people[person].id;
             }

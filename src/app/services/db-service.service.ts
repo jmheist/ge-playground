@@ -162,7 +162,15 @@ export class DbServiceService {
     return this.db.docWithIds$(this.exchDoc);
   }
 
-  getExchangePeople(exId) {
+  getExchangePeople(exId): Observable<any> {
+    this.PeopleCollection = this.afs
+      .collection<Exchange>(`exchanges`)
+      .doc(exId)
+      .collection<User>("exchangees");
+    return this.db.colWithIds$(this.PeopleCollection);
+  }
+
+  getExchangePeopleOnce(exId) {
     this.PeopleCollection = this.afs
       .collection<Exchange>(`exchanges`)
       .doc(exId)
@@ -248,7 +256,7 @@ export class DbServiceService {
   userRequestedEmail(userEmail): Promise<any> {
     const ref = this.afs.collection("users").doc(userEmail);
     const stamp = this.db.timestamp;
-    console.log(stamp);
+    // console.log(stamp);
     return ref.update({ requestedEmail: this.db.timestamp });
   }
 }

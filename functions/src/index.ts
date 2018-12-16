@@ -100,7 +100,7 @@ exports.newExchangeCreated = functions.firestore
               exchange_name: exchangeAfter.name,
               name: exchangeAfter.adminName,
               email_button_link:
-                "http://localhost:4200/exchange/" +
+                "http://www.thegreatgiftexchange.com/exchange/" +
                 change.after.id +
                 "/" +
                 exchangeAfter.adminUid +
@@ -143,10 +143,11 @@ exports.adminVerifiedEmail = functions.firestore
                 exchange_name: exchange.name,
                 name: exchange.adminName,
                 email_button_link:
-                  "http://localhost:4200/exchange/" +
+                  "http://www.thegreatgiftexchange.com/exchange/" +
                   change.after.id +
                   "/" +
-                  exchange.adminUid
+                  exchange.adminUid,
+                message: exchange.welcomeMessage
               }
             }
           ],
@@ -181,10 +182,11 @@ exports.adminVerifiedEmail = functions.firestore
                     exchange_name: exchange.name,
                     name: ex.name,
                     email_button_link:
-                      "http://localhost:4200/exchange/" +
+                      "http://www.thegreatgiftexchange.com/exchange/" +
                       change.after.id +
                       "/" +
-                      snap.id
+                      snap.id,
+                    message: exchange.welcomeMessage
                   }
                 }
               ],
@@ -245,7 +247,7 @@ exports.wishListSet = functions.firestore
                     name: ex.name,
                     drawn_name: exchangee.name,
                     email_button_link:
-                      "http://localhost:4200/exchange/" +
+                      "http://www.thegreatgiftexchange.com/exchange/" +
                       params.exchangeId +
                       "/" +
                       doc.id +
@@ -279,7 +281,7 @@ exports.userRequestedExchangeLinks = functions.firestore
   .onUpdate(
     field("requestedEmail", "CHANGED", (change, context) => {
       const user = change.after.data();
-      console.log("user requested email");
+      console.log("user requested email", user.name, user.email);
       const msgOptions = {
         personalizations: [
           {
@@ -292,7 +294,7 @@ exports.userRequestedExchangeLinks = functions.firestore
             dynamic_template_data: {
               name: user.name,
               email_button_link:
-                "http://localhost:4200/exchange-lookup/" +
+                "http://www.thegreatgiftexchange.com/exchange-lookup/" +
                 user.email
             }
           }

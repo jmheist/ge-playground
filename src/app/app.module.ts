@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Component } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
+
+import { AdsenseModule } from 'ng2-adsense';
+
 import { AppComponent } from './app.component';
 import { NavComponent } from './template/nav/nav.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -13,14 +16,16 @@ import { Step4Component } from './pages/setup/step4/step4.component';
 import { FinalStepComponent } from './pages/setup/final-step/final-step.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-
+import { ReactiveFormsModule } from '@angular/forms'
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { ListExchangesComponent } from './pages/list-exchanges/list-exchanges.component';
+
+import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 
 import { DbServiceService } from './services/db-service.service';
 import { SetupService } from './services/setup.service';
@@ -40,6 +45,7 @@ import { SendLoginEmailComponent } from './pages/send-login-email/send-login-ema
 import { UpdateEmailComponent } from './pages/exchange/exchange-view/update-email/update-email.component';
 import { VerifyEmailComponent } from './pages/exchange/verify-email/verify-email.component';
 import { ExchangeLookupComponent } from './pages/exchange-lookup/exchange-lookup.component';
+import { BadLinkComponent } from './pages/bad-link/bad-link.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +73,8 @@ import { ExchangeLookupComponent } from './pages/exchange-lookup/exchange-lookup
     SendLoginEmailComponent,
     UpdateEmailComponent,
     VerifyEmailComponent,
-    ExchangeLookupComponent
+    ExchangeLookupComponent,
+    BadLinkComponent
   ],
   imports: [
     BrowserModule,
@@ -79,11 +86,21 @@ import { ExchangeLookupComponent } from './pages/exchange-lookup/exchange-lookup
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    Angulartics2Module.forRoot({
+      pageTracking: {
+        clearIds: true,
+      }
+    }),
+    AdsenseModule.forRoot({
+      adClient: 'ca-pub-8196182321788212',
+      // adSlot: 7259870550,
+    }),
   ],
   providers: [
     DbServiceService,
     SetupService,
     FirestoreService,
+    
   ],
   bootstrap: [AppComponent]
 })

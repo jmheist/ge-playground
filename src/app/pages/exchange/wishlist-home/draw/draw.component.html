@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <h2>{{(currentUser)?.nameDrawn.capitalize()}}'s Wishlist</h2>
         <p>
-            <a [class.disabled]="isDirty" [routerLink]="['/exchange', exchangeId, currentUserUid]">&laquo; Go back to exchange.</a>
+            <a [routerLink]="['/exchange', exchangeId, currentUserUid]">&laquo; Go back to exchange.</a>
         </p>
     </div>
 </div>

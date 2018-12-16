@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormArray, FormGroup, Validators } from "@angular/forms";
 import { controlNameBinding } from "@angular/forms/src/directives/reactive_directives/form_control_name";
+import { Angulartics2 } from "angulartics2";
 
 @Component({
   selector: "app-step2",
@@ -13,7 +14,8 @@ export class Step2Component implements OnInit {
   constructor(
     private _setupService: SetupService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private angulartics2: Angulartics2
   ) {}
 
   public formData = this._setupService.getData();
@@ -91,11 +93,22 @@ export class Step2Component implements OnInit {
     return Math.floor(Math.random() * 100000000 + 1);
   }
 
+   hasDuplicates(array) {
+    var valuesSoFar = Object.create(null);
+    for (var i = 0; i < array.length; ++i) {
+      var value = array[i];
+      if (value in valuesSoFar) {
+        console.log(value);
+        array[i] = value + " #2";
+      }
+      valuesSoFar[value] = true;
+    }
+    return array;
+  }
+
   submitData() {
     // prevent blanks, and long live exlcudes saved previously
     var cleanedExs = [];
-    console.log(this.formData)
-    console.log(this.step2Form.value);
     for (let i = 0; i < this.step2Form.value.exchangees.length; i++) {
       const ex = this.step2Form.value.exchangees[i];
       if (ex.name != "" && ex.email != "") {
@@ -114,23 +127,26 @@ export class Step2Component implements OnInit {
         cleanedExs.push(ex);
       }
     }
-    console.log(cleanedExs);
+    // console.log(cleanedExs);
     // add admin to exchangees if aplicable
     if (this.formData.includeAdmin && !this.formData.adminAdded) {
-      console.log(this.formData.includeAdmin,!this.formData.adminAdded)
-      console.log(this.formData)
       cleanedExs.push({
         name: this.step2Form.value.adminName,
         email: this.step2Form.value.adminEmail,
-        isAdmin: true,
+        isAdmin: true
         // tempId: this.getTempId
       });
       this.formData.adminAdded = true;
     }
 
     this.step2Form.value.exchangees = cleanedExs;
-    console.log(this.step2Form.value)
     this._setupService.addData(this.step2Form.value);
+    this.angulartics2.eventTrack.next({
+      action: "go to step 3",
+      properties: {
+        category: "setup"
+      }
+    });
     this.router.navigate(["setup/step3"]);
   }
 }

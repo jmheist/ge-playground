@@ -19,8 +19,8 @@ export class VerifyEmailComponent implements OnInit {
   public showAdminNames: string;
   public includeAdmin: boolean;
   public participant: boolean;
-  private exchangeId: string;
-  private curentUserId: string;
+  public exchangeId: string;
+  public curentUserId: string;
 
   private exchangeDoc: Exchange;
 
@@ -48,7 +48,6 @@ export class VerifyEmailComponent implements OnInit {
             await this.exchange.subscribe(async exchange => {
               this.exchangeDoc = exchange;
               if (
-                !exchange.includeAdmin &&
                 this.curentUserId === exchange.adminUid
               ) {
                 this.currentUser = {
@@ -69,13 +68,11 @@ export class VerifyEmailComponent implements OnInit {
   ngOnInit() {}
 
   verify() {
-    console.log(this.exchangeDoc);
     if (
       this.isAdmin &&
       !this.exchangeDoc.hasOwnProperty("adminVerifiedEmail")
     ) {
       // verify the exchange
-      console.log("verifying");
       this.db.updateExchange(this.exchangeId, {
         adminVerifiedEmail: true
       });

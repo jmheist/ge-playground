@@ -13,7 +13,7 @@ import { UserService } from "src/app/services/user.service";
 })
 export class ExchangeViewComponent implements OnInit {
   public exchange: Observable<Exchange>;
-  public people;
+  public people: Observable<any>;
   public currentUser: User;
   public isAdmin: boolean;
   public showAdminNames: string;
@@ -30,14 +30,15 @@ export class ExchangeViewComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.route.parent.params.subscribe(async params => {
+    await this.route.parent.params.subscribe(async params => {
       this.exchangeId = params["exchangeId"];
       this.userSrv.setActiveUserId(params["curentUserId"]);
       this.curentUserId = this.userSrv.getActiveUserId();
-      await this.loadExchange();
+    });
+    await this.loadExchange();
       await this.loadPeople();
       await this.db
-        .getExchangee(this.exchangeId, this.userSrv.getActiveUserId())
+        .getExchangee(this.exchangeId, this.curentUserId)
         .subscribe(async user => {
           if (user) {
             this.currentUser = user;
@@ -65,7 +66,6 @@ export class ExchangeViewComponent implements OnInit {
             });
           }
         });
-    });
   }
 
   updateUsersEmail(userId = "self") {
@@ -85,9 +85,7 @@ export class ExchangeViewComponent implements OnInit {
   }
 
   loadPeople() {
-    this.db.getExchangePeople(this.exchangeId).then(async people => {
-      this.people = people;
-    });
+    this.people = this.db.getExchangePeople(this.exchangeId);
   }
 
   loadExchangeAs(id) {

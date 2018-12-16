@@ -4,13 +4,11 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-4">
-      <h3>Add Names</h3>
+      <h3>Add people to the gift exchange</h3>
       <ul>
-        <li>Your Info</li>
-        <li>Add Names</li>
+        <li>Start with yourself, even if you are not in the exchange</li>
+        <li>Add name and email address for everyone else. Use your own email for people who can't get email (you'll receive their link)</li>
       </ul>
-      <p>{{step2Form.value | json}}</p>
-      <p>{{formData | json}}</p>
     </div>
     <div class="col-lg-8">
       <form [formGroup]="step2Form" novalidate (ngSubmit)="submitData()">
@@ -46,8 +44,8 @@
           
         </div>
         <div class="form-group">
-          <button type="button" class="btn btn-secondary ml-2" (click)="back()">Back</button>
-          <button type="submit" [disabled]="step2Form.invalid" class="btn btn-success">Next</button>
+          <button type="button" class="btn btn-secondary" (click)="back()">Back</button>
+          <button type="submit" [disabled]="step2Form.invalid" class="btn btn-success  ml-2">Next</button>
         </div>
       </form>
     </div>

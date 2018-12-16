@@ -3,7 +3,7 @@
     <div class="col">
       <h1>Hi {{(user)?.name}}</h1>
       <p>Email: {{(user)?.email}}</p>
-      <p>Here is a list of the exchanges your belong to with this email address.</p>
+      <p>Here is a list of the exchanges you belong to for this email address.</p>
       <ul>
         <li *ngFor="let exchange of (exchanges)"><a [routerLink]="['/exchange', exchange.id, exchange.userId]">{{exchange.name}}</a></li>
       </ul>

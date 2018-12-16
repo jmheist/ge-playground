@@ -29,10 +29,10 @@ export class SendLoginEmailComponent implements OnInit {
 
   submitData() {
     const email = this.emailForm.get('email').value;;
-    console.log(email);
+    // console.log(email);
     this.db.getUserOnce(email).then(user => {
       if (user) {
-        console.log(user.exchanges);
+        // console.log(user.exchanges);
         this.db.userRequestedEmail(email);
         this.setSavedMsg(`An email has been sent to ${email}!`, true);
       } else {

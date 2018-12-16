@@ -17,7 +17,7 @@ export class DrawComponent implements OnInit {
   public exchange: {};
   public currentUser: User;
   public currentUserUid: string;
-  private exchangeId: string;
+  public exchangeId: string;
   private exDoc;
 
   constructor(
