@@ -90,7 +90,7 @@ export class SetupService {
   }
 
   async addDrawnIds(exchangees) {
-    // console.log("addDrawnIds(): Starting");
+    console.log("addDrawnIds(): Starting");
     const properties = Object.keys(exchangees);
     for (const id of properties) {
       let ex = exchangees[id];
@@ -106,7 +106,7 @@ export class SetupService {
         await this.db.updateExchagee(this.setupData.uid, id, ex);
       }
     }
-    // console.log("addDrawnIds(): Finished");
+    console.log("addDrawnIds(): Finished");
     return;
   }
 
@@ -197,7 +197,7 @@ export class SetupService {
 
     const assignGiftPartners = function(people) {
       var peopleLeftToAssign = people.map(person => person.name);
-      // console.log(peopleLeftToAssign);
+      console.log(peopleLeftToAssign);
       people.forEach(function(person) {
         var choices = peopleLeftToAssign.filter(function(personToAssign) {
           return (
@@ -210,7 +210,7 @@ export class SetupService {
         }
         if (choices.length === 0) {
         } else {
-          // console.log(choices);
+          console.log(choices);
           person.nameDrawn = choices[0];
           var index = peopleLeftToAssign.indexOf(choices[0]);
           peopleLeftToAssign.splice(index, 1);
@@ -218,15 +218,31 @@ export class SetupService {
       });
     };
 
+    function dedupe(people) {
+      people.forEach(p => {
+        var counter = 1
+        var count = people.reduce(function (n, person) {
+          return n + (person.name == p.name);
+        }, 0);
+        if (count > 1) {
+          p.name = p.name + " " + counter;
+          counter++;
+        }
+      });
+    }
+
     let allAssigned = false;
     let loopCount = 0;
+
+    dedupe(people);
+
     while (!allAssigned) {
       loopCount++;
       assignGiftPartners(people);
       allAssigned = verifyGiftPartners(people);
       //exit loop if going too long
       if (loopCount > 50) {
-        // console.log("Something went wrong with the assignment");
+        console.log("Something went wrong with the assignment");
         errors = true;
         break;
       }
@@ -237,10 +253,10 @@ export class SetupService {
 
     //save choices into database
     if (errors) {
-      // console.log("there were errors while drawing names");
+      console.log("there were errors while drawing names");
     } else {
-      // console.log(people);
+      console.log(people);
     }
-    // console.log("names drawn");
+    console.log("names drawn");
   }
 }

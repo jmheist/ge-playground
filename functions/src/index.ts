@@ -1,4 +1,4 @@
-//
+//////
 // After saving changes, run this in console at root of project:
 // firebase deploy --only functions
 //
@@ -16,7 +16,8 @@
 //      name: 'projects/giftexchange-572f3/databases/(default)/documents/exchanges/VY8jZdyROiybSOeugaPH/exchangees/Eq64E1oeTQRfBFSaNUJH/wishlist/cbfRYk8bNDroT3hMePQF' },
 //   timestamp: '2018-12-10T05:14:51.394879Z' }
 
-const functions = require("firebase-functions");
+const functions = require('firebase-functions');
+//const admin = require('firebase-admin');
 const sgMail = require("@sendgrid/mail");
 
 import * as admin from "firebase-admin";
