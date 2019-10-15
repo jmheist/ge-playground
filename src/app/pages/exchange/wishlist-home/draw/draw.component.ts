@@ -18,6 +18,7 @@ export class DrawComponent implements OnInit {
   public currentUser: User;
   public currentUserUid: string;
   public exchangeId: string;
+  public tag: 'jmheist08-20';
   private exDoc;
 
   constructor(
@@ -62,11 +63,11 @@ export class DrawComponent implements OnInit {
   openItemUrl(item) {
     if (item.itemUrl) {
       if (item.itemUrl.match(/https?:\/\/(?=(?:....)?amazon|smile)(www|smile)\S+com(((?:\/(?:dp|gp)\/([A-Z0-9]+))?\S*[?&]?(?:tag=))?\S*?)(?:#)?(\w*?-\w{2})?(\S*)(#?\S*)+/g)) {
-        item.itemUrl = this.updateQueryStringParameter(item.itemUrl, 'tag', 'jmheist-20');
+        item.itemUrl = this.updateQueryStringParameter(item.itemUrl, 'tag', this.tag);
       }
       window.open(item.itemUrl,'_blank');
     } else {
-      const url = "https://www.amazon.com/s/?field-keywords="+item.itemName.split(" ").join("+")+"&tag=jmheist-20"
+      const url = "https://www.amazon.com/s/?field-keywords="+item.itemName.split(" ").join("+")+"&tag="+this.tag;
       window.open(url,'_blank');
     }
   }
