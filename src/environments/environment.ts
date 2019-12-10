@@ -5,12 +5,14 @@
 export const environment = {
   production: false,
   firebase: {
-  	apiKey: "AIzaSyCcA6KyePSLIA3WvXVRjMYke_6PasHpVvk",
-    authDomain: "giftexchange-572f3.firebaseapp.com",
-    databaseURL: "https://giftexchange-572f3.firebaseio.com",
-    projectId: "giftexchange-572f3",
-    storageBucket: "giftexchange-572f3.appspot.com",
-    messagingSenderId: "184436074227"
+  	apiKey: "AIzaSyD1D1AZRmbPIEUpOoRZVb1NvG0JHCPe84g",
+    authDomain: "ge-tst.firebaseapp.com",
+    databaseURL: "https://ge-tst.firebaseio.com",
+    projectId: "ge-tst",
+    storageBucket: "ge-tst.appspot.com",
+    messagingSenderId: "1080270700491",
+    appId: "1:1080270700491:web:4df2c6440b552e56cb004e",
+    measurementId: "G-0YXDEH0NW8"
   }
 };
 
