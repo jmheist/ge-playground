@@ -24,7 +24,7 @@
 <div class="row">
     <div class="col-sm-8">
         <form [formGroup]="wishlistForm" novalidate (ngSubmit)="submitData()">
-            <div formArrayName="items" *ngFor="let item of wishlistForm.get('items').controls; let i = index; last as isLast;"
+            <div formArrayName="items" *ngFor="let item of wishlistForm.get('items')['controls']; let i = index; last as isLast;"
                 class="mb-3 pb-3 border-bottom">
                 <div class="" [formGroupName]="i">
                     <div class="row pb-1">

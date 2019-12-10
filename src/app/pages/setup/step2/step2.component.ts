@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormArray, FormGroup, Validators } from "@angular/forms";
-import { controlNameBinding } from "@angular/forms/src/directives/reactive_directives/form_control_name";
 import { Angulartics2 } from "angulartics2";
 
 @Component({

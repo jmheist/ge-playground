@@ -25,7 +25,7 @@
         <h3>Add Names</h3>
         <div class="addNamesSection">
 
-          <div formArrayName="exchangees" *ngFor="let exchangee of step2Form.get('exchangees').controls; let i = index;">
+          <div formArrayName="exchangees" *ngFor="let exchangee of step2Form.get('exchangees')['controls']; let i = index;">
           
             <div class="form-row align-items-top" [formGroupName]="i">
               <div class="col-6">
