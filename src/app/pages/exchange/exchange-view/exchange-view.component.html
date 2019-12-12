@@ -23,10 +23,10 @@
     </ul>
   </div>
   <div class="col-sm-4">
-    <h5>Settings</h5>
+    <h5>Gift Excahnge Settings</h5>
     <ul>
-      <li>Budget: ${{ (exchange | async)?.budget }}</li>
-      <li>Date: {{ (exchange | async)?.date.month }}/{{ (exchange | async)?.date.day }}/{{ (exchange |
+      <li>Max Gift Value: ${{ (exchange | async)?.budget }}</li>
+      <li>Date of Gift Exchange: {{ (exchange | async)?.date.month }}/{{ (exchange | async)?.date.day }}/{{ (exchange |
         async)?.date.year }}</li>
       <li *ngIf="isAdmin && includeAdmin">I'm Included: Yes</li>
       <li>Admin Sees Names: {{ showAdminNames }}</li>
@@ -61,6 +61,13 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="container">
+      <div id="amzn-assoc-ad-91c06d19-1511-43c7-aea1-381f6abc1c67"></div><script async src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=91c06d19-1511-43c7-aea1-381f6abc1c67"></script>
     </div>
   </div>
 </div>
