@@ -6,10 +6,10 @@ PRELAUNCH TODO LIST:
   ✔ Fix user reqested login email trigger @started(18-12-13 14:04) @done(18-12-13 14:04) @lasted(26s)
   ✔ Page: Admin edit someones email address @done(18-12-13 16:21)
   ☐ Email Templates
-    ☐ Verify Email
-    ☐ Welcome all exchangees to gift exchange
-    ☐ Your name has set their wishlist
-      ☐ Your name has updated their wishlist
+    ✔ Verify Email @done(19-12-12 16:55)
+    ✔ Welcome all exchangees to gift exchange @done(19-12-12 16:55)
+    ✔ Your name has set their wishlist @done(19-12-12 16:55)
+      ✔ Your name has updated their wishlist @done(19-12-12 16:55)
 
 POST LAUNCH TODO LIST: 
   ☐ Page: Send email to group
@@ -33,9 +33,9 @@ Things to complete:
 
   Page Setup Completion: 
     ✔ Exchange Setup @done(18-11-26 11:34)
-    ☐ Exchange Admin Confirm Email page
+    ✔ Exchange Admin Confirm Email page @done(19-12-12 16:55)
     ✔ Exchange Admin Page @done(18-11-26 11:34)
-      ☐ Update email page 
+      ✔ Update email page @done(19-12-12 16:55)
       ☐ Send email page
     ☐ Exchangee Home Page
       ✔ group page @done(18-12-07 14:57)
@@ -43,7 +43,7 @@ Things to complete:
       ✔ view name's wishlist @done(18-12-07 14:57)
         ☐ ask name a question
       ✔ Set their own wishlist @done(18-12-07 14:57)
-      ☐ see gift idea list
+      ✔ see gift idea list @done(19-12-12 16:55)
 
   Exchange Setup Phase:
     ✔ Forms @done(18-11-26 10:15)
@@ -68,3 +68,4 @@ Things to complete:
     ☐ Add exchange Id to users document when exchangee intereacts with exchange
       - for future lookup of previous gift exchanges
       - dont add to early in process in case exchange is created but never used
+    ☐ Move the group email message from the creation steps to the first step after verifying
