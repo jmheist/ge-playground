@@ -14,14 +14,14 @@ export class ListExchangesComponent implements OnInit {
   public users;
   public userDoc;
   public user: User;
+  public usersByExchange;
 
   constructor(
     private _dbservice: DbServiceService,
-    private fs: FirestoreService,
-    private router: Router
   ) {
     this.exchanges = this._dbservice.getExchanges();
     this.users = this._dbservice.users;
+    this.usersByExchange = [];
   }
 
   ngOnInit() {
@@ -33,4 +33,7 @@ export class ListExchangesComponent implements OnInit {
       // console.log(this.user.id);
     });
   }
+
+
+
 }

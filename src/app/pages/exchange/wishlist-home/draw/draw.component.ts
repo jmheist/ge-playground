@@ -28,7 +28,7 @@ export class DrawComponent implements OnInit {
     private userSrv: UserService
 
   ) {
-    this.tag = 'jmheist08-20';
+    this.tag = 'jmheist0f-20';
     this.router.parent.parent.params.subscribe(params => {
       this.exchangeId = params['exchangeId'];
       this.userSrv.setActiveUserId(params['curentUserId']);

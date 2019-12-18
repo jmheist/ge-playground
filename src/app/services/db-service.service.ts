@@ -163,6 +163,7 @@ export class DbServiceService {
   }
 
   getExchangePeople(exId): Observable<any> {
+    console.log(exId)
     this.PeopleCollection = this.afs
       .collection<Exchange>(`exchanges`)
       .doc(exId)
