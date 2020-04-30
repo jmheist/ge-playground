@@ -33,7 +33,7 @@
     "firebase": "^5.11.1",
     "firebase-admin": "8.6.0",
     "firebase-functions": "^3.3.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "ng2-adsense": "^5.4.3",
     "popper.js": "^1.16.0",
     "rxjs": "^6.5.3",
